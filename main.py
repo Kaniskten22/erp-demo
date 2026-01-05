@@ -37,10 +37,15 @@ import os
 import firebase_admin
 from firebase_admin import credentials, firestore, storage
 
-cred = credentials.Certificate("/Users/kaniskten/Downloads/erp4-main//67.json")
-firebase_admin.initialize_app(cred, {
-    'storageBucket': 'school-erp-fc020.firebasestorage.app'  
-})
+def initialize_firebase():
+    cred_dict = json.loads(os.environ["FIREBASE_SERVICE_ACCOUNT"])
+    cred = credentials.Certificate(cred_dict)
+    firebase_admin.initialize_app(cred, {
+        'storageBucket': 'school-erp-fc020.firebasestorage.app'
+    })
+    print("✅ Firebase initialized successfully")
+
+initialize_firebase()
 db = firestore.client()
 bucket = storage.bucket()
 
