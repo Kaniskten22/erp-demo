@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Admissions</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif; /* Modern font */
+      background-color: #eef2f6; /* Light, subtle background */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px; /* Add some padding for spacing */
+      box-sizing: border-box;
+      color: #333;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 35px 30px; /* Increased padding */
+      border-radius: 16px; /* More rounded corners */
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* Softer, larger shadow */
+      width: 100%;
+      max-width: 800px; /* Wider container for table */
+      position: relative; /* For back arrow positioning */
+      overflow-x: auto; /* Enable horizontal scroll for table on small screens */
+    }
+
+    h2 {
+      text-align: center;
+      color: #2c3e50; /* Darker heading color */
+      font-size: 28px; /* Larger heading */
+      margin-bottom: 30px; /* More space below heading */
+      font-weight: 700; /* Bolder font weight */
+      border-bottom: 2px solid #007bff; /* Blue border */
+      padding-bottom: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      border-radius: 10px; /* Rounded corners for table */
+      overflow: hidden; /* Ensures rounded corners are applied */
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Subtle shadow for table */
+    }
+
+    th, td {
+      padding: 15px; /* Increased padding */
+      text-align: left;
+      border-bottom: 1px solid #eee; /* Lighter border */
+      font-size: 15px;
+    }
+
+    th {
+      background-color: #007bff; /* Blue header */
+      color: white;
+      font-weight: 600;
+      text-transform: uppercase; /* Uppercase for headers */
+    }
+
+    tr:nth-child(even) {
+      background-color: #f8faff; /* Very light blue for even rows */
+    }
+
+    tr:hover {
+      background-color: #e9f5ff; /* Light blue on hover */
+    }
+
+    .edit-button {
+      display: inline-block;
+      padding: 8px 15px;
+      background-color: #28a745; /* Green for edit button */
+      color: white;
+      text-decoration: none;
+      border-radius: 8px; /* Rounded corners for button */
+      font-size: 14px;
+      font-weight: 500;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 2px 5px rgba(40, 167, 69, 0.2); /* Subtle shadow */
+    }
+
+    .edit-button:hover {
+      background-color: #218838; /* Darker green on hover */
+      transform: translateY(-1px); /* Slight lift on hover */
+    }
+
+    .back-arrow {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      text-decoration: none;
+      color: #007bff;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      transition: color 0.3s ease;
+    }
+
+    .back-arrow:hover {
+      color: #0056b3;
+    }
+
+    .back-arrow-chevron {
+      font-size: 24px; /* Larger chevron */
+      margin-right: 5px;
+      line-height: 1; /* Align chevron better */
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .container {
+        padding: 25px 15px;
+        border-radius: 12px;
+      }
+
+      h2 {
+        font-size: 24px;
+        margin-bottom: 25px;
+      }
+
+      table, tbody, th, td, tr {
+        display: block; /* Stack table elements */
+      }
+
+      thead {
+        display: none; /* Hide table header */
+      }
+
+      tr {
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      td {
+        border: none;
+        position: relative;
+        padding-left: 50%; /* Space for data-label */
+        text-align: right;
+      }
+
+      td:before {
+        content: attr(data-label); /* Use data-label for pseudo-elements */
+        position: absolute;
+        left: 0;
+        width: 45%;
+        padding-left: 15px;
+        font-weight: 600;
+        text-align: left;
+        color: #555;
+      }
+
+      .edit-button {
+        width: calc(100% - 30px); /* Full width for button in mobile */
+        text-align: center;
+        margin: 10px 15px;
+        padding: 10px;
+      }
+
+      .back-arrow {
+        font-size: 14px;
+        top: 15px;
+        left: 15px;
+      }
+
+      .back-arrow-chevron {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/add_admission" class="back-arrow">
+      <span class="back-arrow-chevron">&#x2039;</span> Back
+    </a>
+    <h2>Select Admission to Edit</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Student Name</th>
+          <th>Stage</th>
+          <th>Grade</th>
+          <th>Board</th>
+          <th>Date</th>
+          <th>Edit</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for admission in admissions %}
+        <tr>
+          <td data-label="Student Name">{{ admission.student_name }}</td>
+          <td data-label="Stage">{{ admission.stage }}</td>
+          <td data-label="Grade">{{ admission.grade }}</td>
+          <td data-label="Board">{{ admission.board }}</td>
+          <td data-label="Date">{{ admission.admission_date }}</td>
+          <td data-label="Edit">
+            <a href="{{ url_for('edit_admission', admission_id=admission.id) }}" class="edit-button">Edit</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+</html>

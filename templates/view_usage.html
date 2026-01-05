@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Usage This Month</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6a0dad; /* Deep Purple */
+            --secondary-color: #9370db; /* Medium Purple */
+            --accent-color: #ffd700; /* Gold */
+            --background-light: #f8f8f8;
+            --text-dark: #333;
+            --text-light: #fff;
+            --card-background: #ffffff;
+            --border-color: #e0e0e0;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --chart-student-color: #6495ed; /* Cornflower Blue */
+            --chart-teacher-color: #ff6347; /* Tomato */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-light);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-dark);
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            font-weight: 700;
+            text-align: center;
+            font-size: 2.5em;
+        }
+
+        .container {
+            background-color: var(--card-background);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px var(--shadow-light);
+            padding: 30px 40px;
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 700px; /* Max width for content */
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .data-points {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        }
+
+        .data-point {
+            background-color: var(--background-light);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px 25px;
+            margin: 10px;
+            flex: 1; /* Allow items to grow and shrink */
+            min-width: 180px; /* Minimum width before wrapping */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .data-point strong {
+            display: block;
+            font-size: 1.1em;
+            color: var(--secondary-color);
+            margin-bottom: 5px;
+        }
+
+        .data-point span {
+            font-size: 1.8em;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .chart-container {
+            width: 100%;
+            max-width: 600px; /* Max width for the chart itself */
+            height: 350px; /* Fixed height for the chart */
+            margin: 0 auto 30px auto; /* Center the chart and add margin */
+            padding: 20px;
+            background-color: var(--card-background);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px var(--shadow-light);
+            box-sizing: border-box;
+        }
+
+        .back-button {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .back-button:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+            .container, .chart-container {
+                padding: 20px;
+            }
+            .data-points {
+                flex-direction: column; /* Stack data points vertically on small screens */
+                align-items: center;
+            }
+            .data-point {
+                width: 90%; /* Make data points wider on small screens */
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Usage This Month</h1>
+
+    <div class="container">
+        <div class="data-points">
+            <div class="data-point">
+                <strong>Students logged in:</strong>
+                <span>{{ student_count }}</span>
+            </div>
+            <div class="data-point">
+                <strong>Teachers logged in:</strong>
+                <span>{{ teacher_count }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="usageChart"></canvas>
+    </div>
+
+    <a href="/home" class="back-button">Back to Home</a>
+
+    <div style="display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; margin-top: 20px;">
+        <div style="flex:1; min-width: 250px; background: var(--card-background); border-radius: 10px; box-shadow: 0 2px 8px var(--shadow-light); padding: 18px 20px; margin-bottom: 20px;">
+            <h3 style="color: var(--primary-color); margin-top:0;">Student Logins</h3>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+                {% for user in student_users %}
+                    <li style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding: 6px 0;">
+                        <span>{{ user.username }}</span>
+                        <span style="color: #888;">{{ user.last_login }}</span>
+                    </li>
+                {% endfor %}
+                {% if student_users|length == 0 %}
+                    <li style="color:#aaa;">No student logins this month.</li>
+                {% endif %}
+            </ul>
+        </div>
+        <div style="flex:1; min-width: 250px; background: var(--card-background); border-radius: 10px; box-shadow: 0 2px 8px var(--shadow-light); padding: 18px 20px; margin-bottom: 20px;">
+            <h3 style="color: var(--secondary-color); margin-top:0;">Teacher Logins</h3>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+                {% for user in teacher_users %}
+                    <li style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding: 6px 0;">
+                        <span>{{ user.username }}</span>
+                        <span style="color: #888;">{{ user.last_login }}</span>
+                    </li>
+                {% endfor %}
+                {% if teacher_users|length == 0 %}
+                    <li style="color:#aaa;">No teacher logins this month.</li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const studentCount = {{ student_count }};
+        const teacherCount = {{ teacher_count }};
+
+        // Get CSS variable values for chart colors
+        const rootStyles = getComputedStyle(document.documentElement);
+        const studentColor = rootStyles.getPropertyValue('--chart-student-color').trim();
+        const teacherColor = rootStyles.getPropertyValue('--chart-teacher-color').trim();
+
+        const ctx = document.getElementById('usageChart').getContext('2d');
+        const usageChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Students', 'Teachers'],
+                datasets: [{
+                    label: 'Users Logged In',
+                    data: [studentCount, teacherCount],
+                    backgroundColor: [
+                        studentColor,
+                        teacherColor
+                    ],
+                    borderColor: [
+                        studentColor,
+                        teacherColor
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Users',
+                            font: {
+                                size: 14,
+                                weight: '600',
+                                family: 'Poppins'
+                            },
+                            color: rootStyles.getPropertyValue('--text-dark').trim()
+                        },
+                        ticks: {
+                            font: {
+                                family: 'Poppins'
+                            },
+                            color: rootStyles.getPropertyValue('--text-dark').trim()
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'User Type',
+                            font: {
+                                size: 14,
+                                weight: '600',
+                                family: 'Poppins'
+                            },
+                            color: rootStyles.getPropertyValue('--text-dark').trim()
+                        },
+                        ticks: {
+                            font: {
+                                family: 'Poppins'
+                            },
+                            color: rootStyles.getPropertyValue('--text-dark').trim()
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Monthly Login Overview',
+                        font: {
+                            size: 18,
+                            weight: '700',
+                            family: 'Poppins'
+                        },
+                        color: rootStyles.getPropertyValue('--primary-color').trim()
+                    },
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0,0,0,0.7)',
+                        titleFont: { family: 'Poppins' },
+                        bodyFont: { family: 'Poppins' }
+                    }
+                }
+            }
+        });
+    </script>
+                            <footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+</html>

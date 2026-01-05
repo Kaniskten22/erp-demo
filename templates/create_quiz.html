@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Create Quiz</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+      color: #333;
+    }
+
+    .quiz-container {
+      background: #fff;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 600px;
+      padding: 40px 50px 45px;
+      box-shadow: 0 16px 45px rgba(37, 117, 252, 0.25);
+      box-sizing: border-box;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quiz-container:hover {
+      box-shadow: 0 22px 55px rgba(37, 117, 252, 0.4);
+    }
+
+    a.back-arrow {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      text-decoration: none;
+      color: #2575fc;
+      font-weight: 600;
+      font-size: 1.1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 30px;
+      background: rgba(37, 117, 252, 0.1);
+      box-shadow: 0 6px 18px rgba(37, 117, 252, 0.2);
+      transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+      user-select: none;
+      z-index: 10;
+    }
+
+    a.back-arrow:hover,
+    a.back-arrow:focus {
+      background-color: #2575fc;
+      color: #fff;
+      outline: none;
+      transform: translateX(-6px);
+      box-shadow: 0 10px 25px rgba(37, 117, 252, 0.45);
+      cursor: pointer;
+    }
+
+    .back-arrow-chevron {
+      font-weight: 700;
+      font-size: 1.6rem;
+      line-height: 1;
+    }
+
+    h1 {
+      margin: 0 0 35px 0;
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #2575fc;
+      text-align: center;
+      user-select: none;
+      text-shadow: 0 4px 8px rgba(37, 117, 252, 0.3);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    label {
+      font-weight: 600;
+      color: #555;
+      font-size: 1.1rem;
+      user-select: none;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    textarea,
+    input[type="text"],
+    select {
+      width: 100%;
+      padding: 14px 18px;
+      font-size: 1rem;
+      font-family: 'Poppins', sans-serif;
+      border: 2.5px solid #cbd5e1;
+      border-radius: 14px;
+      background-color: #f9fafb;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      resize: vertical;
+      box-sizing: border-box;
+      color: #2c3e50;
+      font-weight: 500;
+      user-select: text;
+    }
+
+    textarea {
+      min-height: 100px;
+    }
+
+    textarea:focus,
+    input[type="text"]:focus,
+    select:focus {
+      outline: none;
+      border-color: #2575fc;
+      box-shadow: 0 0 12px rgba(37, 117, 252, 0.4);
+      background-color: #fff;
+    }
+
+    select {
+      appearance: none;
+      background-image: url('data:image/svg+xml;utf8,<svg fill="%232575fc" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      background-size: 16px 16px;
+      cursor: pointer;
+    }
+
+    button[type="submit"] {
+      background-color: #2575fc;
+      color: #fff;
+      padding: 16px 0;
+      font-size: 1.25rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+      box-shadow: 0 10px 25px rgba(37, 117, 252, 0.55);
+    }
+
+    button[type="submit"]:hover,
+    button[type="submit"]:focus {
+      background-color: #1a54d6;
+      box-shadow: 0 12px 35px rgba(26, 84, 214, 0.7);
+      outline: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 680px) {
+      .quiz-container {
+        padding: 32px 30px 38px 30px;
+      }
+      h1 {
+        font-size: 2.3rem;
+        margin-bottom: 28px;
+      }
+      button[type="submit"] {
+        font-size: 1.1rem;
+        padding: 14px 0;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .quiz-container {
+        padding: 28px 20px 30px 20px;
+      }
+      button[type="submit"] {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <a href="/home" class="back-arrow" aria-label="Back to Home">
+      <span class="back-arrow-chevron" aria-hidden="true">&#x2039;</span> Back
+    </a>
+    <h1>Create Quiz</h1>
+    <form method="POST" novalidate>
+      <div class="form-group">
+        <label for="question">Question:</label>
+        <textarea id="question" name="question" rows="4" required placeholder="Enter your question here"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="option_a">Option A:</label>
+        <input type="text" id="option_a" name="option_a" required placeholder="Enter option A" />
+      </div>
+      <div class="form-group">
+        <label for="option_b">Option B:</label>
+        <input type="text" id="option_b" name="option_b" required placeholder="Enter option B" />
+      </div>
+      <div class="form-group">
+        <label for="option_c">Option C:</label>
+        <input type="text" id="option_c" name="option_c" required placeholder="Enter option C" />
+      </div>
+      <div class="form-group">
+        <label for="option_d">Option D:</label>
+        <input type="text" id="option_d" name="option_d" required placeholder="Enter option D" />
+      </div>
+      <div class="form-group">
+        <label for="correct_option">Correct Option:</label>
+        <select id="correct_option" name="correct_option" required>
+          <option value="" disabled selected>Select Correct Option</option>
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+          <option value="D">D</option>
+        </select>
+      </div>
+      <button type="submit">Create Quiz</button>
+    </form>
+  </div>
+  <footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+
+</html>

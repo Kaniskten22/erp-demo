@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Homework Detail</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .top-bar {
+            background-color: #004aad;
+            color: white;
+            padding: 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+        }
+
+        .top-bar svg {
+            margin-right: 10px;
+        }
+
+        .container {
+            background-color: white;
+            margin: 20px;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .subject-icon {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .subject-icon img {
+            height: 24px;
+            margin-right: 10px;
+        }
+
+        .subject-details div:first-child {
+            font-weight: bold;
+            color: #004aad;
+        }
+
+        .subject-details div:last-child {
+            font-size: 12px;
+            color: gray;
+        }
+
+        .title {
+            font-weight: 600;
+            font-size: 16px;
+            color: #004aad;
+            margin-bottom: 10px;
+        }
+
+        .desc {
+            font-size: 14px;
+            color: #444;
+            margin-bottom: 15px;
+            white-space: pre-line;
+        }
+
+        .meta {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .teacher {
+            font-weight: bold;
+            color: #004aad;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .teacher::before {
+            content: "👤";
+            margin-right: 8px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #004aad;
+            font-size: 14px;
+        }
+
+        .back svg {
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <div class="top-bar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="white" class="bi bi-arrow-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+        </svg>
+        <span>Homework Detail</span>
+    </div>
+
+    <!-- Homework Card -->
+    <div class="container">
+        <div class="subject-icon">
+            <img src="https://img.icons8.com/ios-filled/50/000000/book.png" alt="book" />
+            <div class="subject-details">
+                <div>{{ homework.subject }}</div>
+                <div>HOMEWORK</div>
+            </div>
+        </div>
+
+        <div class="title">{{ homework.title }}</div>
+
+        <div class="desc">{{ homework.description }}</div>
+
+        <div class="meta">
+            <strong>Due:</strong> {{ homework.due_date }}<br>
+            <strong>Assigned:</strong> {{ homework.timestamp }}
+        </div>
+
+        <div class="teacher">{{ homework.teacher }}</div>
+
+        <a href="{{ url_for('view_homeworks') }}" class="back">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+            </svg>
+            Back to Homeworks
+        </a>
+    </div>
+<footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+</html>

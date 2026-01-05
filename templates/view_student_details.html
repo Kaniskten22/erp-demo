@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Student Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f0f2f5; /* Lighter, modern background */
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    .header {
+      background-color: #007bff; /* Blue header */
+      color: white;
+      padding: 15px 20px; /* Adjusted padding */
+      display: flex;
+      align-items: center;
+      font-size: 1.1em;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      position: sticky; /* Make header sticky */
+      top: 0;
+      z-index: 1000;
+    }
+
+    .header .back-arrow {
+      color: white;
+      text-decoration: none;
+      font-size: 1em;
+      display: flex;
+      align-items: center;
+      transition: color 0.3s ease;
+      margin-right: 15px; /* Space between back arrow and title */
+    }
+
+    .header .back-arrow:hover {
+      color: #d1e7ff; /* Lighter white on hover */
+    }
+
+    .back-arrow-chevron {
+      font-size: 1.5em; /* Larger chevron */
+      margin-right: 5px;
+      line-height: 1; /* Aligns chevron better */
+    }
+
+    .header-title {
+      flex-grow: 1; /* Takes available space */
+      text-align: center; /* Center the title */
+      font-weight: 600;
+      font-size: 1.3em;
+    }
+
+    .profile-info {
+      background-color: white;
+      padding: 30px; /* Increased padding */
+      display: flex;
+      align-items: center;
+      border-radius: 12px; /* More rounded corners */
+      margin: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* Softer, larger shadow */
+      flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    }
+
+    .avatar {
+      width: 90px; /* Slightly larger avatar */
+      height: 90px;
+      border-radius: 50%;
+      background-color: #e9ecef; /* Placeholder background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 3em;
+      color: #6c757d;
+      margin-right: 25px; /* Space between avatar and text */
+      flex-shrink: 0; /* Prevent avatar from shrinking */
+    }
+
+    .info-text {
+      flex-grow: 1; /* Allow text to take available space */
+    }
+
+    .profile-name {
+      font-size: 1.8em; /* Larger name font */
+      font-weight: 700;
+      color: #2c3e50; /* Darker name color */
+      margin-bottom: 5px;
+    }
+
+    .profile-grade-board {
+      font-size: 1.1em;
+      color: #6c757d;
+      margin-bottom: 10px;
+    }
+
+    .profile-meta {
+      font-size: 0.95em;
+      color: #555;
+    }
+
+    .section-item {
+      background-color: white;
+      border-radius: 12px; /* Consistent rounded corners */
+      margin: 20px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06); /* Lighter shadow for sections */
+      overflow: hidden; /* Hide overflowing content */
+      transition: box-shadow 0.3s ease; /* Smooth transition for hover */
+    }
+
+    .section-item:hover {
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1); /* Enhanced shadow on hover */
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      padding: 20px 25px; /* Increased padding */
+      cursor: pointer;
+      background-color: #f8f9fa; /* Light background for header */
+      border-bottom: 1px solid #e9ecef; /* Separator */
+    }
+
+    .section-header:hover {
+      background-color: #e9ecef; /* Slightly darker on hover */
+    }
+
+    .icon-container {
+      font-size: 1.8em; /* Larger icons */
+      color: #007bff; /* Blue icons */
+      margin-right: 20px;
+    }
+
+    .title-group {
+      flex-grow: 1;
+    }
+
+    .main-title {
+      font-size: 1.3em; /* Larger title */
+      font-weight: 600;
+      color: #34495e;
+    }
+
+    .subtitle {
+      font-size: 0.9em;
+      color: #7f8c8d;
+    }
+
+    .arrow-icon {
+      font-size: 1.5em;
+      color: #6c757d;
+      transition: transform 0.3s ease;
+    }
+
+    .section-details {
+      display: none; /* Hidden by default, toggled by JS */
+      padding: 15px 25px 25px; /* Adjusted padding */
+      background-color: #ffffff;
+      border-top: 1px solid #eee; /* Light border top */
+      transition: max-height 0.3s ease-out; /* Smooth slide effect */
+      overflow: hidden; /* Prevent content overflow during transition */
+      display: grid; /* Use grid for alignment */
+      grid-template-columns: auto 1fr; /* Two columns: label and value */
+      gap: 10px 20px; /* Spacing between grid items */
+    }
+
+    .section-details .label {
+      font-weight: 600;
+      color: #555;
+      text-align: right; /* Align labels to the right */
+    }
+
+    .section-details .value {
+      color: #333;
+      text-align: left; /* Align values to the left */
+    }
+
+    /* Media queries for responsiveness */
+    @media (max-width: 768px) {
+      .profile-info {
+        flex-direction: column; /* Stack avatar and text vertically */
+        text-align: center;
+      }
+
+      .avatar {
+        margin-right: 0;
+        margin-bottom: 20px; /* Space below avatar */
+      }
+
+      .profile-name {
+        font-size: 1.6em;
+      }
+
+      .profile-grade-board {
+        font-size: 1em;
+      }
+
+      .section-header {
+        padding: 15px 20px; /* Adjust padding for smaller screens */
+      }
+
+      .icon-container {
+        font-size: 1.5em;
+        margin-right: 15px;
+      }
+
+      .main-title {
+        font-size: 1.2em;
+      }
+
+      .section-details {
+        padding: 10px 20px 20px;
+        grid-template-columns: 1fr; /* Stack labels and values on small screens */
+      }
+      .section-details .label {
+          text-align: left; /* Align labels to left on small screens */
+          font-size: 0.9em; /* Smaller font for labels on small screens */
+      }
+      .section-details .value {
+          font-size: 0.95em; /* Smaller font for values on small screens */
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="/home" class="back-arrow">
+      <span class="back-arrow-chevron">&#x2039;</span> Back
+    </a>
+    <span class="header-title">Student Profile</span>
+  </div>
+
+  <div class="profile-info">
+    <div class="avatar">👤</div>
+    <div class="info-text">
+      <div class="profile-name">{{ username }}</div>
+      <div class="profile-grade-board">Grade {{ details.grade }} | Board {{ details.board }}</div>
+      <div class="profile-meta">
+        Student ID: {{ details.student_id }} | Admission Date: {{ details.admission_date }}
+      </div>
+    </div>
+  </div>
+
+  <div class="section-item">
+    <div class="section-header">
+      <div class="icon-container">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      </div>
+      <div class="title-group">
+        <div class="main-title">Personal Details</div>
+        <div class="subtitle">Basic information about the student</div>
+      </div>
+      <span class="arrow-icon">▼</span>
+    </div>
+    <div class="section-details">
+      <div class="label">Date of Birth:</div>
+      <div class="value">{{ details.dob }}</div>
+      <div class="label">Gender:</div>
+      <div class="value">{{ details.gender }}</div>
+      <div class="label">Blood Group:</div>
+      <div class="value">{{ details.blood_group }}</div>
+      <div class="label">Aadhaar No:</div>
+      <div class="value">{{ details.aadhaar_no }}</div>
+    </div>
+  </div>
+
+  <div class="section-item">
+    <div class="section-header">
+      <div class="icon-container">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone"><path d="M22 16.92v3a2 2 0 0 1-2.18 2.08L16.5 19.82a2 2 0 0 1-1.28-.79l-2.61-2.61a2 2 0 0 1-.79-1.28L6.48 4.29a2 2 0 0 1 2.08-2.18h3a2 2 0 0 1 2 2v4.5a2 2 0 0 1-2 2.18l-.5.06a2 2 0 0 1-1.07-.63L7.29 11.2a2 2 0 0 1-.63-1.07l.06-.5a2 2 0 0 1 2.18-2H17a2 2 0 0 1 2 2v3.5a2 2 0 0 1-2.18 2.08z"/></svg>
+      </div>
+      <div class="title-group">
+        <div class="main-title">Contact Details</div>
+        <div class="subtitle">How to get in touch with the student</div>
+      </div>
+      <span class="arrow-icon">▼</span>
+    </div>
+    <div class="section-details">
+      <div class="label">Email:</div>
+      <div class="value">{{ details.email }}</div>
+      <div class="label">Phone:</div>
+      <div class="value">{{ details.phone }}</div>
+      <div class="label">Emergency Contact:</div>
+      <div class="value">{{ details.emergency_contact }}</div>
+    </div>
+  </div>
+
+  <div class="section-item">
+    <div class="section-header">
+      <div class="icon-container">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-map-pin"><path d="M12 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3z"></path><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-3.86 0-7-3.14-7-7 0-2.82 1.48-5.32 3.73-6.71L12 3.73l5.27 3.56C20.52 6.68 22 9.18 22 12c0 3.86-3.14 7-7 7z"></path></svg>
+      </div>
+      <div class="title-group">
+        <div class="main-title">Address Details</div>
+        <div class="subtitle">Details about your address</div>
+      </div>
+      <span class="arrow-icon">▼</span>
+    </div>
+    <div class="section-details">
+      <div class="label">Address Line:</div>
+      <div class="value">{{ details.get('address_line', '--') }}</div>
+      <div class="label">City:</div>
+      <div class="value">{{ details.get('city', '--') }}</div>
+      <div class="label">State:</div>
+      <div class="value">{{ details.get('state', '--') }}</div>
+      <div class="label">Pincode:</div>
+      <div class="value">{{ details.get('pincode', '--') }}</div>
+    </div>
+  </div>
+
+  <div class="section-item">
+    <div class="section-header">
+      <div class="icon-container">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-3-3.87"></path><path d="M9 21v-2a4 4 0 0 1 3-3.87"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      </div>
+      <div class="title-group">
+        <div class="main-title">Guardian Details</div>
+        <div class="subtitle">Information about the guardian</div>
+      </div>
+      <span class="arrow-icon">&#x25BC;</span>
+    </div>
+    <div class="section-details">
+      <div class="label">Guardian Name:</div>
+      <div class="value">{{ details.get('guardian_name', '--') }}</div>
+      <div class="label">Guardian Contact:</div>
+      <div class="value">{{ details.get('guardian_contact', '--') }}</div>
+      <div class="label">Guardian Email:</div>
+      <div class="value">{{ details.get('guardian_email', '--') }}</div>
+      <div class="label">Guardian Occupation:</div>
+      <div class="value">{{ details.get('guardian_occupation', '--') }}</div>
+    </div>
+  </div>
+
+  <div class="section-item">
+    <div class="section-header">
+      <div class="icon-container">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.8 4.6c-1.4-1.4-3.6-1.4-5 0L12 8.4l-3.8-3.8c-1.4-1.4-3.6-1.4-5 0s-1.4 3.6 0 5l8.8 8.8 8.8-8.8c1.4-1.4 1.4-3.6 0-5z"></path></svg>
+      </div>
+      <div class="title-group">
+        <div class="main-title">Other Details</div>
+        <div class="subtitle">Medical, disability, and sibling info</div>
+      </div>
+      <span class="arrow-icon">&#x25BC;</span>
+    </div>
+    <div class="section-details">
+      <div class="label">Medical Information:</div>
+      <div class="value">{{ details.get('medical_info', '--') }}</div>
+      <div class="label">Disability Info:</div>
+      <div class="value">{{ details.get('disability_info', '--') }}</div>
+      <div class="label">Sibling Info:</div>
+      <div class="value">{{ details.get('sibling_info', '--') }}</div>
+    </div>
+  </div>
+
+  <div class="section-item">
+    <div class="section-header">
+      <div class="icon-container">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-award"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+      </div>
+      <div class="title-group">
+        <div class="main-title">Previous Academic Details</div>
+        <div class="subtitle">Previous class and performance</div>
+      </div>
+      <span class="arrow-icon">&#x25BC;</span>
+    </div>
+    <div class="section-details">
+      <div class="label">Previous Class:</div>
+      <div class="value">{{ details.get('previous_class', '--') }}</div>
+      <div class="label">Previous Performance:</div>
+      <div class="value">{{ details.get('previous_performance', '--') }}</div>
+    </div>
+  </div>
+
+  <div class="section-item">
+    <div class="section-header">
+      <div class="icon-container">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+      </div>
+      <div class="title-group">
+        <div class="main-title">Additional Details</div>
+        <div class="subtitle">Language, School, Nationality, Religion, Addresses</div>
+      </div>
+      <span class="arrow-icon">&#x25BC;</span>
+    </div>
+    <div class="section-details">
+      <div class="label">Language:</div>
+      <div class="value">{{ details.get('language', '--') }}</div>
+      <div class="label">Previous School:</div>
+      <div class="value">{{ details.get('previous_school', '--') }}</div>
+      <div class="label">Nationality:</div>
+      <div class="value">{{ details.get('nationality', '--') }}</div>
+      <div class="label">Religion:</div>
+      <div class="value">{{ details.get('religion', '--') }}</div>
+      <div class="label">Permanent Address:</div>
+      <div class="value">{{ details.get('permanent_address', '--') }}</div>
+      <div class="label">Present Address:</div>
+      <div class="value">{{ details.get('present_address', '--') }}</div>
+    </div>
+  </div>
+
+  <div class="section-item">
+    <div class="section-header">
+      <div class="icon-container">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-check"><path d="M16 21v-2a4 4 0 0 0-3-3.87"></path><path d="M8 21v-2a4 4 0 0 1 3-3.87"></path><circle cx="12" cy="7" r="4"></circle><polyline points="16 11 18 13 22 9"></polyline></svg>
+      </div>
+      <div class="title-group">
+        <div class="main-title">Name & Roll Details</div>
+        <div class="subtitle">First, Middle, Last Name and Roll Number</div>
+      </div>
+      <span class="arrow-icon">&#x25BC;</span>
+    </div>
+    <div class="section-details">
+      <div class="label">First Name:</div>
+      <div class="value">{{ details.get('first_name', '--') }}</div>
+      <div class="label">Middle Name:</div>
+      <div class="value">{{ details.get('middle_name', '--') }}</div>
+      <div class="label">Last Name:</div>
+      <div class="value">{{ details.get('last_name', '--') }}</div>
+      <div class="label">Roll Number:</div>
+      <div class="value">{{ details.get('roll_number', '--') }}</div>
+    </div>
+  </div>
+
+  <script>
+    const sectionHeaders = document.querySelectorAll('.section-header');
+
+    sectionHeaders.forEach(header => {
+      header.addEventListener('click', () => {
+        const sectionItem = header.parentElement;
+        const details = sectionItem.querySelector('.section-details');
+        const arrow = header.querySelector('.arrow-icon');
+
+        if (details) {
+          if (details.style.display === 'none' || details.style.display === '') {
+            details.style.display = 'grid'; // Use grid for expanded state
+            arrow.innerHTML = '&#x25B2;'; // Up arrow
+          } else {
+            details.style.display = 'none';
+            arrow.innerHTML = '&#x25BC;'; // Down arrow
+          }
+        }
+      });
+    });
+  </script>
+                        <footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+
+</html>

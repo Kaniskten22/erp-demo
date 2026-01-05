@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Image</title>
+    <link rel="stylesheet" href="static/styles.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* Added for vertical centering */
+            min-height: 100vh; /* Ensure it takes full viewport height */
+            margin: 0;
+            padding: 20px; /* Added padding for smaller screens */
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+
+        h2 {
+            margin-bottom: 25px;
+            font-size: 28px;
+            color: #2c3e50;
+            text-align: center; /* Center the heading */
+        }
+
+        form {
+            background-color: #fff;
+            padding: 30px 40px; /* Increased padding */
+            border-radius: 12px; /* More rounded corners */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* More pronounced shadow */
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 450px; /* Slightly increased max-width */
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+
+        input[type="file"] {
+            padding: 12px; /* Increased padding */
+            background-color: #e9ecef; /* Lighter background */
+            border: 1px solid #ced4da; /* Subtle border */
+            border-radius: 8px; /* More rounded corners */
+            font-size: 16px; /* Consistent font size */
+            color: #495057;
+        }
+
+        button {
+            padding: 14px; /* Increased padding */
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 8px; /* More rounded corners */
+            font-size: 18px; /* Larger font size */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover */
+        }
+
+        button:hover {
+            background-color: #34495e;
+            transform: translateY(-2px); /* Slight lift on hover */
+        }
+
+        .back-link {
+            margin-top: 30px; /* Increased margin-top */
+            color: #007bff; /* Primary blue color */
+            text-decoration: none;
+            font-size: 17px; /* Slightly larger font */
+            display: flex; /* Use flexbox for icon alignment */
+            align-items: center;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #0056b3; /* Darker blue on hover */
+            text-decoration: underline;
+        }
+
+        .back-link svg {
+            margin-right: 8px; /* Space between icon and text */
+        }
+
+        .back-arrow {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            text-decoration: none;
+            color: #007bff;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            transition: color 0.3s ease;
+        }
+
+        .back-arrow:hover {
+            color: #0056b3;
+        }
+
+        .back-arrow-chevron {
+            font-size: 24px;
+            margin-right: 5px;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body>
+    <a href="/home" class="back-arrow">
+        <span class="back-arrow-chevron">&#x2039;</span> Back
+    </a>
+    <h2>Upload Gallery Image</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/*" required>
+        <button type="submit">Upload</button>
+    </form>
+
+                        <footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+</html>

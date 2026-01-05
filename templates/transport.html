@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Live School Bus Tracking - Satellite</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+        #info {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+            font-size: 17px;
+            color: #333;
+            z-index: 1000;
+            text-align: center;
+        }
+        .back-to-home {
+            position: absolute;
+            top: 70px;
+            left: 20px;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+        }
+        .back-to-home:hover {
+            background-color: #e2e6ea;
+        }
+    </style>
+</head>
+<body>
+
+<div id="map"></div>
+<div id="info">📍 Checking fingerprint status...</div>
+
+<a href="/home" class="back-to-home">⬅ Back to Home</a>
+
+<script>
+    const homeLat = {{ home_lat or 0 }};
+    const homeLon = {{ home_lon or 0 }};
+    const fingerprintStatus = "{{ fingerprint_status }}";
+
+    let map, directionsService, directionsRenderer, busMarker, homeMarker;
+    let previousLatLng = null;
+    let animationFrameId = null;
+    const vanIconUrl = 'https://cdn-icons-png.flaticon.com/128/1068/1068580.png';
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: homeLat, lng: homeLon },
+            zoom: 15,
+            mapTypeId: 'satellite',
+            mapTypeControl: true,
+            mapTypeControlOptions: {
+                position: google.maps.ControlPosition.RIGHT_TOP
+            }
+        });
+
+        directionsService = new google.maps.DirectionsService();
+        directionsRenderer = new google.maps.DirectionsRenderer({
+            suppressMarkers: true,
+            polylineOptions: {
+                strokeColor: '#4285F4',
+                strokeWeight: 5
+            }
+        });
+        directionsRenderer.setMap(map);
+
+        homeMarker = new google.maps.Marker({
+            position: { lat: homeLat, lng: homeLon },
+            map: map,
+            icon: {
+                url: 'https://cdn-icons-png.flaticon.com/128/609/609803.png',
+                scaledSize: new google.maps.Size(40, 40)
+            },
+            title: 'Your Home'
+        });
+
+        busMarker = new google.maps.Marker({
+            position: { lat: 0, lng: 0 },
+            map: map,
+            icon: {
+                url: vanIconUrl,
+                scaledSize: new google.maps.Size(40, 40),
+                anchor: new google.maps.Point(20, 20)
+            },
+            title: 'School Vehicle'
+        });
+
+        if (fingerprintStatus === "IN") {
+            updateRoute();
+            setInterval(updateRoute, 4000);
+        } else {
+            document.getElementById('info').innerHTML = "❌ You are currently OUT of the bus.";
+        }
+    }
+
+    function getRotatedIcon(angle) {
+        const icon = {
+            url: vanIconUrl,
+            scaledSize: new google.maps.Size(40, 40),
+            anchor: new google.maps.Point(20, 20),
+            rotation: angle
+        };
+        return icon;
+    }
+
+    function animateMarker(marker, fromLatLng, toLatLng, duration = 2000) {
+        const startTime = performance.now();
+
+        const deltaLat = toLatLng.lat - fromLatLng.lat;
+        const deltaLng = toLatLng.lng - fromLatLng.lng;
+        const angle = Math.atan2(deltaLng, deltaLat) * (180 / Math.PI);
+
+        marker.setIcon(getRotatedIcon(angle));
+
+        function animate(time) {
+            const progress = Math.min((time - startTime) / duration, 1);
+
+            const lat = fromLatLng.lat + deltaLat * progress;
+            const lng = fromLatLng.lng + deltaLng * progress;
+
+            marker.setPosition(new google.maps.LatLng(lat, lng));
+
+            if (progress < 1) {
+                animationFrameId = requestAnimationFrame(animate);
+            }
+        }
+
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = requestAnimationFrame(animate);
+    }
+
+    async function updateRoute() {
+        try {
+            const res = await fetch('/location');
+            const data = await res.json();
+            const busLat = data.lat;
+            const busLon = data.lon;
+
+            if (busLat && busLon) {
+                const origin = new google.maps.LatLng(busLat, busLon);
+                const destination = new google.maps.LatLng(homeLat, homeLon);
+
+                if (previousLatLng) {
+                    animateMarker(busMarker, previousLatLng, { lat: busLat, lng: busLon });
+                } else {
+                    busMarker.setPosition(origin);
+                }
+                previousLatLng = { lat: busLat, lng: busLon };
+
+                directionsService.route({
+                    origin,
+                    destination,
+                    travelMode: 'DRIVING'
+                }, (result, status) => {
+                    if (status === 'OK') {
+                        directionsRenderer.setDirections(result);
+                        const route = result.routes[0].legs[0];
+                        const distance = route.distance.text;
+                        const duration = route.duration.text;
+                        document.getElementById('info').innerHTML = `🚌 Distance: <b>${distance}</b> | Time: <b>${duration}</b>`;
+                    }
+                });
+            }
+        } catch (e) {
+            document.getElementById('info').innerHTML = `⚠️ Error fetching live location`;
+        }
+    }
+</script>
+
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZ8Ao_Vk0QEWkDC--x_Zs96O3UB4BvYzw&callback=initMap">
+</script>
+
+</body>
+</html>

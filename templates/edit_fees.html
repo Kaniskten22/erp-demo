@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Edit/Add Fee Details</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #eef2f7 0%, #d6e2f0 100%);
+      padding: 30px 20px;
+      color: #34495e;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .container {
+      background: #fff;
+      max-width: 640px;
+      width: 100%;
+      border-radius: 18px;
+      padding: 40px 48px 48px;
+      box-shadow: 0 16px 48px rgba(52, 73, 94, 0.15);
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    a.back-arrow {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      font-weight: 600;
+      color: #4a90e2;
+      text-decoration: none;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 30px;
+      background-color: #e3f0fd;
+      box-shadow: 0 6px 18px rgba(74, 144, 226, 0.25);
+      transition: background-color 0.3s ease, color 0.3s ease, transform 0.25s ease;
+      user-select: none;
+      z-index: 10;
+    }
+
+    a.back-arrow:hover,
+    a.back-arrow:focus {
+      background-color: #3377dd;
+      color: #fff;
+      outline: none;
+      transform: translateX(-6px);
+      box-shadow: 0 8px 28px rgba(51, 119, 221, 0.55);
+      cursor: pointer;
+    }
+
+    .back-arrow-chevron {
+      font-weight: 700;
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 40px;
+      user-select: none;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      user-select: text;
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #34495e;
+      margin-bottom: 8px;
+      user-select: text;
+    }
+
+    select, input[type="number"], input[type="date"] {
+      width: 100%;
+      padding: 14px 18px;
+      font-size: 1rem;
+      border-radius: 10px;
+      border: 2.5px solid #cbd5e1;
+      background-color: #f9fafb;
+      color: #34495e;
+      font-weight: 500;
+      font-family: 'Poppins', sans-serif;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      box-sizing: border-box;
+      user-select: text;
+      appearance: none;
+    }
+
+    select {
+      background-image: url('data:image/svg+xml;utf8,<svg fill="%234a90e2" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 18px center;
+      background-size: 18px 18px;
+      cursor: pointer;
+    }
+
+    select:focus, input[type="number"]:focus, input[type="date"]:focus {
+      outline: none;
+      border-color: #4a90e2;
+      box-shadow: 0 0 12px rgba(74, 144, 226, 0.5);
+      background-color: #ffffff;
+    }
+
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none;
+      margin: 0; 
+    }
+
+    h3 {
+      margin: 24px 0 16px 0;
+      font-weight: 600;
+      font-size: 1.35rem;
+      color: #34495e;
+      user-select: none;
+    }
+
+    button {
+      margin-top: 24px;
+      padding: 15px 0;
+      font-size: 1.15rem;
+      font-weight: 700;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      color: #fff;
+      background: linear-gradient(90deg, #4a90e2 0%, #357bd8 100%);
+      box-shadow: 0 10px 30px rgba(74, 144, 226, 0.6);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+    }
+
+    button:hover,
+    button:focus {
+      background: linear-gradient(90deg, #357bd8 0%, #2a60b6 100%);
+      box-shadow: 0 14px 35px rgba(42, 96, 182, 0.7);
+      outline: none;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 26px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+      border-radius: 10px;
+      overflow: hidden;
+      font-size: 1rem;
+      user-select: text;
+      background-color: #fff;
+    }
+
+    th, td {
+      padding: 14px 18px;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    th {
+      background: #357bd8;
+      color: #fff;
+      font-weight: 700;
+      user-select: none;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .pending {
+      color: #e74c3c;
+      font-weight: 700;
+      user-select: text;
+    }
+
+    .concession {
+      color: #27ae60;
+      font-weight: 700;
+      margin-left: 8px;
+      user-select: text;
+    }
+
+    .receipt {
+      background: #e6ffea;
+      padding: 12px 14px;
+      border: 1px solid #b2ffb2;
+      border-radius: 10px;
+      box-shadow: inset 0 2px 6px rgba(39, 174, 96, 0.15);
+      user-select: text;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      color: #2d7d38;
+    }
+
+    a.summary-link {
+      display: inline-block;
+      margin-top: 30px;
+      color: #4a90e2;
+      font-weight: 600;
+      text-decoration: none;
+      user-select: none;
+      font-size: 1.1rem;
+      transition: color 0.3s ease;
+    }
+    a.summary-link:hover,
+    a.summary-link:focus {
+      color: #2575fc;
+      outline: none;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    @media (max-width: 720px) {
+      .container {
+        padding: 30px 28px;
+      }
+      h2 {
+        font-size: 2rem;
+      }
+      h3 {
+        font-size: 1.15rem;
+      }
+      button {
+        font-size: 1rem;
+        padding: 13px 0;
+      }
+      table, th, td {
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 440px) {
+      .container {
+        padding: 24px 20px 32px;
+      }
+      button {
+        width: 100%;
+      }
+      a.back-arrow {
+        padding: 6px 14px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+  <script>
+    function fetchStudentFees() {
+      const student = document.getElementById('student').value;
+      if (student) {
+        window.location.href = `/edit_fees?student=${encodeURIComponent(student)}`;
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <a href="/home" class="back-arrow" aria-label="Back to Home">
+      <span class="back-arrow-chevron">&#x2039;</span> Back
+    </a>
+
+    <h2>Edit/Add Fee Details</h2>
+<form method="POST" style="width: 100%;" novalidate>
+  <label for="student">Select Student:</label>
+  <select name="student" id="student" required>
+    <option value="" disabled {% if not selected_student %}selected{% endif %}>-- Select Student --</option>
+    {% for student in students %}
+      <option value="{{ student }}" {% if selected_student == student %}selected{% endif %}>{{ student }}</option>
+    {% endfor %}
+  </select>
+  <button type="button" onclick="fetchStudentFees()">Load</button>
+
+
+      {% if fee_details %}
+        <label for="academic_fee">Academic Fee:</label>
+        <input type="number" name="academic_fee" id="academic_fee" value="{{ fee_details.academic_fee }}" min="0" step="0.01" required />
+
+        <label for="transport_fee">Transport Fee:</label>
+        <input type="number" name="transport_fee" id="transport_fee" value="{{ fee_details.transport_fee }}" min="0" step="0.01" required />
+
+        <label for="late_fee">Late Fee:</label>
+        <input type="number" name="late_fee" id="late_fee" value="{{ fee_details.late_fee }}" min="0" step="0.01" required />
+
+        <label for="advance_fee">Advance Fee:</label>
+        <input type="number" name="advance_fee" id="advance_fee" value="{{ fee_details.advance_fee }}" min="0" step="0.01" required />
+
+        <label for="concession">Concession (if any):</label>
+        <input type="number" name="concession" id="concession" value="{{ concession }}" min="0" step="0.01" />
+
+        <h3>Add Payment</h3>
+
+        <label for="payment_amount">Amount:</label>
+        <input type="number" name="payment_amount" id="payment_amount" step="0.01" min="0" placeholder="Enter payment amount" />
+
+        <label for="payment_date">Date:</label>
+        <input type="date" name="payment_date" id="payment_date" />
+
+        <label for="payment_method">Method:</label>
+        <input type="text" name="payment_method" id="payment_method" placeholder="e.g., Cash, UPI, Card" />
+
+        <button type="submit">Save</button>
+      {% endif %}
+    </form>
+
+    <a href="/home" class="summary-link">← Back to Home</a>
+
+    {% if fee_details %}
+      <h3>Payment History</h3>
+      {% if payments %}
+        <table>
+          <thead>
+            <tr>
+              <th>Amount</th>
+              <th>Date</th>
+              <th>Method</th>
+              <th>Receipt</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for payment in payments %}
+              <tr>
+                <td>₹{{ payment.amount }}</td>
+                <td>{{ payment.date }}</td>
+                <td>{{ payment.method }}</td>
+                <td>
+                  <div class="receipt">
+                    Receipt for ₹{{ payment.amount }} paid on {{ payment.date }}<br />
+                    Method: {{ payment.method }}<br />
+                    Student: {{ fee_details.student }}
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p>No payments yet.</p>
+      {% endif %}
+
+      <h3>Outstanding Balance</h3>
+      <p class="pending">
+        ₹{{ outstanding }}
+        {% if concession %}
+          <span class="concession">(Concession applied: ₹{{ concession }})</span>
+        {% endif %}
+      </p>
+
+      <form method="POST" onsubmit="return confirm('Are you sure you want to delete this fee entry?');">
+        <input type="hidden" name="student" value="{{ fee_details.student }}">
+        <input type="hidden" name="action" value="delete">
+        <button type="submit" style="background:#e74c3c; color:white; margin-top:10px;">Delete Fee Entry</button>
+      </form>
+    {% endif %}
+  </div>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            background-color: #f7f7f7;
+        }
+        .header {
+            background-color: #0d47a1;
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .back-arrow {
+            font-size: 1.5em;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        .header-title {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .settings-list {
+            padding: 15px;
+        }
+        .setting-item {
+            background-color: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .item-info {
+            display: flex;
+            align-items: center;
+        }
+        .item-icon {
+            font-size: 1.5em;
+            margin-right: 15px;
+            color: #4285f4; /* Example blue color */
+        }
+        .item-text {
+            display: flex;
+            flex-direction: column;
+        }
+        .item-title {
+            font-weight: bold;
+            color: #333;
+        }
+        .item-subtitle {
+            color: #777;
+            font-size: 0.9em;
+        }
+        .arrow {
+            font-size: 1.5em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+                <a href="/home" class="back-arrow">
+            <span class="back-arrow-chevron">&#x2039;</span> Back
+        </a>
+
+    <div class="settings-list">
+        <div class="setting-item">
+            <div class="item-info">
+                <span class="item-icon">&#128296;</span>
+                <div class="item-text">
+                    <div class="item-title">Themes</div>
+                    <div class="item-subtitle">You can personalise your app look</div>
+                </div>
+            </div>
+            <span class="arrow">&#62;</span>
+        </div>
+
+        <div class="setting-item">
+            <div class="item-info">
+                <span class="item-icon">&#128241;</span>
+                <div class="item-text">
+                    <div class="item-title">Devices</div>
+                    <div class="item-subtitle">Your current / active devices</div>
+                </div>
+            </div>
+            <span class="arrow">&#62;</span>
+        </div>
+
+        <div class="setting-item">
+            <div class="item-info">
+                <span class="item-icon">&#128274;</span>
+                <div class="item-text">
+                    <div class="item-title">Change Password</div>
+                    <div class="item-subtitle">You can change your password.</div>
+                </div>
+            </div>
+            <span class="arrow">&#62;</span>
+        </div>
+    </div>
+
+</body>
+</html>

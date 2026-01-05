@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bus Status</title>
+    <meta http-equiv="refresh" content="30"> <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Variables for easy color adjustments */
+        :root {
+            --primary-blue: #3498db;
+            --primary-blue-dark: #2980b9;
+            --success-green: #2ecc71;
+            --danger-red: #e74c3c;
+            --text-dark: #2c3e50;
+            --text-light: #ecf0f1;
+            --background-light: #f4f7f6;
+            --card-bg: #ffffff;
+            --shadow-light: rgba(0, 0, 0, 0.1);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-light);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 500px;
+            background-color: var(--card-bg);
+            box-shadow: 0 8px 30px var(--shadow-medium);
+            padding: 35px;
+            border-radius: 12px;
+            box-sizing: border-box;
+            text-align: center;
+            position: relative; /* For the back arrow positioning */
+        }
+
+        header h1 {
+            color: var(--primary-blue-dark);
+            margin-bottom: 25px;
+            font-weight: 700;
+            font-size: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        header h1 .bus-icon {
+            font-size: 2.8rem;
+            color: var(--primary-blue);
+        }
+
+        .user-info {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .status-card {
+            background-color: var(--background-light);
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 30px;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e0e0e0;
+        }
+
+        .status-card p {
+            margin: 10px 0;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .status-label {
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .status-value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 8px;
+            animation: fadeIn 0.8s ease-out;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-IN {
+            background-color: var(--success-green);
+            color: var(--text-light);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .status-OUT {
+            background-color: var(--danger-red);
+            color: var(--text-light);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .no-scan-message {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #ffeccf;
+            border-radius: 8px;
+            border: 1px solid #ffda9e;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .last-updated {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-top: 20px;
+        }
+
+        .back-link {
+            margin-top: 35px;
+            text-align: center;
+        }
+
+        .back-link a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            color: var(--text-light);
+            background-color: var(--primary-blue);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-link a:hover {
+            background-color: var(--primary-blue-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-link a svg {
+            margin-right: 8px;
+            width: 20px;
+            height: 20px;
+            fill: var(--text-light);
+        }
+
+        /* Keyframe for fade-in animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+            .container {
+                padding: 25px;
+            }
+            header h1 {
+                font-size: 2rem;
+            }
+            header h1 .bus-icon {
+                font-size: 2.2rem;
+            }
+            .user-info {
+                font-size: 1rem;
+            }
+            .status-card {
+                padding: 20px;
+            }
+            .status-card p {
+                font-size: 1.1rem;
+            }
+            .status-value {
+                font-size: 1.4rem;
+                padding: 4px 12px;
+            }
+            .no-scan-message {
+                font-size: 1.1rem;
+                padding: 15px;
+            }
+            .back-link a {
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
+            .back-link a svg {
+                width: 18px;
+                height: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><span class="bus-icon">🚌</span> Your Bus Status</h1>
+        </header>
+
+        <p class="user-info">Logged in as: {{ username }}</p>
+
+        {% if status %}
+            <div class="status-card">
+                <p><span class="status-label">Status:</span> <span class="status-value status-{{ status['status'] }}">{{ status['status'] }}</span></p>
+                <p class="last-updated">Last Updated: {{ status['timestamp'] }}</p>
+            </div>
+        {% else %}
+            <p class="no-scan-message">No fingerprint scan found yet. Please scan your fingerprint to update your bus status.</p>
+        {% endif %}
+
+        <div class="back-link">
+            <a href="/home">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"/></svg>
+                Back to Home
+            </a>
+        </div>
+    </div>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+
+</html>

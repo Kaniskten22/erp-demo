@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Add Class Timetable</title>
+  <style>
+    /* Base reset and typography */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9fbff;
+      margin: 20px;
+      color: #333;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Back arrow link style */
+    .back-arrow {
+      display: inline-flex;
+      align-items: center;
+      color: #007bff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin-bottom: 28px;
+      user-select: none;
+      transition: color 0.25s ease-in-out;
+      cursor: pointer;
+    }
+    .back-arrow-chevron {
+      font-size: 2rem;
+      margin-right: 10px;
+      transition: margin-right 0.3s ease;
+      user-select: none;
+      line-height: 1;
+    }
+    .back-arrow:hover,
+    .back-arrow:focus {
+      color: #0056b3;
+      outline: none;
+      text-decoration: underline;
+    }
+    .back-arrow:hover .back-arrow-chevron,
+    .back-arrow:focus .back-arrow-chevron {
+      margin-right: 14px;
+    }
+
+    /* Heading */
+    h2 {
+      color: #007bff;
+      margin-bottom: 30px;
+      border-bottom: 3px solid #007bff;
+      padding-bottom: 12px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 2.4rem;
+      letter-spacing: 1.2px;
+      user-select: none;
+    }
+
+    /* Form */
+    form {
+      max-width: 720px;
+      margin: 0 auto 40px;
+      background: #ffffff;
+      padding: 30px 36px 40px;
+      border-radius: 16px;
+      box-shadow:
+        0 12px 32px rgba(0, 123, 255, 0.12);
+      transition: box-shadow 0.3s ease;
+    }
+    form:hover,
+    form:focus-within {
+      box-shadow:
+        0 16px 48px rgba(0, 123, 255, 0.22);
+    }
+
+    /* Labels */
+    label {
+      display: block;
+      font-weight: 700;
+      color: #34495e;
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+      user-select: none;
+    }
+    label select {
+      margin-top: 6px;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 1rem;
+      border: 1.8px solid #cbd5e1;
+      width: 100%;
+      background-color: #f6faff;
+      color: #2c3e50;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      font-family: inherit;
+    }
+    label select:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+      background-color: #ffffff;
+    }
+
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-top: 30px;
+      box-shadow: 0 4px 14px rgba(0, 123, 255, 0.1);
+    }
+
+    th, td {
+      border-right: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+      padding: 14px 12px;
+      text-align: center;
+      font-size: 1rem;
+    }
+
+    th:last-child,
+    td:last-child {
+      border-right: none;
+    }
+
+    th {
+      background-color: #e9f2ff;
+      font-weight: 700;
+      color: #0056b3;
+      user-select: none;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    td:first-child {
+      font-weight: 600;
+      color: #007bff;
+      background-color: #f4faff;
+      user-select: none;
+      text-transform: capitalize;
+    }
+
+    /* Inputs inside table */
+    input[type="text"] {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid #ccc;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      font-family: inherit;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.04);
+      color: #2c3e50;
+    }
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 10px rgba(0, 123, 255, 0.25);
+      background-color: #fff;
+    }
+
+    /* Submit Button */
+    button[type="submit"] {
+      margin-top: 28px;
+      width: 100%;
+      background-color: #007bff;
+      border: none;
+      padding: 14px 0;
+      color: #fff;
+      font-size: 1.25rem;
+      font-weight: 700;
+      border-radius: 14px;
+      cursor: pointer;
+      box-shadow: 0 10px 28px rgba(0, 123, 255, 0.35);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.15s ease;
+      user-select: none;
+    }
+    button[type="submit"]:hover,
+    button[type="submit"]:focus {
+      background-color: #0056b3;
+      box-shadow: 0 14px 36px rgba(0, 86, 179, 0.5);
+      outline: none;
+      transform: translateY(-2px);
+    }
+    button[type="submit"]:active {
+      transform: translateY(0);
+      box-shadow: 0 8px 20px rgba(0, 86, 179, 0.4);
+    }
+
+    /* Responsive */
+    @media (max-width: 720px) {
+      form {
+        padding: 24px 24px 32px;
+      }
+      table {
+        font-size: 0.9rem;
+      }
+      th, td {
+        padding: 10px 6px;
+      }
+      button[type="submit"] {
+        font-size: 1.1rem;
+        padding: 12px 0;
+      }
+    }
+    @media (max-width: 480px) {
+      h2 {
+        font-size: 1.8rem;
+      }
+      label {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="/home" class="back-arrow" aria-label="Go back to Home">
+    <span class="back-arrow-chevron" aria-hidden="true">&#x2039;</span> Back
+  </a>
+
+  <h2>Add Class Timetable</h2>
+  <form method="post" novalidate>
+    <label for="grade-select">Grade:
+      <select id="grade-select" name="grade" required aria-required="true" aria-describedby="grade-desc">
+        {% for grade in grades %}
+          <option value="{{ grade }}">{{ grade }}</option>
+        {% endfor %}
+      </select>
+    </label>
+
+    <label for="board-select">Board:
+      <select id="board-select" name="board" required aria-required="true" aria-describedby="board-desc">
+        {% for board in boards %}
+          <option value="{{ board }}">{{ board }}</option>
+        {% endfor %}
+      </select>
+    </label>
+
+    <table role="grid" aria-label="Class timetable">
+      <thead>
+        <tr>
+          <th scope="col">Day</th>
+          {% for n in range(1,9) %}
+            <th scope="col">Period {{ n }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for day in ['mon', 'tue', 'wed', 'thu', 'fri'] %}
+          <tr>
+            <th scope="row">{{ day|capitalize }}</th>
+            {% for n in range(1,9) %}
+              <td><input type="text" name="{{ day }}_period{{ n }}" autocomplete="off" /></td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <button type="submit">Save Timetable</button>
+  </form>
+  <footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+</html>

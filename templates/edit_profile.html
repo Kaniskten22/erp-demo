@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Edit Profile</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 50px 20px;
+      min-height: 100vh;
+      color: #1B447B;
+    }
+
+    .container {
+      background: #fff;
+      max-width: 600px;
+      width: 100%;
+      padding: 28px 40px 36px 40px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(27, 68, 123, 0.15);
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    a.back-arrow {
+      position: absolute;
+      top: 25px;
+      left: 25px;
+      font-weight: 600;
+      color: #1B447B;
+      text-decoration: none;
+      font-size: 1.1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      border-radius: 30px;
+      background: rgba(27, 68, 123, 0.1);
+      transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+      box-shadow: 0 6px 16px rgba(27, 68, 123, 0.15);
+      user-select: none;
+    }
+    a.back-arrow:hover,
+    a.back-arrow:focus {
+      background-color: #163a5f;
+      color: #fff;
+      outline: none;
+      transform: translateX(-6px);
+      box-shadow: 0 8px 22px rgba(22, 58, 95, 0.5);
+      cursor: pointer;
+    }
+    .back-arrow-chevron {
+      font-weight: 700;
+      font-size: 1.6rem;
+      line-height: 1;
+    }
+
+    h1 {
+      text-align: center;
+      font-weight: 700;
+      font-size: 2.8rem;
+      margin-top: 0;
+      margin-bottom: 40px;
+      user-select: none;
+      text-shadow: 0 2px 6px rgba(27, 68, 123, 0.3);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      user-select: text;
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+      user-select: text;
+      color: #1B447B;
+    }
+
+    input[type="password"],
+    input[type="text"],
+    select,
+    input[type="number"] {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 1rem;
+      border: 1.8px solid #ccc;
+      border-radius: 10px;
+      font-family: 'Poppins', sans-serif;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      box-sizing: border-box;
+      color: #1B447B;
+    }
+
+    input[type="password"]:focus,
+    input[type="text"]:focus,
+    select:focus,
+    input[type="number"]:focus {
+      outline: none;
+      border-color: #1B447B;
+      box-shadow: 0 0 12px rgba(27, 68, 123, 0.5);
+    }
+
+    select {
+      appearance: none;
+      background-image: url('data:image/svg+xml;utf8,<svg fill="%231B447B" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px 16px;
+      cursor: pointer;
+    }
+
+    button {
+      margin-top: 28px;
+      padding: 14px 0;
+      background-color: #1B447B;
+      color: white;
+      font-weight: 700;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 10px 28px rgba(27, 68, 123, 0.4);
+      user-select: none;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    button:hover,
+    button:focus {
+      background-color: #163a5f;
+      box-shadow: 0 14px 30px rgba(22, 58, 95, 0.7);
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/home" class="back-arrow" aria-label="Back to Home">
+      <span class="back-arrow-chevron">&#x2039;</span> Back
+    </a>
+    <h1>Edit Profile</h1>
+    <form method="POST" novalidate>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" value="{{ user_data.password }}" required autocomplete="current-password" />
+
+      <label for="admission_no">Admission No.:</label>
+      <input type="text" id="admission_no" name="admission_no" value="{{ user_data.admission_no }}" required />
+
+      <label for="board">Board:</label>
+      <select id="board" name="board" required aria-required="true" aria-label="Select Board">
+        <option value="Montessori" {% if user_data.board == 'Montessori' %}selected{% endif %}>Montessori</option>
+        <option value="CBSE" {% if user_data.board == 'CBSE' %}selected{% endif %}>CBSE</option>
+      </select>
+
+      <label for="grade">Grade:</label>
+      <input type="number" id="grade" name="grade" value="{{ user_data.grade }}" min="1" max="12" required aria-required="true" aria-label="Grade" />
+
+      <button type="submit">Save Changes</button>
+    </form>
+  </div>
+  <footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+
+</html>

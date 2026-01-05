@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Chat UI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables for easier theme management */
+        :root {
+            --primary-gradient-start: #6a11cb;
+            --primary-gradient-end: #2575fc;
+            --secondary-gradient-start: #ff6e7f;
+            --secondary-gradient-end: #b565a7;
+            --neutral-bg: #f9f9f9;
+            --card-bg: #fff;
+            --border-color: #eee;
+            --text-dark: #333;
+            --text-light: #555;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: var(--neutral-bg);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Use min-height to allow content to push height */
+            box-sizing: border-box;
+        }
+
+        .chat-container {
+            max-width: 700px; /* Slightly wider container */
+            width: 95%; /* Take up more width on smaller screens */
+            background: var(--card-bg);
+            border-radius: 16px; /* More rounded corners */
+            box-shadow: 0 12px 30px var(--shadow-medium); /* Deeper, softer shadow */
+            display: flex;
+            flex-direction: column;
+            height: 90vh; /* Slightly taller chat container */
+            overflow: hidden;
+            position: relative; /* For positioning back arrow */
+        }
+
+        /* Back Arrow Styling */
+        .back-arrow {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: white; /* White for better contrast */
+            font-weight: 500;
+            font-size: 1.05rem;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.15); /* Subtle background */
+            z-index: 10; /* Ensure it's above other elements */
+        }
+
+        .back-arrow:hover {
+            transform: translateX(-3px); /* Slight left shift on hover */
+            opacity: 0.9;
+            background-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .back-arrow-chevron {
+            font-size: 2rem; /* Larger chevron */
+            line-height: 1;
+            margin-right: 5px;
+            transform: translateY(-1px);
+        }
+
+        .chat-header {
+            background: linear-gradient(to right, var(--primary-gradient-start), var(--primary-gradient-end));
+            color: white;
+            padding: 25px 20px; /* Increased padding */
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Lighter border */
+            border-top-left-radius: 16px; /* Match container radius */
+            border-top-right-radius: 16px; /* Match container radius */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-header h2 {
+            margin: 0;
+            font-size: 2em; /* Larger heading */
+            font-weight: 700; /* Bolder font weight */
+            letter-spacing: 0.5px;
+        }
+
+        .chat-box {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            scroll-behavior: smooth;
+            background-color: #fcfcfc; /* Slightly off-white background */
+        }
+
+        .message {
+            max-width: 85%; /* Increased max width */
+            margin: 10px 0; /* Adjusted margin */
+            padding: 14px 18px; /* Adjusted padding */
+            border-radius: 20px; /* More rounded overall */
+            font-size: 0.95em; /* Slightly smaller font for better fit */
+            line-height: 1.4;
+            color: white;
+            box-shadow: 0 2px 5px var(--shadow-light); /* Subtle shadow */
+            position: relative;
+            word-wrap: break-word; /* Ensure long words break */
+        }
+
+        .message.them {
+            background: #e6e6e6; /* Lighter background for 'them' */
+            color: var(--text-dark); /* Darker text for 'them' */
+            align-self: flex-start;
+            border-bottom-left-radius: 5px; /* Unique radius for chat bubble effect */
+        }
+
+        .message.you {
+            background: linear-gradient(to right, var(--secondary-gradient-start), var(--secondary-gradient-end)); /* Brighter gradient */
+            align-self: flex-end;
+            border-bottom-right-radius: 5px; /* Unique radius for chat bubble effect */
+        }
+
+        .message strong {
+            display: block;
+            margin-bottom: 4px; /* Slightly less margin */
+            font-size: 0.85em; /* Smaller sender name */
+            color: rgba(0, 0, 0, 0.6); /* Lighter color for 'them' sender */
+            font-weight: 600;
+        }
+        .message.you strong {
+             color: rgba(255, 255, 255, 0.8); /* Lighter color for 'you' sender */
+        }
+
+
+        form {
+            display: flex;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            padding: 20px; /* Increased padding */
+            border-top: 1px solid var(--border-color);
+            background-color: var(--neutral-bg);
+            border-bottom-left-radius: 16px;
+            border-bottom-right-radius: 16px;
+            gap: 15px; /* Gap between form elements */
+            align-items: flex-end; /* Align items to the bottom */
+        }
+
+        textarea {
+            flex: 1 1 100%; /* Take full width and allow shrinking/growing */
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            font-size: 1rem;
+            resize: vertical; /* Allow vertical resize only */
+            min-height: 50px; /* Set a minimum height */
+            max-height: 150px; /* Set a maximum height */
+            overflow: auto;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05); /* Inner shadow */
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-gradient-end); /* Highlight on focus */
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2), inset 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        button {
+            flex-shrink: 0; /* Prevent button from shrinking */
+            padding: 12px 25px; /* Increased padding */
+            background: linear-gradient(135deg, #4CAF50, #2ECC71); /* Green send button */
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
+            font-weight: 600;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #2ECC71, #4CAF50);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(46, 204, 113, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(46, 204, 113, 0.2);
+        }
+
+        /* Custom Select Styling */
+        .custom-select-wrapper {
+            position: relative;
+            user-select: none;
+            flex: 1; /* Allow flex to take available space */
+            min-width: 150px; /* Minimum width for select boxes */
+        }
+
+        .custom-select-trigger {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 15px; /* Larger padding */
+            font-size: 1rem;
+            line-height: 1.5;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .custom-select-trigger:hover,
+        .custom-select-wrapper.open .custom-select-trigger {
+            border-color: var(--primary-gradient-end);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2), inset 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .custom-select-trigger span {
+            margin-right: 10px;
+            color: var(--text-light); /* Lighter text for placeholder */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .custom-select-trigger svg {
+            height: 20px; /* Smaller arrow */
+            width: 20px;
+            fill: var(--text-muted); /* Muted arrow color */
+            transition: transform 0.3s ease;
+        }
+
+        .custom-select-wrapper.open .custom-select-trigger svg {
+            transform: rotate(180deg);
+        }
+
+        .custom-options {
+            position: absolute;
+            top: calc(100% + 8px); /* Space below trigger */
+            left: 0;
+            right: 0;
+            z-index: 100; /* Ensure options are on top */
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden; /* Ensure list items are clipped */
+            max-height: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+            box-shadow: 0 8px 20px var(--shadow-medium);
+        }
+
+        .custom-select-wrapper.open .custom-options {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .custom-options ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .custom-options li {
+            padding: 12px 15px; /* Larger padding for list items */
+            font-size: 1rem;
+            line-height: 1.5;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .custom-options li:hover,
+        .custom-options li.selected {
+            background-color: var(--primary-gradient-end); /* Highlight selected/hovered */
+            color: #fff;
+        }
+
+        /* Hide the native select element */
+        .custom-select-wrapper select {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            cursor: pointer;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .chat-container {
+                height: 95vh;
+                max-width: 100%;
+                width: 100%;
+                border-radius: 0; /* Full width on smaller screens */
+            }
+            .chat-header {
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+                padding: 20px 15px;
+            }
+            .chat-header h2 {
+                font-size: 1.7em;
+            }
+            .back-arrow {
+                top: 15px;
+                left: 15px;
+                font-size: 0.95rem;
+                padding: 6px 10px;
+            }
+            .back-arrow-chevron {
+                font-size: 1.8rem;
+            }
+            .chat-box {
+                padding: 15px;
+            }
+            .message {
+                max-width: 90%;
+                margin: 8px 0;
+                padding: 12px 16px;
+                font-size: 0.9em;
+            }
+            form {
+                flex-direction: column; /* Stack select boxes and input */
+                gap: 10px;
+                padding: 15px;
+            }
+            .custom-select-wrapper {
+                min-width: 100%; /* Full width for selects */
+            }
+            textarea {
+                min-height: 40px;
+            }
+            button {
+                width: 100%; /* Full width button */
+                margin-left: 0; /* Remove left margin */
+                padding: 10px 20px;
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .chat-header h2 {
+                font-size: 1.5em;
+            }
+            .back-arrow {
+                top: 10px;
+                left: 10px;
+                font-size: 0.9rem;
+            }
+            .back-arrow-chevron {
+                font-size: 1.5rem;
+            }
+            .chat-box {
+                padding: 10px;
+            }
+            .message {
+                padding: 10px 14px;
+                font-size: 0.85em;
+            }
+            form {
+                padding: 10px;
+            }
+            .custom-select-trigger, .custom-options li, textarea, button {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+             .custom-select-trigger svg {
+                height: 18px;
+                width: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <a href="/home" class="back-arrow">
+            <span class="back-arrow-chevron">&#x2039;</span> Back
+        </a>
+        <div class="chat-header">
+            <h2>Chat</h2>
+        </div>
+        <div class="chat-box" id="chat-box">
+            {% for message in messages %}
+                <div class="message {{ 'you' if message.sender == username else 'them' }}">
+                    <strong>{{ message.sender }}:</strong> {{ message.message }}
+                </div>
+            {% endfor %}
+        </div>
+        <form id="chat-form" method="POST">
+            {% if role == 'student' %}
+                <div class="custom-select-wrapper" id="recipient-select-wrapper">
+                    <div class="custom-select-trigger" id="recipient-select-trigger">
+                        <span>Select Recipient</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    </div>
+                    <div class="custom-options" id="recipient-select-options">
+                        <ul>
+                            {% for recipient in recipients %}
+                                <li data-value="{{ recipient.id }}">{{ recipient.name }}</li>
+                            {% endfor %}
+                        </ul>
+                        <select name="recipient" id="recipient" required>
+                             <option value="" disabled selected>Select Recipient</option> {% for recipient in recipients %}
+                                <option value="{{ recipient.id }}">{{ recipient.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            {% else %}
+                <div class="custom-select-wrapper" id="grade-select-wrapper">
+                    <div class="custom-select-trigger" id="grade-select-trigger">
+                        <span>Select Grade</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    </div>
+                    <div class="custom-options" id="grade-select-options">
+                        <ul>
+                            <li data-value="">Select Grade</li>
+                            {% for grade in grades %}
+                                <li data-value="{{ grade }}">{{ grade }}</li>
+                            {% endfor %}
+                        </ul>
+                        <select name="grade" id="grade" required>
+                            <option value="" disabled selected>Select Grade</option>
+                            {% for grade in grades %}
+                                <option value="{{ grade }}">{{ grade }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="custom-select-wrapper" id="board-select-wrapper">
+                    <div class="custom-select-trigger" id="board-select-trigger">
+                        <span>Select Board</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    </div>
+                    <div class="custom-options" id="board-select-options">
+                        <ul>
+                            <li data-value="">Select Board</li>
+                            {% for board in boards %}
+                                <li data-value="{{ board }}">{{ board }}</li>
+                            {% endfor %}
+                        </ul>
+                        <select name="board" id="board" required>
+                            <option value="" disabled selected>Select Board</option>
+                            {% for board in boards %}
+                                <option value="{{ board }}">{{ board }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="custom-select-wrapper" id="recipient-select-wrapper">
+                    <div class="custom-select-trigger" id="recipient-select-trigger">
+                        <span>Select Recipient</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    </div>
+                    <div class="custom-options" id="recipient-select-options">
+                        <ul>
+                            {% if recipients %}
+                                {% for recipient in recipients %}
+                                    <li data-value="{{ recipient.id }}">{{ recipient.name }}</li>
+                                {% endfor %}
+                            {% endif %}
+                        </ul>
+                        <select name="recipient" id="recipient" required>
+                            <option value="" disabled selected>Select Recipient</option>
+                            {% if recipients %}
+                                {% for recipient in recipients %}
+                                    <option value="{{ recipient.id }}">{{ recipient.name }}</option>
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div>
+                </div>
+            {% endif %}
+            <textarea name="message" id="message" rows="3" placeholder="Type your message..." required></textarea>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+
+    <script>
+        const chatBox = document.getElementById('chat-box');
+        // Scroll to the bottom only if it's a new chat or if the user hasn't scrolled up
+        if (chatBox) {
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeCustomSelect('recipient-select-wrapper');
+            initializeCustomSelect('grade-select-wrapper');
+            initializeCustomSelect('board-select-wrapper');
+
+            // Set initial display for custom selects
+            const selects = document.querySelectorAll('.custom-select-wrapper select');
+            selects.forEach(selectElement => {
+                const trigger = selectElement.closest('.custom-select-wrapper').querySelector('.custom-select-trigger span');
+                const selectedOptionText = selectElement.options[selectElement.selectedIndex].text;
+                trigger.textContent = selectedOptionText;
+            });
+        });
+
+        function initializeCustomSelect(selectIdWrapper) {
+            const selectWrapper = document.getElementById(selectIdWrapper);
+            if (!selectWrapper) return; // Exit if wrapper doesn't exist (e.g., student role doesn't have grade/board)
+
+            const selectTrigger = selectWrapper.querySelector('.custom-select-trigger');
+            const selectOptions = selectWrapper.querySelector('.custom-options');
+            const selectElement = selectWrapper.querySelector('select');
+            const customOptionsList = selectOptions.querySelector('ul'); // Get the UL for custom options
+
+            selectTrigger.addEventListener('click', () => {
+                // Close other open selects
+                document.querySelectorAll('.custom-select-wrapper.open').forEach(wrapper => {
+                    if (wrapper !== selectWrapper) {
+                        wrapper.classList.remove('open');
+                    }
+                });
+
+                selectWrapper.classList.toggle('open');
+
+                if (selectWrapper.classList.contains('open')) {
+                    const optionsRect = selectOptions.getBoundingClientRect();
+                    const triggerRect = selectTrigger.getBoundingClientRect();
+                    const spaceBelow = window.innerHeight - triggerRect.bottom;
+                    const spaceAbove = triggerRect.top;
+
+                    // Position the options list
+                    if (optionsRect.height > spaceBelow && spaceAbove > spaceBelow) {
+                        selectOptions.style.top = `-${optionsRect.height + 8}px`; // 8px for gap
+                    } else {
+                        selectOptions.style.top = `${triggerRect.height + 8}px`; // 8px for gap
+                    }
+                    selectOptions.style.left = `0`;
+                    selectOptions.style.width = `${triggerRect.width}px`; // Match width of trigger
+                }
+            });
+
+            customOptionsList.addEventListener('click', (event) => {
+                if (event.target.tagName === 'LI') {
+                    const value = event.target.dataset.value;
+                    const text = event.target.textContent;
+
+                    // Update the native select element
+                    selectElement.value = value;
+
+                    // Update the custom trigger's displayed text
+                    selectTrigger.querySelector('span').textContent = text;
+
+                    // Close the custom select
+                    selectWrapper.classList.remove('open');
+
+                    // Remove 'selected' class from previous and add to current
+                    customOptionsList.querySelectorAll('li').forEach(li => li.classList.remove('selected'));
+                    event.target.classList.add('selected');
+
+                    // Trigger change event on the native select element to simulate user interaction
+                    const changeEvent = new Event('change');
+                    selectElement.dispatchEvent(changeEvent);
+                }
+            });
+
+            window.addEventListener('click', (event) => {
+                // Close if click outside the select wrapper and its options
+                if (!selectWrapper.contains(event.target) && !selectOptions.contains(event.target)) {
+                    selectWrapper.classList.remove('open');
+                }
+            });
+
+            // Sync native select value to custom trigger display
+            selectElement.addEventListener('change', () => {
+                const selectedOption = selectElement.options[selectElement.selectedIndex];
+                selectTrigger.querySelector('span').textContent = selectedOption ? selectedOption.text : 'Select Option';
+
+                // Also update the 'selected' class on the custom list items
+                customOptionsList.querySelectorAll('li').forEach(li => {
+                    if (li.dataset.value === selectElement.value) {
+                        li.classList.add('selected');
+                    } else {
+                        li.classList.remove('selected');
+                    }
+                });
+            });
+
+            // Initial sync for default selected option (if any)
+            const initialSelectedOption = selectElement.options[selectElement.selectedIndex];
+            if (initialSelectedOption) {
+                selectTrigger.querySelector('span').textContent = initialSelectedOption.text;
+                // Add 'selected' class to the corresponding custom li
+                customOptionsList.querySelectorAll('li').forEach(li => {
+                    if (li.dataset.value === initialSelectedOption.value) {
+                        li.classList.add('selected');
+                    }
+                });
+            }
+        }
+    </script>
+                        <footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mark Student Home Location</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #1a73e8;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 28px;
+            font-weight: 500;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        label {
+            font-weight: bold;
+            color: #5f6368;
+            font-size: 16px;
+        }
+        select {
+            padding: 12px;
+            border: 1px solid #dadce0;
+            border-radius: 6px;
+            font-size: 16px;
+            color: #3c4043;
+            background-color: #fff;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%235f6368" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 20px;
+            appearance: none;
+        }
+        select:focus {
+            outline: none;
+            border-color: #4285F4;
+            box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+        }
+        button {
+            background-color: #1a73e8;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            align-self: flex-start;
+        }
+        button:hover {
+            background-color: #1669c2;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        #map {
+            height: 500px;
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .instructions {
+            text-align: center;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            color: #70757a;
+            font-size: 15px;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <h2>🗺️ Mark Home Location</h2>
+
+    <form method="POST">
+        <label for="student">Select Student:</label>
+        <select name="student" id="student" required>
+            {% for student in students %}
+            <option value="{{ student }}">{{ student }}</option>
+            {% endfor %}
+        </select>
+        <input type="hidden" id="latitude" name="latitude" required>
+        <input type="hidden" id="longitude" name="longitude" required>
+
+        <div class="instructions">
+            Click on the map to mark the student's home location.
+        </div>
+
+        <button type="submit">✅ Save Location</button>
+    </form>
+</div>
+
+<div id="map"></div>
+
+<script>
+    let map;
+    let marker;
+
+    function initMap() {
+        const defaultLocation = { lat: 11.1085, lng: 77.3411 };
+
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: defaultLocation,
+            zoom: 14,
+            mapTypeId: 'satellite',
+            mapTypeControl: true,
+            mapTypeControlOptions: {
+                position: google.maps.ControlPosition.RIGHT_TOP
+            }
+        });
+
+        map.addListener("click", (e) => {
+            const lat = e.latLng.lat().toFixed(6);
+            const lng = e.latLng.lng().toFixed(6);
+
+            document.getElementById('latitude').value = lat;
+            document.getElementById('longitude').value = lng;
+
+            if (marker) {
+                marker.setPosition(e.latLng);
+            } else {
+                marker = new google.maps.Marker({
+                    position: e.latLng,
+                    map: map,
+                    title: "Home Location",
+                    icon: {
+                        url: "https://cdn-icons-png.flaticon.com/128/25/25231.png",
+                        scaledSize: new google.maps.Size(38, 38)
+                    }
+                });
+            }
+
+            map.panTo(e.latLng);
+        });
+    }
+</script>
+
+<!-- ✅ Google Maps API (replace with your actual key if needed) -->
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZ8Ao_Vk0QEWkDC--x_Zs96O3UB4BvYzw&callback=initMap">
+</script>
+<footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+</html>
+

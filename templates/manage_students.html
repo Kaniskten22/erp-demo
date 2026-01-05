@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Manage Students</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif; /* Modern font */
+      background-color: #eef2f6; /* Light, subtle background */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 20px; /* Adjusted padding */
+      box-sizing: border-box;
+      color: #333;
+      min-height: 100vh;
+    }
+
+    a.back-arrow {
+      margin-bottom: 25px; /* More space below back arrow */
+      font-weight: 600;
+      color: #007bff; /* Primary blue color */
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      user-select: none;
+      font-size: 1.05rem; /* Slightly larger font size */
+      transition: color 0.3s ease, transform 0.2s ease;
+    }
+    a.back-arrow:hover, a.back-arrow:focus {
+      color: #0056b3;
+      transform: translateX(-3px); /* Subtle slide effect on hover */
+      outline: none;
+      cursor: pointer;
+    }
+    .back-arrow-chevron {
+      font-weight: 700;
+      font-size: 1.8rem; /* Larger chevron */
+      user-select: none;
+      line-height: 1;
+    }
+
+    h1 {
+      color: #2c3e50; /* Darker, more prominent heading color */
+      margin-bottom: 30px; /* More space below heading */
+      text-align: center;
+      user-select: none;
+      font-size: 2.6rem; /* Larger heading size */
+      font-weight: 700; /* Bolder font weight */
+      border-bottom: 3px solid #007bff; /* Blue border below heading */
+      padding-bottom: 10px;
+    }
+
+    .filter-form {
+      margin-bottom: 30px; /* More space below filter form */
+      display: flex;
+      justify-content: center;
+      align-items: center; /* Vertically align items */
+      gap: 15px; /* Increased gap */
+      flex-wrap: wrap;
+      max-width: 850px; /* Increased max-width for form */
+      width: 100%;
+      background-color: #fff;
+      padding: 20px 25px; /* Padding for the form box */
+      border-radius: 12px; /* Rounded corners for form box */
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* Subtle shadow for form box */
+    }
+
+    .filter-form label {
+      margin-right: 5px;
+      font-weight: 600;
+      color: #555; /* Softer label color */
+      user-select: none;
+      font-size: 1.05rem;
+    }
+
+    .filter-form select {
+      padding: 10px 14px; /* Increased padding */
+      border-radius: 8px; /* More rounded select */
+      border: 1px solid #d1d1d6; /* Subtle border */
+      font-size: 1rem;
+      cursor: pointer;
+      min-width: 120px; /* Slightly wider select */
+      box-sizing: border-box;
+      background-color: #f9f9fb; /* Light background */
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .filter-form select:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+      outline: none;
+    }
+
+    .filter-form button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px; /* Increased padding */
+      border-radius: 8px; /* More rounded button */
+      cursor: pointer;
+      font-size: 1.05rem;
+      font-weight: 600;
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      user-select: none;
+      box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+    }
+
+    .filter-form button:hover,
+    .filter-form button:focus {
+      background-color: #0056b3;
+      transform: translateY(-2px); /* Slight lift effect */
+      box-shadow: 0 6px 15px rgba(0, 123, 255, 0.3);
+      outline: none;
+    }
+
+    table.manage-students-table {
+      width: 100%;
+      max-width: 850px; /* Wider table */
+      border-collapse: collapse;
+      margin-top: 20px;
+      border: 1px solid #ddd;
+      background-color: #fff;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); /* Stronger shadow */
+      user-select: none;
+      border-radius: 12px; /* Rounded table corners */
+      overflow: hidden; /* Ensures rounded corners apply */
+    }
+
+    table.manage-students-table th,
+    table.manage-students-table td {
+      border: 1px solid #eee; /* Lighter borders for cells */
+      padding: 15px; /* Increased padding */
+      text-align: center;
+      font-size: 1rem;
+    }
+
+    table.manage-students-table th {
+      background-color: #007bff;
+      color: white;
+      font-weight: 700;
+      text-align: center;
+      user-select: none;
+      text-transform: uppercase; /* Uppercase for headers */
+      letter-spacing: 0.5px; /* Slight letter spacing */
+    }
+
+    table.manage-students-table tr:nth-child(even) {
+      background-color: #f8faff; /* Very light blue for even rows */
+    }
+
+    table.manage-students-table tr:hover {
+      background-color: #e9f5ff; /* Light blue on hover */
+    }
+
+    table.manage-students-table td form {
+      margin: 0;
+      padding: 0;
+      display: inline-block;
+    }
+
+    table.manage-students-table td button {
+      background-color: #dc3545; /* Red for remove button */
+      color: white;
+      border: none;
+      padding: 10px 15px; /* Increased padding */
+      border-radius: 8px; /* More rounded button */
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      user-select: none;
+    }
+
+    table.manage-students-table td button:hover,
+    table.manage-students-table td button:focus {
+      background-color: #c82333; /* Darker red on hover */
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    table.manage-students-table td a button {
+      background-color: #28a745; /* Green for edit button */
+      padding: 10px 15px;
+      border-radius: 8px;
+      margin-left: 10px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      color: white; /* Ensure text is white */
+      border: none; /* Remove default border */
+      font-weight: 500;
+    }
+
+    table.manage-students-table td a button:hover,
+    table.manage-students-table td a button:focus {
+      background-color: #218838; /* Darker green on hover */
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.2rem;
+      }
+
+      .filter-form {
+        flex-direction: column;
+        gap: 10px; /* Reduced gap for smaller screens */
+        padding: 15px;
+      }
+      .filter-form label,
+      .filter-form select,
+      .filter-form button {
+        width: 100%;
+        max-width: 280px; /* Slightly smaller max-width */
+      }
+      table.manage-students-table {
+        font-size: 0.9rem;
+        border-radius: 8px;
+      }
+
+      table.manage-students-table th,
+      table.manage-students-table td {
+        padding: 12px; /* Reduced padding for smaller screens */
+      }
+
+      table.manage-students-table td button,
+      table.manage-students-table td a button {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+        margin-left: 5px; /* Adjusted margin for buttons */
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+      }
+      .filter-form {
+        padding: 10px;
+      }
+      table.manage-students-table th,
+      table.manage-students-table td {
+        padding: 10px 8px;
+      }
+      table.manage-students-table td a button {
+        margin-left: 0; /* No margin on very small screens */
+        margin-top: 5px; /* Add some top margin if stacked */
+        display: block; /* Make buttons block level if needed */
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="/home" class="back-arrow" aria-label="Back to Home">
+    <span class="back-arrow-chevron" aria-hidden="true">&#x2039;</span> Back
+  </a>
+  <h1>Manage Students</h1>
+
+  <!-- Filter Form -->
+  <form method="get" class="filter-form" aria-label="Filter students by grade and board">
+    <label for="grade">Grade:</label>
+    <select name="grade" id="grade" aria-controls="students-table">
+      <option value="">All</option>
+      {% for grade in grades %}
+        <option value="{{ grade }}" {% if selected_grade == grade|string %}selected{% endif %}>{{ grade }}</option>
+      {% endfor %}
+    </select>
+
+    <label for="board">Board:</label>
+    <select name="board" id="board" aria-controls="students-table">
+      <option value="">All</option>
+      {% for board in boards %}
+        <option value="{{ board }}" {% if selected_board == board %}selected{% endif %}>{{ board }}</option>
+      {% endfor %}
+    </select>
+
+    <button type="submit">Filter</button>
+  </form>
+
+  <!-- Download Excel -->
+  <form method="get" action="/download_students" style="margin-top: -20px; margin-bottom: 20px;">
+    <input type="hidden" name="grade" value="{{ selected_grade }}">
+    <input type="hidden" name="board" value="{{ selected_board }}">
+    <button type="submit" style="
+      background-color: #03b4f5;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.05rem;
+      font-weight: 600;
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
+    ">
+      Download as Excel
+    </button>
+  </form>
+
+  <!-- Search Students -->
+<div style="margin-bottom: 20px; max-width: 850px; width: 100%;">
+  <input type="text" id="studentSearch" placeholder="Search by student username..." 
+         style="width: 100%; padding: 12px 15px; font-size: 1rem; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box;" 
+         aria-label="Search students by username">
+</div>
+
+
+  <!-- Student Table -->
+  <table class="manage-students-table" id="students-table" role="grid" aria-label="Students list">
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Username</th>
+        <th>Grade</th>
+        <th>Board</th>
+        <th>Father's Name</th>
+        <th>Mother's Name</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Student Photo</th>
+        <th>Father Photo</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for student in students %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ student.id }}</td>
+        <td>{{ student.grade }}</td>
+        <td>{{ student.board }}</td>
+        <td>{{ student.father_name }}</td>
+        <td>{{ student.mother_name }}</td>
+        <td>{{ student.phone }}</td>
+        <td>{{ student.address }}</td>
+
+        <!-- Student Photo -->
+        <td>
+          {% if student.student_photo %}
+            <img src="{{ student.student_photo }}" alt="Student Photo" width="60" height="60" style="border-radius: 8px;">
+          {% else %}
+            -
+          {% endif %}
+        </td>
+
+        <!-- Father Photo -->
+        <td>
+          {% if student.father_photo %}
+            <img src="{{ student.father_photo }}" alt="Father Photo" width="60" height="60" style="border-radius: 8px;">
+          {% else %}
+            -
+          {% endif %}
+        </td>
+
+        <td>
+          <form method="POST" action="/manage_students" style="display:inline;">
+            <input type="hidden" name="student_id" value="{{ student.id }}">
+            <button type="submit" aria-label="Remove {{ student.id }}">Remove</button>
+          </form>
+          <a href="/add_student_details?student={{ student.id }}" style="margin-left:10px;">
+            <button type="button" aria-label="Edit details for {{ student.id }}">Edit Profile</button>
+          </a>
+          <a href="/edit_student/{{ student.id }}" style="margin-left:10px;">
+            <button type="button" aria-label="Edit password and grade for {{ student.id }}">Edit</button>
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <script>
+  document.getElementById('studentSearch').addEventListener('input', function () {
+    const query = this.value.toLowerCase();
+    const rows = document.querySelectorAll('#students-table tbody tr');
+
+    rows.forEach(row => {
+      const usernameCell = row.querySelector('td:nth-child(2)');
+      const username = usernameCell.textContent.toLowerCase();
+      row.style.display = username.includes(query) ? '' : 'none';
+    });
+  });
+</script>
+<script>
+  document.getElementById('studentSearch').addEventListener('input', function () {
+    const query = this.value.toLowerCase();
+    const rows = document.querySelectorAll('#students-table tbody tr');
+
+    rows.forEach(row => {
+      const usernameCell = row.querySelector('td:nth-child(2)');
+      const username = usernameCell.textContent.toLowerCase();
+      row.style.display = username.includes(query) ? '' : 'none';
+    });
+  });
+</script>
+<footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+
+
+
+</html>

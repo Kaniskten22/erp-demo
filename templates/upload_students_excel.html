@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Students via Excel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Basic Reset & Body Styling */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f7f6; /* Light grey background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Container for the form */
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #2c3e50; /* Darker blue-grey for heading */
+            margin-bottom: 25px;
+            font-weight: 700;
+            font-size: 1.8em;
+        }
+
+        /* Form Styling */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center; /* Center form elements horizontally */
+        }
+
+        /* File Input Styling */
+        input[type="file"] {
+            border: 2px dashed #a8dadc; /* Light blue dashed border */
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f0f8ff; /* Very light blue background */
+            width: calc(100% - 30px); /* Adjust width for padding */
+            text-align: center;
+            cursor: pointer;
+            font-size: 1em;
+            color: #457b9d; /* Medium blue text */
+            transition: all 0.3s ease;
+        }
+
+        input[type="file"]:hover {
+            background-color: #e0f2f7; /* Slightly darker light blue on hover */
+            border-color: #457b9d; /* Darker blue border on hover */
+        }
+
+        /* Hide default file input button and style a custom one if needed (more advanced) */
+        input[type="file"]::-webkit-file-upload-button {
+            visibility: hidden;
+        }
+        input[type="file"]::before {
+            content: 'Choose Excel File';
+            display: inline-block;
+            background: #457b9d; /* Medium blue button */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-weight: 700;
+            margin-right: 10px;
+            transition: background-color 0.3s ease;
+        }
+        input[type="file"]:hover::before {
+            background-color: #1d3557; /* Darker blue on hover */
+        }
+
+        /* Upload Button Styling */
+        button[type="submit"] {
+            background-color: #28a745; /* Green for success/upload */
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-weight: 700;
+            width: 100%;
+            max-width: 200px; /* Limit button width */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        button[type="submit"]:hover {
+            background-color: #218838; /* Darker green on hover */
+            transform: translateY(-2px);
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        /* Required Columns Information */
+        .required-columns {
+            background-color: #e6f7ff; /* Lighter blue background */
+            border: 1px solid #91d5ff; /* Blue border */
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 30px;
+            font-size: 0.95em;
+            color: #1890ff; /* Brighter blue text */
+            text-align: left;
+            width: calc(100% - 30px); /* Adjust width for padding */
+        }
+
+        .required-columns strong {
+            color: #096dd9; /* Darker blue for strong text */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Upload Student Excel File</h2>
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="excel_file" accept=".xlsx,.xls" required>
+            <button type="submit">Upload</button>
+        </form>
+        <div class="required-columns">
+            <p><strong>Required Columns:</strong> Username, Password, Board, Grade, Father Name, Mother Name, Phone, Address</p>
+        </div>
+    </div>
+
+</body>
+
+</html>
+

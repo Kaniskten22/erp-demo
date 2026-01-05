@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Admission</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif; /* Modern font */
+      background-color: #eef2f6; /* Light, subtle background */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px; /* Add some padding for spacing */
+      box-sizing: border-box;
+      color: #333;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 35px 30px; /* Increased padding */
+      border-radius: 16px; /* More rounded corners */
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* Softer, larger shadow */
+      width: 100%;
+      max-width: 500px; /* Max width for better form display */
+      position: relative; /* For back arrow positioning */
+    }
+
+    h2 {
+      text-align: center;
+      color: #2c3e50; /* Darker heading color */
+      font-size: 28px; /* Larger heading */
+      margin-bottom: 30px; /* More space below heading */
+      font-weight: 700; /* Bolder font weight */
+      border-bottom: 2px solid #007bff; /* Blue border */
+      padding-bottom: 10px;
+    }
+
+    label {
+      display: block;
+      margin: 18px 0 8px; /* Adjusted margins */
+      font-weight: 600;
+      color: #555; /* Softer label color */
+      font-size: 15px; /* Slightly larger label font */
+    }
+
+    input[type="text"], input[type="date"] {
+      width: calc(100% - 24px); /* Account for padding */
+      padding: 14px; /* Increased padding */
+      border-radius: 12px; /* Consistent rounded corners */
+      border: 1px solid #d1d1d6; /* Subtle border */
+      background: #f9f9fb; /* Light background for fields */
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      box-sizing: border-box; /* Include padding in element's total width and height */
+    }
+
+    input:focus {
+      border-color: #007bff; /* Blue focus border */
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); /* Subtle blue shadow on focus */
+    }
+
+    button[type="submit"] {
+      margin-top: 30px; /* More space above button */
+      width: 100%;
+      padding: 16px; /* Larger button padding */
+      border: none;
+      border-radius: 12px;
+      background-color: #007bff; /* Primary blue button */
+      color: white;
+      font-size: 18px; /* Larger font size */
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3); /* Button shadow */
+    }
+
+    button[type="submit"]:hover {
+      background-color: #0056b3; /* Darker blue on hover */
+      transform: translateY(-2px); /* Slight lift effect */
+    }
+
+    .back-arrow {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      text-decoration: none;
+      color: #007bff;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      transition: color 0.3s ease;
+    }
+
+    .back-arrow:hover {
+      color: #0056b3;
+    }
+
+    .back-arrow-chevron {
+      font-size: 24px; /* Larger chevron */
+      margin-right: 5px;
+      line-height: 1; /* Align chevron better */
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      .container {
+        padding: 30px 20px;
+        border-radius: 12px;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
+
+      label {
+        font-size: 14px;
+      }
+
+      input[type="text"], input[type="date"] {
+        padding: 12px;
+        font-size: 15px;
+      }
+
+      button[type="submit"] {
+        padding: 14px;
+        font-size: 16px;
+      }
+
+      .back-arrow {
+        font-size: 14px;
+        top: 15px;
+        left: 15px;
+      }
+
+      .back-arrow-chevron {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/home" class="back-arrow">
+      <span class="back-arrow-chevron">&#x2039;</span> Back
+    </a>
+    <h2>Edit Admission</h2>
+    <form method="POST">
+      <label for="student_name">Student Name</label>
+      <input type="text" name="student_name" id="student_name" value="{{ admission.student_name }}" required>
+
+      <label for="parent_name">Parent Name</label>
+      <input type="text" name="parent_name" id="parent_name" value="{{ admission.parent_name }}" required>
+
+      <label for="contact">Contact</label>
+      <input type="text" name="contact" id="contact" value="{{ admission.contact }}" required>
+
+      <label for="stage">Stage</label>
+      <input type="text" name="stage" id="stage" value="{{ admission.stage }}" required>
+
+      <label for="grade">Grade</label>
+      <input type="text" name="grade" id="grade" value="{{ admission.grade }}" required>
+
+      <label for="board">Board</label>
+      <input type="text" name="board" id="board" value="{{ admission.board }}" required>
+
+      <label for="admission_date">Admission Date</label>
+      <input type="date" name="admission_date" id="admission_date" value="{{ admission.admission_date }}" required>
+
+      <label for="remarks">Remarks</label>
+      <input type="text" name="remarks" id="remarks" value="{{ admission.remarks }}">
+
+      <button type="submit">Update</button>
+    </form>
+  </div>
+  <footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+</html>

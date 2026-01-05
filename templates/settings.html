@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0d47a1;
+            --primary-dark: #00227a;
+            --background-light: #f0f2f5;
+            --card-background: #ffffff;
+            --text-dark: #333333;
+            --text-medium: #555555;
+            --text-light: #777777;
+            --border-color: #e0e0e0;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px 0;
+            box-sizing: border-box;
+        }
+
+        .settings-container {
+            width: 95%;
+            max-width: 600px;
+            background-color: var(--card-background);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px var(--shadow-medium);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(to right, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 2px 8px var(--shadow-light);
+        }
+
+        .back-arrow {
+            position: absolute;
+            left: 20px;
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            font-size: 1.05rem;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.15);
+            z-index: 10;
+        }
+
+        .back-arrow:hover {
+            transform: translateX(-3px);
+            opacity: 0.9;
+            background-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .back-arrow-chevron {
+            font-size: 2rem; /* Larger chevron */
+            line-height: 1;
+            margin-right: 5px;
+            transform: translateY(-1px);
+        }
+
+        .header-title {
+            flex-grow: 1;
+            text-align: center;
+            font-size: 1.8em;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .settings-list {
+            padding: 15px;
+        }
+
+        .setting-item {
+            background-color: var(--card-background);
+            padding: 18px 20px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px var(--shadow-light);
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .setting-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px var(--shadow-medium);
+            background-color: #f9f9f9;
+        }
+
+        .item-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .item-icon {
+            font-size: 1.8em;
+            margin-right: 20px;
+            color: var(--primary-color);
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .item-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .item-title {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 1.1em;
+            margin-bottom: 3px;
+        }
+
+        .item-subtitle {
+            color: var(--text-light);
+            font-size: 0.85em;
+        }
+
+        .arrow {
+            font-size: 1.5em;
+            color: var(--text-light);
+            margin-left: 15px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+                align-items: stretch; /* Stretch to fill height on small screens */
+            }
+
+            .settings-container {
+                width: 100%;
+                max-width: none;
+                border-radius: 0;
+                box-shadow: none;
+                flex: 1; /* Allow container to grow and fill space */
+            }
+
+            .header {
+                padding: 15px;
+                border-radius: 0;
+            }
+
+            .header-title {
+                font-size: 1.5em;
+            }
+
+            .back-arrow {
+                left: 15px;
+                font-size: 1rem;
+                padding: 6px 10px;
+            }
+
+            .back-arrow-chevron {
+                font-size: 1.8rem;
+            }
+
+            .settings-list {
+                padding: 10px;
+            }
+
+            .setting-item {
+                padding: 15px;
+                margin-bottom: 8px;
+            }
+
+            .item-icon {
+                font-size: 1.6em;
+                margin-right: 15px;
+            }
+
+            .item-title {
+                font-size: 1em;
+            }
+
+            .item-subtitle {
+                font-size: 0.8em;
+            }
+            .arrow {
+                font-size: 1.2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 12px;
+            }
+            .header-title {
+                font-size: 1.3em;
+            }
+            .back-arrow {
+                left: 10px;
+                font-size: 0.9rem;
+            }
+            .back-arrow-chevron {
+                font-size: 1.5rem;
+            }
+            .setting-item {
+                padding: 12px;
+            }
+            .item-icon {
+                font-size: 1.4em;
+                margin-right: 10px;
+            }
+            .item-title {
+                font-size: 0.95em;
+            }
+            .item-subtitle {
+                font-size: 0.75em;
+            }
+            .arrow {
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-container">
+        <div class="header">
+            <a href="/home" class="back-arrow">
+                <span class="back-arrow-chevron">&#x2039;</span> Back
+            </a>
+            <h1 class="header-title">Settings</h1>
+        </div>
+
+        <div class="settings-list">
+            <div class="setting-item" onclick="location.href='/themes'">
+                <div class="item-info">
+                    <span class="item-icon">&#128296;</span> <div class="item-text">
+                        <div class="item-title">Themes</div>
+                        <div class="item-subtitle">You can personalize your app look</div>
+                    </div>
+                </div>
+                <span class="arrow">&#62;</span>
+            </div>
+
+            <div class="setting-item" onclick="location.href='/devices'">
+                <div class="item-info">
+                    <span class="item-icon">&#128241;</span> <div class="item-text">
+                        <div class="item-title">Devices</div>
+                        <div class="item-subtitle">Your current / active devices</div>
+                    </div>
+                </div>
+                <span class="arrow">&#62;</span>
+            </div>
+
+            <div class="setting-item" onclick="location.href='/change_password'">
+                <div class="item-info">
+                    <span class="item-icon">&#128274;</span> <div class="item-text">
+                        <div class="item-title">Change Password</div>
+                        <div class="item-subtitle">You can change your password.</div>
+                    </div>
+                </div>
+                <span class="arrow">&#62;</span>
+            </div>
+            </div>
+    </div>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0d47a1;
+            --primary-dark: #00227a;
+            --background-light: #f0f2f5;
+            --card-background: #ffffff;
+            --text-dark: #333333;
+            --text-medium: #555555;
+            --text-light: #777777;
+            --border-color: #e0e0e0;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px 0;
+            box-sizing: border-box;
+        }
+
+        .settings-container {
+            width: 95%;
+            max-width: 600px;
+            background-color: var(--card-background);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px var(--shadow-medium);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(to right, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 2px 8px var(--shadow-light);
+        }
+
+        .back-arrow {
+            position: absolute;
+            left: 20px;
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            font-size: 1.05rem;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.15);
+            z-index: 10;
+        }
+
+        .back-arrow:hover {
+            transform: translateX(-3px);
+            opacity: 0.9;
+            background-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .back-arrow-chevron {
+            font-size: 2rem; /* Larger chevron */
+            line-height: 1;
+            margin-right: 5px;
+            transform: translateY(-1px);
+        }
+
+        .header-title {
+            flex-grow: 1;
+            text-align: center;
+            font-size: 1.8em;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .settings-list {
+            padding: 15px;
+        }
+
+        .setting-item {
+            background-color: var(--card-background);
+            padding: 18px 20px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px var(--shadow-light);
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .setting-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px var(--shadow-medium);
+            background-color: #f9f9f9;
+        }
+
+        .item-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .item-icon {
+            font-size: 1.8em;
+            margin-right: 20px;
+            color: var(--primary-color);
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .item-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .item-title {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 1.1em;
+            margin-bottom: 3px;
+        }
+
+        .item-subtitle {
+            color: var(--text-light);
+            font-size: 0.85em;
+        }
+
+        .arrow {
+            font-size: 1.5em;
+            color: var(--text-light);
+            margin-left: 15px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+                align-items: stretch; /* Stretch to fill height on small screens */
+            }
+
+            .settings-container {
+                width: 100%;
+                max-width: none;
+                border-radius: 0;
+                box-shadow: none;
+                flex: 1; /* Allow container to grow and fill space */
+            }
+
+            .header {
+                padding: 15px;
+                border-radius: 0;
+            }
+
+            .header-title {
+                font-size: 1.5em;
+            }
+
+            .back-arrow {
+                left: 15px;
+                font-size: 1rem;
+                padding: 6px 10px;
+            }
+
+            .back-arrow-chevron {
+                font-size: 1.8rem;
+            }
+
+            .settings-list {
+                padding: 10px;
+            }
+
+            .setting-item {
+                padding: 15px;
+                margin-bottom: 8px;
+            }
+
+            .item-icon {
+                font-size: 1.6em;
+                margin-right: 15px;
+            }
+
+            .item-title {
+                font-size: 1em;
+            }
+
+            .item-subtitle {
+                font-size: 0.8em;
+            }
+            .arrow {
+                font-size: 1.2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 12px;
+            }
+            .header-title {
+                font-size: 1.3em;
+            }
+            .back-arrow {
+                left: 10px;
+                font-size: 0.9rem;
+            }
+            .back-arrow-chevron {
+                font-size: 1.5rem;
+            }
+            .setting-item {
+                padding: 12px;
+            }
+            .item-icon {
+                font-size: 1.4em;
+                margin-right: 10px;
+            }
+            .item-title {
+                font-size: 0.95em;
+            }
+            .item-subtitle {
+                font-size: 0.75em;
+            }
+            .arrow {
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-container">
+        <div class="header">
+            <a href="/home" class="back-arrow">
+                <span class="back-arrow-chevron">&#x2039;</span> Back
+            </a>
+            <h1 class="header-title">Settings</h1>
+        </div>
+
+        <div class="settings-list">
+            <div class="setting-item" onclick="location.href='/themes'">
+                <div class="item-info">
+                    <span class="item-icon">&#128296;</span> <div class="item-text">
+                        <div class="item-title">Themes</div>
+                        <div class="item-subtitle">You can personalize your app look</div>
+                    </div>
+                </div>
+                <span class="arrow">&#62;</span>
+            </div>
+
+            <div class="setting-item" onclick="location.href='/devices'">
+                <div class="item-info">
+                    <span class="item-icon">&#128241;</span> <div class="item-text">
+                        <div class="item-title">Devices</div>
+                        <div class="item-subtitle">Your current / active devices</div>
+                    </div>
+                </div>
+                <span class="arrow">&#62;</span>
+            </div>
+
+            <div class="setting-item" onclick="location.href='/change_password'">
+                <div class="item-info">
+                    <span class="item-icon">&#128274;</span> <div class="item-text">
+                        <div class="item-title">Change Password</div>
+                        <div class="item-subtitle">You can change your password.</div>
+                    </div>
+                </div>
+                <span class="arrow">&#62;</span>
+            </div>
+            </div>
+    </div>
+                            <footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+
+</html>

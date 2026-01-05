@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vikas Vidyalaya</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #e3f2fd, #bbdefb);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .bg-icon {
+      position: absolute;
+      opacity: 0.1;
+      font-size: 80px;
+      color: #007BFF;
+      animation: drift calc(10s + var(--i) * 0.5s) infinite ease-in-out;
+    }
+
+    .bg-icon:nth-child(n) {
+      animation-delay: calc((var(--i) - 1) * 0.5s);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .login-container {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+      z-index: 10;
+      transition: transform 0.3s ease;
+    }
+
+    .login-container:hover {
+      transform: translateY(-5px);
+    }
+
+    .login-container img.logo {
+      width: 100px;
+      margin-bottom: 20px;
+      animation: pulse 2s infinite;
+    }
+
+    h2 {
+      color: #007BFF;
+      margin-bottom: 25px;
+      font-weight: 600;
+    }
+
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 14px;
+      margin: 12px 0;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      background-color: #f0f4f8;
+      transition: box-shadow 0.3s ease;
+    }
+
+    input[type="text"]:focus, input[type="password"]:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0,123,255,0.3);
+      background-color: #fff;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(to right, #007BFF, #0056b3);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(to right, #0056b3, #003f88);
+      transform: scale(1.02);
+    }
+
+   @keyframes drift {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(20px, -30px) rotate(45deg);
+  }
+  50% {
+    transform: translate(0, -60px) rotate(90deg);
+  }
+  75% {
+    transform: translate(-20px, -30px) rotate(135deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(180deg);
+  }
+}
+
+
+    .error-message {
+      color: red;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Animated Background Icons -->
+  <i class="fas fa-book-open bg-icon" style="--i:1; top:10%; left:10%;"></i>
+  <i class="fas fa-pen-nib bg-icon" style="--i:2; top:20%; right:5%;"></i>
+  <i class="fas fa-book bg-icon" style="--i:3; bottom:15%; left:5%;"></i>
+  <i class="fas fa-pencil-alt bg-icon" style="--i:4; bottom:10%; right:10%;"></i>
+  <i class="fas fa-ruler bg-icon" style="--i:5; top:30%; left:35%;"></i>
+  <i class="fas fa-graduation-cap bg-icon" style="--i:6; bottom:25%; right:30%;"></i>
+  <i class="fas fa-apple-alt bg-icon" style="--i:7; top:40%; right:20%;"></i>
+  <i class="fas fa-chalkboard-teacher bg-icon" style="--i:8; top:5%; right:15%;"></i>
+  <i class="fas fa-school bg-icon" style="--i:9; bottom:5%; left:25%;"></i>
+  <i class="fas fa-globe bg-icon" style="--i:10; top:25%; left:60%;"></i>
+  <i class="fas fa-flask bg-icon" style="--i:11; bottom:30%; right:5%;"></i>
+  <i class="fas fa-microscope bg-icon" style="--i:12; top:15%; right:25%;"></i>
+  <i class="fas fa-user-graduate bg-icon" style="--i:13; bottom:10%; left:60%;"></i>
+  <i class="fas fa-laptop bg-icon" style="--i:14; top:35%; right:40%;"></i>
+  <i class="fas fa-clipboard-list bg-icon" style="--i:15; bottom:20%; left:45%;"></i>
+  <i class="fas fa-calculator bg-icon" style="--i:16; top:45%; left:10%;"></i>
+  <i class="fas fa-language bg-icon" style="--i:17; bottom:40%; right:10%;"></i>
+  <i class="fas fa-book-reader bg-icon" style="--i:18; top:50%; right:5%;"></i>
+  <i class="fas fa-marker bg-icon" style="--i:19; top:5%; left:5%;"></i>
+  <i class="fas fa-paint-brush bg-icon" style="--i:20; bottom:5%; right:5%;"></i>
+
+  <div class="login-container">
+        <h2>Login</h2>
+    <form method="POST">
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+    </form>
+    <!-- Optional error message display (if any error occurs during login) -->
+    <div class="error-message">
+        {% if error %}
+            <p>{{ error }}</p>
+        {% endif %}
+    </div>
+</div>
+
+</body>
+</html>

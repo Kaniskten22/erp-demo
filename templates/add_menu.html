@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Add Weekly Menu</title>
+  <style>
+    /* Reset & base styles */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 40px auto;
+      max-width: 900px;
+      color: #343a40;
+      line-height: 1.6;
+      padding: 0 20px;
+    }
+
+    /* Back arrow style */
+    .back-arrow {
+      display: inline-flex;
+      align-items: center;
+      color: #007bff;
+      text-decoration: none;
+      font-weight: 600;
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+      user-select: none;
+      transition: color 0.25s ease-in-out;
+    }
+    .back-arrow:hover, .back-arrow:focus {
+      color: #0056b3;
+      outline: none;
+      text-decoration: underline;
+    }
+    .back-arrow-chevron {
+      font-size: 2rem;
+      margin-right: 8px;
+      transition: margin-right 0.25s ease;
+    }
+    .back-arrow:hover .back-arrow-chevron,
+    .back-arrow:focus .back-arrow-chevron {
+      margin-right: 12px;
+    }
+
+    /* Heading */
+    h2 {
+      color: #007bff;
+      text-align: center;
+      font-weight: 700;
+      font-size: 2.4rem;
+      margin-bottom: 35px;
+      letter-spacing: 1.3px;
+    }
+
+    /* Day card container */
+    .day-section {
+      background-color: #ffffff;
+      border-radius: 14px;
+      border: 1px solid #e9ecef;
+      box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.08),
+        0 0 0 4px #f8f9fa; /* subtle white ring */
+      padding: 28px 30px 34px;
+      margin-bottom: 28px;
+      transition: box-shadow 0.3s ease;
+    }
+    .day-section:hover,
+    .day-section:focus-within {
+      box-shadow:
+        0 8px 24px rgba(0, 123, 255, 0.15),
+        0 0 0 4px #e0f0ff;
+      border-color: #007bff;
+    }
+
+    /* Day header */
+    .day-section h4 {
+      color: #28a745;
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin: 0 0 22px 0;
+      border-bottom: 3px solid #28a745;
+      padding-bottom: 10px;
+      letter-spacing: 0.06em;
+      user-select: none;
+    }
+
+    /* Form groups - flex layout */
+    .form-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 18px;
+      transition: color 0.3s ease;
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .form-group label {
+      flex: 0 0 160px;
+      font-weight: 700;
+      color: #495057;
+      font-size: 1.1rem;
+      user-select: none;
+    }
+
+    .form-group input[type="date"],
+    .form-group input[type="text"] {
+      flex: 1 1 auto;
+      padding: 14px 16px;
+      font-size: 1rem;
+      border-radius: 10px;
+      border: 1.8px solid #ced4da;
+      background-color: #fefefe;
+      transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease,
+        background-color 0.3s ease;
+      font-family: inherit;
+      outline-offset: 2px;
+    }
+
+    .form-group input[type="date"]::-webkit-inner-spin-button,
+    .form-group input[type="date"]::-webkit-calendar-picker-indicator {
+      cursor: pointer;
+      filter: invert(33%) sepia(42%) saturate(1980%) hue-rotate(187deg) brightness(90%) contrast(85%);
+      /* a subtle blue tint for calendar icon */
+    }
+
+    .form-group input[type="date"]:focus,
+    .form-group input[type="text"]:focus {
+      border-color: #007bff;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 123, 255, 0.4);
+      outline: none;
+    }
+
+    /* Placeholder text style */
+    ::placeholder {
+      color: #adb5bd;
+      font-style: italic;
+    }
+
+    /* Submit button */
+    button[type="submit"] {
+      background-image: linear-gradient(135deg, #0069d9 0%, #0056b3 100%);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.3rem;
+      padding: 16px 36px;
+      margin: 30px auto 20px;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      display: block;
+      box-shadow:
+        0 6px 18px rgba(0, 86, 179, 0.35);
+      transition:
+        background-image 0.3s ease,
+        box-shadow 0.3s ease,
+        transform 0.15s ease;
+      user-select: none;
+      max-width: 320px;
+      width: 100%;
+    }
+    button[type="submit"]:hover,
+    button[type="submit"]:focus {
+      background-image: linear-gradient(135deg, #0056b3 0%, #003f7f 100%);
+      box-shadow:
+        0 8px 22px rgba(0, 64, 127, 0.55);
+      outline: none;
+      transform: translateY(-2px);
+    }
+    button[type="submit"]:active {
+      transform: translateY(0);
+      box-shadow:
+        0 4px 12px rgba(0, 64, 127, 0.4);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      body {
+        margin: 20px 15px;
+        max-width: none;
+      }
+      .form-group {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .form-group label {
+        flex-basis: auto;
+        width: 100%;
+        margin-bottom: 6px;
+        font-size: 1.05rem;
+      }
+      .form-group input[type="date"],
+      .form-group input[type="text"] {
+        width: 100%;
+      }
+      button[type="submit"] {
+        max-width: 100%;
+      }
+      h2 {
+        font-size: 1.9rem;
+        margin-bottom: 25px;
+      }
+      .day-section h4 {
+        font-size: 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="/home" class="back-arrow" aria-label="Go back to Home">
+    <span class="back-arrow-chevron" aria-hidden="true">&#x2039;</span> Back
+  </a>
+
+  <h2>Add Your Weekly Menu</h2>
+  <form method="post" novalidate>
+    {% set days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] %}
+    {% for day in days %}
+      <section class="day-section" tabindex="-1" aria-labelledby="{{ day|lower }}-heading">
+        <h4 id="{{ day|lower }}-heading">{{ day }}</h4>
+
+        <div class="form-group">
+          <label for="{{ day|lower }}_date">Date:</label>
+          <input type="date" id="{{ day|lower }}_date" name="{{ day }}_date" required aria-required="true" />
+        </div>
+
+        <div class="form-group">
+          <label for="{{ day|lower }}_morning_snacks">Morning Snacks:</label>
+          <input type="text" id="{{ day|lower }}_morning_snacks" name="{{ day }}_morning_snacks" placeholder="e.g., Fruits, Yogurt" />
+        </div>
+
+        <div class="form-group">
+          <label for="{{ day|lower }}_lunch">Lunch:</label>
+          <input type="text" id="{{ day|lower }}_lunch" name="{{ day }}_lunch" placeholder="e.g., Salad, Sandwich" />
+        </div>
+
+        <div class="form-group">
+          <label for="{{ day|lower }}_evening_snacks">Evening Snacks:</label>
+          <input type="text" id="{{ day|lower }}_evening_snacks" name="{{ day }}_evening_snacks" placeholder="e.g., Popcorn, Nuts" />
+        </div>
+      </section>
+    {% endfor %}
+    <button type="submit">Save Weekly Menu</button>
+  </form>
+  <footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Homework</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+      background-color: #f2f2f7;
+      margin: 0;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .homework-form-container {
+      background-color: #fff;
+      padding: 32px 24px;
+      border-radius: 16px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 16px;
+      color: #007aff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 15px;
+    }
+
+    h2 {
+      color: #1c1c1e;
+      text-align: center;
+      margin-bottom: 24px;
+      font-size: 22px;
+    }
+
+    label {
+      display: block;
+      margin-top: 16px;
+      margin-bottom: 6px;
+      color: #3c3c43;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      background-color: #f9f9f9;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      background: #fff;
+      border-color: #007aff;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    button[type="submit"] {
+      margin-top: 24px;
+      width: 100%;
+      padding: 14px;
+      background-color: #007aff;
+      border: none;
+      color: white;
+      font-size: 17px;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #005ecb;
+    }
+
+    #loading-animation {
+      display: none;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    #loading-animation img {
+      height: 60px;
+    }
+
+    #loading-animation p {
+      font-weight: 600;
+      color: #007aff;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="homework-form-container">
+    <a href="/home" class="back-link" aria-label="Back to Home">← Back</a>
+    <h2>Add Homework</h2>
+    <form method="POST" aria-label="Add Homework Form">
+      <label for="title">Title</label>
+      <input type="text" id="title" name="title" required placeholder="Enter homework title" autocomplete="off" />
+
+      <label for="subject">Subject</label>
+      <input type="text" id="subject" name="subject" required placeholder="Enter subject name" autocomplete="off" />
+
+      <label for="description">Description</label>
+      <textarea id="description" name="description" required placeholder="Enter homework description"></textarea>
+
+      <label for="due_date">Due Date</label>
+      <input type="date" id="due_date" name="due_date" required />
+
+      <label for="grade">Grade</label>
+      <select id="grade" name="grade" required>
+        <option value="" disabled selected>Select Grade</option>
+        <option value="1">Grade 1</option>
+        <option value="2">Grade 2</option>
+        <option value="3">Grade 3</option>
+        <option value="4">Grade 4</option>
+        <option value="5">Grade 5</option>
+        <option value="6">Grade 6</option>
+        <option value="7">Grade 7</option>
+        <option value="8">Grade 8</option>
+      </select>
+
+      <label for="board">Board</label>
+      <select id="board" name="board" required>
+        <option value="" disabled selected>Select Board</option>
+        <option value="CBSE">CBSE</option>
+        <option value="Montessori">Montessori</option>
+        <option value="IGCSE">IGCSE</option>
+      </select>
+
+      <button type="submit">Add Homework</button>
+
+      <!-- 🚀 Rocket Animation -->
+      <div id="loading-animation">
+        <img src="https://cdn-icons-png.flaticon.com/128/1356/1356479.png" alt="Posting..." />
+        <p>Posting...</p>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const form = document.querySelector("form");
+    const loading = document.getElementById("loading-animation");
+
+    form.addEventListener("submit", function () {
+      loading.style.display = "block";
+    });
+  </script>
+  <footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+</html>
+

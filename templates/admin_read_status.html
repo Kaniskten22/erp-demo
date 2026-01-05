@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Circular Read Status</title>
+  <style>
+    /* Base reset and layout */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f6f8;
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #333;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Container */
+    .circular-status-container {
+      background-color: #fff;
+      max-width: 600px;
+      width: 100%;
+      padding: 36px 40px;
+      border-radius: 14px;
+      box-shadow: 0 12px 28px rgba(0, 123, 255, 0.15);
+      transition: box-shadow 0.3s ease;
+      position: relative;
+    }
+    .circular-status-container:hover,
+    .circular-status-container:focus-within {
+      box-shadow: 0 16px 40px rgba(0, 123, 255, 0.25);
+      outline: none;
+    }
+
+    /* Back arrow */
+    .back-arrow {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      display: inline-flex;
+      align-items: center;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #007bff;
+      text-decoration: none;
+      user-select: none;
+      cursor: pointer;
+      transition: color 0.25s ease;
+      z-index: 10;
+    }
+    .back-arrow-chevron {
+      font-size: 1.8rem;
+      margin-right: 8px;
+      line-height: 1;
+      user-select: none;
+      transition: margin-right 0.25s ease;
+    }
+    .back-arrow:hover,
+    .back-arrow:focus {
+      color: #0056b3;
+      outline: none;
+      text-decoration: underline;
+    }
+    .back-arrow:hover .back-arrow-chevron,
+    .back-arrow:focus .back-arrow-chevron {
+      margin-right: 12px;
+    }
+
+    /* Heading */
+    h1 {
+      text-align: center;
+      color: #007bff;
+      margin-bottom: 32px;
+      font-weight: 700;
+      font-size: 2.2rem;
+      user-select: none;
+      letter-spacing: 1.1px;
+    }
+
+    /* Paragraphs */
+    p {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      color: #3a3a3a;
+    }
+    p strong {
+      font-weight: 700;
+      color: #444;
+      margin-right: 6px;
+      user-select: none;
+    }
+
+    /* Read-by list styling */
+    .read-by-list {
+      margin-top: 12px;
+      padding-left: 20px;
+      list-style-type: disc;
+      max-height: 160px;
+      overflow-y: auto;
+      border: 1px solid #007bff33;
+      border-radius: 8px;
+      background-color: #f0f7ff;
+    }
+    .read-by-list li {
+      margin-bottom: 6px;
+      font-size: 1rem;
+      color: #2d3a66;
+      padding-left: 6px;
+    }
+
+    /* No readers message */
+    .no-readers {
+      color: #dc3545;
+      font-style: italic;
+      font-weight: 600;
+      user-select: none;
+      display: inline-block;
+      margin-top: 8px;
+    }
+
+    /* Scrollbar styling for modern browsers */
+    .read-by-list::-webkit-scrollbar {
+      width: 8px;
+    }
+    .read-by-list::-webkit-scrollbar-thumb {
+      background-color: #007bff80;
+      border-radius: 4px;
+    }
+    .read-by-list::-webkit-scrollbar-track {
+      background: #f0f7ff;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .circular-status-container {
+        padding: 28px 24px 36px;
+      }
+      h1 {
+        font-size: 1.8rem;
+        margin-bottom: 24px;
+      }
+      p {
+        font-size: 0.95rem;
+      }
+      .read-by-list {
+        max-height: 120px;
+      }
+      .back-arrow {
+        top: 12px;
+        left: 12px;
+        font-size: 1rem;
+      }
+      .back-arrow-chevron {
+        font-size: 1.4rem;
+        margin-right: 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="circular-status-container" role="region" aria-labelledby="circular-title">
+    <a href="/home" class="back-arrow" aria-label="Go back to Home">
+      <span class="back-arrow-chevron" aria-hidden="true">&#x2039;</span> Back
+    </a>
+
+    <h1 id="circular-title">Circular Read Status</h1>
+
+    <p><strong>Title:</strong> {{ circular.title }}</p>
+
+    <p><strong>Content:</strong> {{ circular.content }}</p>
+
+    <p><strong>Read By:</strong></p>
+
+    {% if circular.read_by and circular.read_by | length > 0 %}
+      <ul class="read-by-list" tabindex="0" aria-label="List of students who have read this circular">
+        {% for student in circular.read_by %}
+          <li>{{ student }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="no-readers" aria-live="polite">No students have read this circular yet.</p>
+    {% endif %}
+  </div>
+  <footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+
+</html>

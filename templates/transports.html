@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Live School Bus Tracking - Satellite</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+        #info {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+            font-size: 17px;
+            color: #333;
+            z-index: 1000;
+            min-width: 320px;
+            text-align: center;
+        }
+        .back-to-home {
+            position: absolute;
+            top: 70px;
+            left: 20px;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+        .back-to-home:hover {
+            background-color: #e2e6ea;
+            color: #007bff;
+        }
+        .back-to-home svg {
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="map"></div>
+<div id="info">📍 Fetching bus and student locations...</div>
+
+<a href="/home" class="back-to-home">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+    </svg>
+    Back to Home
+</a>
+
+<script>
+    const busLat = {{ bus_lat|default('null') }};
+    const busLon = {{ bus_lon|default('null') }};
+    const students = {{ students|tojson }};
+
+    let map, busMarker, directionsService;
+    let previousLatLng = null;
+    let stopTimer = null;
+    let isStopped = false;
+    const busIcon = 'https://cdn-icons-png.flaticon.com/128/1068/1068580.png';
+    const redBusIcon = 'https://cdn-icons-png.flaticon.com/128/11421/11421619.png';
+
+    function initMap() {
+        const busLocation = new google.maps.LatLng(busLat || 0, busLon || 0);
+
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: busLocation,
+            zoom: 13,
+            mapTypeId: "satellite",
+            mapTypeControl: true,
+            mapTypeControlOptions: {
+                position: google.maps.ControlPosition.RIGHT_TOP
+            }
+        });
+
+        directionsService = new google.maps.DirectionsService();
+
+        busMarker = new google.maps.Marker({
+            position: busLocation,
+            map,
+            title: "School Bus",
+            icon: getRotatedIcon(0, busIcon)
+        });
+
+        previousLatLng = { lat: busLat, lng: busLon };
+        trackMovement();
+
+        if (busLat && busLon) {
+            document.getElementById("info").innerHTML = `🚌 Bus Location: <b>${busLat.toFixed(5)}, ${busLon.toFixed(5)}</b>`;
+            showStudentDirections();
+        } else {
+            document.getElementById("info").innerHTML = `❌ Bus location not available`;
+        }
+    }
+
+    function getRotatedIcon(angle, iconUrl) {
+        return {
+            url: iconUrl,
+            scaledSize: new google.maps.Size(40, 40),
+            anchor: new google.maps.Point(20, 20),
+            rotation: angle
+        };
+    }
+
+    function trackMovement() {
+        setInterval(async () => {
+            const res = await fetch('/location');
+            const data = await res.json();
+            const newLat = data.lat;
+            const newLon = data.lon;
+
+            if (!newLat || !newLon) return;
+
+            const distanceMoved = haversineDistance(previousLatLng, { lat: newLat, lng: newLon });
+
+            if (distanceMoved < 0.005) {
+                if (!stopTimer) {
+                    stopTimer = setTimeout(() => {
+                        isStopped = true;
+                        busMarker.setIcon(getRotatedIcon(0, redBusIcon));
+                    }, 2000); // 2 seconds
+                }
+            } else {
+                clearTimeout(stopTimer);
+                stopTimer = null;
+                isStopped = false;
+
+                const angle = calculateAngle(previousLatLng.lat, previousLatLng.lng, newLat, newLon);
+                busMarker.setIcon(getRotatedIcon(angle, busIcon));
+                busMarker.setPosition(new google.maps.LatLng(newLat, newLon));
+                previousLatLng = { lat: newLat, lng: newLon };
+            }
+
+            document.getElementById("info").innerHTML = `🚌 Bus Location: <b>${newLat.toFixed(5)}, ${newLon.toFixed(5)}</b>`;
+        }, 2000);
+    }
+
+    function haversineDistance(coord1, coord2) {
+        const R = 6371; // km
+        const dLat = (coord2.lat - coord1.lat) * Math.PI / 180;
+        const dLon = (coord2.lng - coord1.lng) * Math.PI / 180;
+        const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(coord1.lat * Math.PI / 180) * Math.cos(coord2.lat * Math.PI / 180) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+    }
+
+    function calculateAngle(lat1, lon1, lat2, lon2) {
+        return Math.atan2(lat2 - lat1, lon2 - lon1) * (180 / Math.PI);
+    }
+
+    function showStudentDirections() {
+        students.forEach((stu) => {
+            const studentLocation = new google.maps.LatLng(stu.lat, stu.lon);
+
+            new google.maps.Marker({
+                position: studentLocation,
+                map,
+                title: stu.username
+            });
+
+            const directionsRenderer = new google.maps.DirectionsRenderer({
+                map: map,
+                suppressMarkers: true,
+                preserveViewport: true,
+                polylineOptions: {
+                    strokeColor: "#4285F4",
+                    strokeWeight: 4
+                }
+            });
+
+            directionsService.route({
+                origin: { lat: busLat, lng: busLon },
+                destination: { lat: stu.lat, lng: stu.lon },
+                travelMode: 'DRIVING'
+            }, (response, status) => {
+                if (status === 'OK') {
+                    directionsRenderer.setDirections(response);
+                }
+            });
+        });
+    }
+</script>
+
+<!-- ✅ Google Maps API -->
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZ8Ao_Vk0QEWkDC--x_Zs96O3UB4BvYzw&callback=initMap">
+</script>
+
+</body>
+</html>

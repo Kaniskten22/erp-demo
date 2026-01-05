@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Answer Quiz</title>
+  <style>
+    /* Add your CSS styles here */
+    :root {
+      --primary-color: #6366f1;
+      --primary-dark: #4f46e5;
+      --bg-color: #f9fafb;
+      --text-color: #1f2937;
+      --card-bg: #ffffff;
+      --border-radius: 12px;
+      --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      padding: 40px 20px;
+    }
+
+        a.back-arrow {
+      position: fixed;
+      top: 25px;
+      left: 25px;
+      color: rgb(0, 0, 0);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgb(255, 255, 255);
+      padding: 8px 14px;
+      border-radius: 30px;
+      box-shadow: 0 4px 15px rgba(0 0 0 / 0.15);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      user-select: none;
+      z-index: 1000;
+    }
+    a.back-arrow:hover,
+    a.back-arrow:focus {
+      background: rgba(255 255 255 / 0.3);
+      outline: none;
+      transform: translateX(-3px);
+      cursor: pointer;
+    }
+    .back-arrow-chevron {
+      font-weight: 700;
+      font-size: 1.6rem;
+      line-height: 1;
+    }
+
+
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      color: var(--primary-color);
+      margin-bottom: 40px;
+    }
+
+    .quiz-container {
+      max-width: 700px;
+      margin: 0 auto 30px auto;
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      padding: 30px;
+    }
+
+    .quiz-container p {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .option {
+      background-color: #f3f4f6;
+      padding: 12px 16px;
+      border-radius: var(--border-radius);
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .option:hover {
+      background-color: #e5e7eb;
+      border-color: var(--primary-color);
+    }
+
+    .correct-option {
+      background-color: #d1fae5 !important;
+      border-color: #10b981 !important;
+      color: #065f46;
+    }
+
+    .wrong-option {
+      background-color: #fee2e2 !important;
+      border-color: #ef4444 !important;
+      color: #991b1b;
+    }
+
+    input[type="radio"] {
+      accent-color: var(--primary-color);
+    }
+
+    button {
+      margin-top: 20px;
+      background: var(--primary-color);
+      border: none;
+      color: white;
+      padding: 14px 20px;
+      border-radius: var(--border-radius);
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .result {
+      text-align: center;
+      font-size: 1.3rem;
+      margin-top: 30px;
+      font-weight: bold;
+    }
+
+    .correct {
+      color: #10b981;
+    }
+
+    .incorrect {
+      color: #ef4444;
+    }
+  </style>
+</head>
+<body>
+    <a href="/home" class="back-arrow" aria-label="Back to Home">
+    <span class="back-arrow-chevron" aria-hidden="true">&#x2039;</span> Back
+  </a>
+  <h1>🧠 Answer Quiz</h1>
+
+  <div id="quiz-area">
+    {% for quiz in quiz_data %}
+    <div class="quiz-container">
+      <p><strong>Question {{ loop.index }}:</strong> {{ quiz.question }}</p>
+      <form id="form-{{ quiz.id }}">
+        {% for key, val in quiz.options.items() %}
+        <label class="option" id="label-{{ quiz.id }}-{{ key }}">
+          <input type="radio" name="selected-{{ quiz.id }}" value="{{ key }}">
+          {{ key.upper() }}. {{ val }}
+        </label>
+        {% endfor %}
+        <button type="button" onclick="checkAnswer('{{ quiz.id }}', '{{ quiz.answer }}')">Submit Answer</button>
+      </form>
+      <p class="result" id="result-{{ quiz.id }}"></p>
+    </div>
+    {% endfor %}
+  </div>
+
+  <script>
+    function checkAnswer(id, correctAnswer) {
+      const selected = document.querySelector(`input[name="selected-${id}"]:checked`);
+      const result = document.getElementById(`result-${id}`);
+      const options = document.querySelectorAll(`#form-${id} .option`);
+
+      // Clear previous highlights
+      options.forEach(opt => {
+        opt.classList.remove('correct-option', 'wrong-option');
+      });
+
+      if (!selected) {
+        result.innerHTML = "<span class='incorrect'>Please select an answer!</span>";
+        return;
+      }
+
+      const userAnswer = selected.value;
+      if (userAnswer === correctAnswer) {
+        document.getElementById(`label-${id}-${userAnswer}`).classList.add("correct-option");
+        result.innerHTML = "<span class='correct'>✅ Correct!</span>";
+      } else {
+        document.getElementById(`label-${id}-${userAnswer}`).classList.add("wrong-option");
+        document.getElementById(`label-${id}-${correctAnswer}`).classList.add("correct-option");
+        result.innerHTML = "<span class='incorrect'>❌ Incorrect!</span>";
+      }
+
+      // Disable all options after submit
+      const radios = document.querySelectorAll(`input[name="selected-${id}"]`);
+      radios.forEach(r => r.disabled = true);
+    }
+  </script>
+  <footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+</html>

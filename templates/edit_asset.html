@@ -1,0 +1,48 @@
+<!-- edit_asset.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Asset</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+<div class="container py-5">
+  <div class="card shadow-sm">
+    <div class="card-header bg-warning text-dark">
+      ✏️ Edit Asset in {{ asset.classroom }}
+    </div>
+    <div class="card-body">
+      <form method="POST">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label">Product Name</label>
+            <input type="text" name="product_name" class="form-control" value="{{ asset.product_name }}" required>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Quantity</label>
+            <input type="number" name="quantity" class="form-control" value="{{ asset.quantity }}" min="1" required>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">MRP (₹)</label>
+            <input type="number" step="0.01" name="mrp" class="form-control" value="{{ asset.mrp }}" required>
+          </div>
+          <div class="col-md-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-success w-100">Update</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <a href="/assets?classroom={{ asset.classroom }}" class="btn btn-secondary mt-4">⬅ Back to Assets</a>
+</div>
+  <footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+</html>
+

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Add Teacher</title>
+  <style>
+    /* Base Reset & Typography */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e3f2fd 0%, #ffffff 100%);
+      margin: 0;
+      padding: 0 20px;
+      color: #2c3e50;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    /* Container */
+    .container {
+      background: #fff;
+      max-width: 480px;
+      width: 100%;
+      padding: 40px 36px 48px;
+      border-radius: 16px;
+      box-shadow:
+        0 10px 30px rgba(0, 123, 255, 0.12);
+      transition: box-shadow 0.3s ease;
+    }
+    .container:hover,
+    .container:focus-within {
+      box-shadow:
+        0 16px 48px rgba(0, 123, 255, 0.24);
+    }
+    /* Back arrow link */
+    .back-arrow {
+      display: inline-flex;
+      align-items: center;
+      color: #007bff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.15rem;
+      margin-bottom: 28px;
+      user-select: none;
+      transition: color 0.3s ease;
+      cursor: pointer;
+    }
+    .back-arrow-chevron {
+      font-size: 1.8rem;
+      margin-right: 10px;
+      transition: margin-right 0.3s ease;
+      line-height: 1;
+      user-select: none;
+    }
+    .back-arrow:hover,
+    .back-arrow:focus {
+      color: #004a99;
+      outline: none;
+      text-decoration: underline;
+    }
+    .back-arrow:hover .back-arrow-chevron,
+    .back-arrow:focus .back-arrow-chevron {
+      margin-right: 14px;
+    }
+    /* Heading */
+    h1 {
+      text-align: center;
+      font-weight: 700;
+      font-size: 2.4rem;
+      color: #007bff;
+      margin-bottom: 36px;
+      user-select: none;
+      letter-spacing: 1.1px;
+    }
+    /* Form Styles */
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    label {
+      font-weight: 700;
+      margin-top: 16px;
+      margin-bottom: 8px;
+      color: #34495e;
+      user-select: none;
+      font-size: 1rem;
+    }
+    input[type="text"],
+    input[type="password"],
+    select {
+      padding: 14px 16px;
+      font-size: 1rem;
+      border-radius: 12px;
+      border: 1.8px solid #cfd8dc;
+      background-color: #f7faff;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+      font-family: inherit;
+      color: #2c3e50;
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
+      outline-offset: 2px;
+    }
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    select:focus {
+      border-color: #007bff;
+      background-color: #ffffff;
+      box-shadow: 0 0 12px rgba(0, 123, 255, 0.35);
+      outline: none;
+    }
+    select {
+      appearance: none;
+      background-image:
+        url("data:image/svg+xml;charset=US-ASCII,%3Csvg width='14' height='9' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 9L0 0h14z' fill='%239aa0a6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      background-size: 14px 9px;
+      cursor: pointer;
+      padding-right: 44px;
+    }
+    /* Submit button */
+    button {
+      margin-top: 32px;
+      padding: 16px 0;
+      font-size: 1.2rem;
+      font-weight: 700;
+      border-radius: 14px;
+      border: none;
+      background-image: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0, 86, 179, 0.35);
+      transition: background-image 0.3s ease, box-shadow 0.3s ease, transform 0.15s ease;
+      user-select: none;
+    }
+    button:hover,
+    button:focus {
+      background-image: linear-gradient(135deg, #0056b3 0%, #003f7f 100%);
+      box-shadow: 0 10px 28px rgba(0, 64, 127, 0.5);
+      outline: none;
+      transform: translateY(-2px);
+    }
+    button:active {
+      box-shadow: 0 6px 18px rgba(0, 64, 127, 0.4);
+      transform: translateY(0);
+    }
+    /* Bottom link */
+    .bottom-link {
+      text-align: center;
+      margin-top: 28px;
+      font-weight: 600;
+      color: #007bff;
+      text-decoration: none;
+      user-select: none;
+      display: inline-block;
+      transition: color 0.3s ease;
+    }
+    .bottom-link:hover,
+    .bottom-link:focus {
+      color: #004a99;
+      outline: none;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    /* Responsive */
+    @media (max-width: 480px) {
+      .container {
+        padding: 32px 28px 40px;
+        border-radius: 12px;
+      }
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 28px;
+      }
+      button {
+        font-size: 1.1rem;
+        padding: 14px 0;
+      }
+      label {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" role="main" aria-labelledby="page-title">
+    <a href="/home" class="back-arrow" aria-label="Go back to Home">
+      <span class="back-arrow-chevron" aria-hidden="true">&#x2039;</span> Back
+    </a>
+    <h1 id="page-title">Add Teacher</h1>
+    <form method="POST" action="/add_teacher" novalidate>
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required autocomplete="username" />
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required autocomplete="new-password" />
+
+      <label for="board">Board:</label>
+      <select id="board" name="board" required aria-required="true">
+        <option value="CBSE">CBSE</option>
+        <option value="Montessori">Montessori</option>
+        <option value="IGCSE">IGCSE</option>
+      </select>
+
+      <label for="grade">Grade:</label>
+      <select id="grade" name="grade" required aria-required="true">
+        <option value="Pre.kg">Pre.kg</option>
+        <option value="Jr.kg">Jr.kg</option>
+        <option value="Sr.kg">Sr.kg</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+      </select>
+
+      <button type="submit">Add Teacher</button>
+    </form>
+
+  </div>
+
+</body>
+</html>

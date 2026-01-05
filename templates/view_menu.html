@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Weekly Menu</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6;
+        }
+            a.back-arrow {
+      position: fixed;
+      top: 25px;
+      left: 25px;
+      color: rgb(0, 0, 0);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255 255 255 / 0.15);
+      padding: 8px 14px;
+      border-radius: 30px;
+      box-shadow: 0 4px 15px rgba(0 0 0 / 0.15);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      user-select: none;
+      z-index: 1000;
+    }
+    a.back-arrow:hover,
+    a.back-arrow:focus {
+      background: rgba(255 255 255 / 0.3);
+      outline: none;
+      transform: translateX(-3px);
+      cursor: pointer;
+    }
+    .back-arrow-chevron {
+      font-weight: 700;
+      font-size: 1.6rem;
+      line-height: 1;
+    }
+
+        .header-title {
+            flex-grow: 1;
+            text-align: center;
+            font-size: 22px;
+            font-weight: 600;
+            color: #333;
+        }
+        .container {
+            padding: 30px 20px;
+            max-width: 960px;
+            margin: 20px auto;
+            box-sizing: border-box;
+        }
+        .section-box {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #01bbff;
+            font-size: 28px;
+            border-bottom: 2px solid #00d0ff;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        th, td {
+            padding: 12px 10px;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        th {
+            background-color: #f8f9fa;
+            color: #01bbff;
+            font-size: 18px;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        @media (max-width: 600px) {
+            .container, .section-box {
+                padding: 10px;
+            }
+            th, td {
+                padding: 8px 4px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+      <a href="/home" class="back-arrow" aria-label="Back to Home">
+    <span class="back-arrow-chevron" aria-hidden="true">&#x2039;</span> Back
+  </a>
+
+    <div class="container">
+        <div class="section-box">
+            <h2>Weekly Menu</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>Morning Snacks</th>
+                        <th>Lunch</th>
+                        <th>Evening Snacks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for day, menu in weekly_menus %}
+                    <tr>
+                        <td>{{ day }}</td>
+                        <td>{{ menu.morning_snacks or '--' }}</td>
+                        <td>{{ menu.lunch or '--' }}</td>
+                        <td>{{ menu.evening_snacks or '--' }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4">No menu available for this week.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+                            <footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+</html>

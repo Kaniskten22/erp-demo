@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutriment Orders</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f8;
+            display: flex; /* Use flexbox for centering */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* Center content vertically */
+            min-height: 100vh; /* Full viewport height */
+            margin: 0;
+            padding: 20px; /* Add some padding for spacing */
+            box-sizing: border-box; /* Include padding in element's total width and height */
+            color: #333;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px; /* Increased padding */
+            border-radius: 12px; /* More rounded corners */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            width: 100%;
+            max-width: 900px; /* Adjusted max-width for better table display */
+            box-sizing: border-box;
+            text-align: left;
+            position: relative; /* For positioning back arrow */
+        }
+
+        h2 {
+            color: #28a745; /* Green for main heading */
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 32px;
+            border-bottom: 2px solid #28a745; /* Green border */
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #007bff; /* Blue for section headings */
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 24px;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 5px;
+        }
+
+        .add-order-link {
+            display: inline-block;
+            background-color: #007bff; /* Blue button */
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px; /* More rounded button */
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 25px;
+            transition: background-color 0.3s ease;
+            text-align: center;
+        }
+
+        .add-order-link:hover {
+            background-color: #0056b3;
+        }
+
+        /* Summary sections */
+        .summary-section {
+            background-color: #f8f9fa; /* Light background for summary sections */
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .summary-section p, .summary-section ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .summary-section li {
+            padding: 5px 0;
+            border-bottom: 1px dashed #e0e0e0; /* Dashed border for list items */
+        }
+
+        .summary-section li:last-child {
+            border-bottom: none;
+        }
+
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+            border-radius: 8px; /* Rounded corners for table */
+            overflow: hidden; /* Ensures rounded corners are applied */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        th, td {
+            padding: 12px 15px; /* Increased padding */
+            text-align: left;
+            border-bottom: 1px solid #e9ecef; /* Lighter border */
+        }
+
+        th {
+            background-color: #28a745; /* Green for table headers */
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fcf8; /* Light green for even rows */
+        }
+
+        tr:hover {
+            background-color: #e6f7e9; /* Lighter green on hover */
+        }
+
+        .payment-status-paid {
+            color: #28a745; /* Green for paid */
+            font-weight: bold;
+        }
+
+        .payment-status-pending {
+            color: #dc3545; /* Red for pending */
+            font-weight: bold;
+        }
+
+        .cancelled-yes {
+            color: #dc3545; /* Red for cancelled */
+            font-weight: bold;
+        }
+
+        .cancelled-no {
+            color: #28a745; /* Green for not cancelled */
+        }
+
+        .back-arrow {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            text-decoration: none;
+            color: #007bff;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            transition: color 0.3s ease;
+        }
+
+        .back-arrow:hover {
+            color: #0056b3;
+        }
+
+        .back-arrow-chevron {
+            font-size: 24px; /* Larger chevron */
+            margin-right: 5px;
+            line-height: 1;
+        }
+
+        /* Responsive adjustments for tables */
+        @media screen and (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            tr {
+                border: 1px solid #ccc;
+                margin-bottom: 15px;
+                border-radius: 8px;
+            }
+
+            td {
+                border: none;
+                border-bottom: 1px solid #eee;
+                position: relative;
+                padding-left: 50%;
+                text-align: right;
+            }
+
+            td:last-child {
+                border-bottom: 0;
+            }
+
+            td:before {
+                position: absolute;
+                left: 15px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                content: attr(data-label);
+                font-weight: 600;
+                color: #555;
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/home" class="back-arrow">
+            <span class="back-arrow-chevron">&#x2039;</span> Back
+        </a>
+        <h2>Nutriment Orders Overview</h2>
+
+        <a href="/add_nutriment_order" class="add-order-link">Add New Nutriment Order</a>
+
+        <div class="summary-section">
+            <h3>Orders Per Day</h3>
+            <ul>
+                {% for date, count in orders_per_day.items() %}
+                    <li><strong>{{ date }}:</strong> {{ count }} orders</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="summary-section">
+            <h3>Payment Details</h3>
+            <p><strong>Total Paid:</strong> <span class="payment-status-paid">₹{{ total_paid }}</span></p>
+            <p><strong>Total Pending:</strong> <span class="payment-status-pending">₹{{ total_pending }}</span></p>
+        </div>
+
+        <div class="summary-section">
+            <h3>Cancellation Details</h3>
+            <p><strong>Total Cancelled Orders:</strong> <span class="cancelled-yes">{{ total_cancelled }}</span></p>
+        </div>
+
+        <div class="summary-section">
+            <h3>Snacks/Lunch Participation</h3>
+            <ul>
+                <li><strong>Snacks (Previous Day):</strong> {{ snacks_prev_day }}</li>
+                <li><strong>Lunch (Previous Day):</strong> {{ lunch_prev_day }}</li>
+                <li><strong>Snacks (Previous Week):</strong> {{ snacks_prev_week }}</li>
+                <li><strong>Lunch (Previous Week):</strong> {{ lunch_prev_week }}</li>
+                <li><strong>Snacks (Previous Month):</strong> {{ snacks_prev_month }}</li>
+                <li><strong>Lunch (Previous Month):</strong> {{ lunch_prev_month }}</li>
+            </ul>
+        </div>
+
+        <h3>All Orders</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Payment Status</th>
+                    <th>Amount</th>
+                    <th>Cancelled</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td data-label="Student">{{ order.student }}</td>
+                    <td data-label="Date">{{ order.date }}</td>
+                    <td data-label="Type">{{ order.order_type }}</td>
+                    <td data-label="Payment Status" class="payment-status-{{ order.payment_status | lower }}">{{ order.payment_status }}</td>
+                    <td data-label="Amount">₹{{ order.payment_amount }}</td>
+                    <td data-label="Cancelled" class="cancelled-{{ 'yes' if order.cancelled else 'no' }}">{{ 'Yes' if order.cancelled else 'No' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+                            <footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+</html>

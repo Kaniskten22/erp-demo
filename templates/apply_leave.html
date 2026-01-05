@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Apply Leave</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 15px 0;
+      color: #333;
+    }
+
+    .container {
+      background: #fff;
+      width: 100%;
+      max-width: 720px;
+      border-radius: 20px;
+      padding: 40px 50px 50px;
+      box-shadow: 0 16px 40px rgba(102, 126, 234, 0.3);
+      position: relative;
+    }
+
+    .back-arrow {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      font-weight: 600;
+      color: #764ba2;
+      text-decoration: none;
+      font-size: 1.1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      user-select: none;
+      transition: color 0.3s ease;
+      z-index: 10;
+    }
+
+    .back-arrow-chevron {
+      font-size: 1.6rem;
+      font-weight: 700;
+      line-height: 1;
+      transition: transform 0.3s ease;
+    }
+
+    .back-arrow:hover,
+    .back-arrow:focus {
+      color: #495057;
+      outline: none;
+    }
+
+    .back-arrow:hover .back-arrow-chevron {
+      transform: translateX(-6px);
+    }
+
+    h1 {
+      text-align: center;
+      font-weight: 700;
+      font-size: 2.8rem;
+      color: #533a8e;
+      margin-bottom: 35px;
+      user-select: none;
+      text-shadow: 0 2px 4px rgba(118, 75, 162, 0.3);
+    }
+
+    form {
+      max-width: 600px;
+      margin: 0 auto 50px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    label {
+      font-weight: 600;
+      color: #5a3e85;
+      font-size: 1.15rem;
+      user-select: none;
+    }
+
+    input[type="date"],
+    textarea {
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 2px solid #d1c4e9;
+      font-size: 1rem;
+      font-family: 'Poppins', sans-serif;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      resize: vertical;
+      min-height: 46px;
+    }
+
+    textarea {
+      min-height: 120px;
+      line-height: 1.5;
+    }
+
+    input[type="date"]:focus,
+    textarea:focus {
+      border-color: #764ba2;
+      box-shadow: 0 0 8px rgba(118, 75, 162, 0.5);
+      outline: none;
+    }
+
+    button[type="submit"] {
+      width: 180px;
+      padding: 14px 0;
+      background-color: #764ba2;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      align-self: center;
+      box-shadow: 0 8px 18px rgba(118, 75, 162, 0.5);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+    }
+
+    button[type="submit"]:hover,
+    button[type="submit"]:focus {
+      background-color: #633a98;
+      box-shadow: 0 12px 25px rgba(99, 58, 152, 0.7);
+      outline: none;
+    }
+
+    .leave-list {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .leave-list h2 {
+      font-size: 2rem;
+      font-weight: 600;
+      color: #533a8e;
+      margin-bottom: 25px;
+      border-bottom: 3px solid #764ba2;
+      padding-bottom: 8px;
+      user-select: none;
+    }
+
+    .leave-item {
+      background: #f8f4ff;
+      border-radius: 18px;
+      box-shadow: 0 6px 20px rgba(118, 75, 162, 0.15);
+      margin-bottom: 20px;
+      padding: 22px 28px;
+      color: #4b3a74;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .leave-item:hover {
+      box-shadow: 0 10px 30px rgba(118, 75, 162, 0.25);
+    }
+
+    .leave-item p {
+      margin: 6px 0;
+      font-size: 1rem;
+      line-height: 1.4;
+      user-select: text;
+    }
+
+    .leave-item p strong {
+      font-weight: 700;
+      color: #6c529e;
+    }
+
+    .status {
+      color: #764ba2;
+      font-weight: 700;
+      font-size: 1.05rem;
+      user-select: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: gray;
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 35px 30px 40px;
+      }
+      h1 {
+        font-size: 2.4rem;
+      }
+      form, .leave-list {
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 400px) {
+      button[type="submit"] {
+        width: 100%;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/home" class="back-arrow" aria-label="Back to Home">
+      <span class="back-arrow-chevron" aria-hidden="true">&#x2039;</span> Back
+    </a>
+
+    <h1>Apply Leave</h1>
+
+    <form method="POST" novalidate>
+      <label for="leave_date">Leave Date:</label>
+      <input type="date" id="leave_date" name="leave_date" required />
+
+      <label for="reason">Reason:</label>
+      <textarea id="reason" name="reason" rows="4" required></textarea>
+
+      <button type="submit">Submit Leave Request</button>
+    </form>
+
+    <div class="leave-list" aria-live="polite">
+      <h2>Your Leave Requests</h2>
+      {% for leave in leaves %}
+      <div class="leave-item" role="group" aria-label="Leave Request on {{ leave.leave_date }}">
+        <p><strong>Date:</strong> {{ leave.leave_date }}</p>
+        <p><strong>Reason:</strong> {{ leave.reason }}</p>
+        <p><strong>Status:</strong> <span class="status">{{ leave.status }}</span></p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <footer>
+    Developed by Kaniskten, Grade 8, Advaita International School<br>
+    © 2025 Kaniskten Programming. All rights reserved.
+  </footer>
+</body>
+</html>

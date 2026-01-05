@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>View Chat</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Changed font to Segoe UI */
+      background: #f4f6f8; /* Light background color */
+      margin: 0;
+      padding: 20px;
+      display: flex; /* Use flexbox for centering */
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh; /* Full viewport height */
+      box-sizing: border-box;
+      color: #333;
+    }
+
+    h1 {
+      color: #007bff; /* Vibrant blue for heading */
+      margin-bottom: 30px; /* Increased margin */
+      text-align: center;
+    }
+
+    .chat-container {
+      max-width: 700px; /* Increased max-width */
+      width: 100%;
+      margin: auto;
+      background: #fff;
+      border-radius: 12px; /* More rounded corners */
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15); /* More pronounced shadow */
+      display: flex;
+      flex-direction: column;
+      height: 80vh;
+      overflow: hidden; /* Hide overflow */
+    }
+
+    .chat-box {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .chat-message { /* Renamed from .message to avoid conflict with .message.student/.reply */
+      max-width: 75%; /* Slightly increased max-width for messages */
+      margin: 10px 0;
+      padding: 14px 20px; /* Increased padding */
+      border-radius: 22px; /* More rounded corners */
+      font-size: 15px; /* Slightly larger font */
+      line-height: 1.5;
+      color: #333;
+      background-color: #f0f2f5; /* Light grey for general messages */
+      align-self: flex-start; /* Default alignment */
+    }
+
+    /* Specific styles for student and reply messages based on original logic */
+    .message.student {
+      background: #e5e5ea;
+      color: black;
+      align-self: flex-start;
+    }
+
+    .message.reply {
+      background: linear-gradient(to right, #4caf50, #81c784);
+      color: white; /* Ensure text is white for reply messages */
+      align-self: flex-end;
+    }
+
+    form {
+      display: flex;
+      padding: 15px;
+      border-top: 1px solid #eee; /* Lighter border */
+      background-color: #fdfdfd; /* Slightly different background for form */
+    }
+
+    textarea {
+      flex: 1;
+      padding: 12px; /* Increased padding */
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 15px; /* Consistent font size */
+      resize: vertical; /* Allow vertical resizing */
+      min-height: 40px; /* Minimum height for textarea */
+    }
+
+    button {
+      margin-left: 10px;
+      padding: 12px 22px; /* Increased padding */
+      background: linear-gradient(135deg, #28a745, #218838); /* Green gradient */
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 15px; /* Consistent font size */
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #218838, #1e7e34); /* Darker green on hover */
+      transform: translateY(-1px); /* Slight lift */
+    }
+
+    .back-arrow {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      text-decoration: none;
+      color: #007bff;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      transition: color 0.3s ease;
+    }
+
+    .back-arrow:hover {
+      color: #0056b3;
+    }
+
+    .back-arrow-chevron {
+      font-size: 24px;
+      margin-right: 5px;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body>
+  <a href="/home" class="back-arrow">
+    <span class="back-arrow-chevron">&#x2039;</span> Back
+  </a>
+  <h1>Chat History</h1>
+  <div class="chat-container">
+    <div class="chat-box"> {% for message in messages %}
+      <div class="chat-message {% if message.sender == 'Student' %}message student{% else %}message reply{% endif %}" data-id="{{ message.id }}">
+          <strong>{{ message.sender }}</strong> to <strong>{{ message.recipient }}</strong>:
+          <p>{{ message.message }}</p>
+          <small>{{ message.timestamp }}</small>
+      </div>
+      {% endfor %}
+    </div>
+
+    <form method="POST">
+      <textarea id="reply_message" name="reply_message" rows="3" required placeholder="Type your reply..."></textarea>
+      <input type="hidden" id="message-id" name="message_id">
+      <button type="submit">Send Reply</button>
+    </form>
+  </div>
+
+  <script>
+    const chatBox = document.querySelector('.chat-box'); /* Changed to select the new chat-box div */
+    if (chatBox) {
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    // Add event listener to populate the hidden input with the message ID when replying
+    document.querySelectorAll('.chat-message').forEach(message => { /* Changed selector to chat-message */
+      message.addEventListener('click', () => {
+        const messageId = message.getAttribute('data-id');
+        if (messageId) {
+          document.getElementById('message-id').value = messageId;
+        }
+      });
+    });
+  </script>
+                          <footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+
+</html>

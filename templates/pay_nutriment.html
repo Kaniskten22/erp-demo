@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pay for Nutriment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4A90E2;
+            --primary-color-dark: #357ABD;
+            --secondary-color: #2ECC71;
+            --text-dark: #34495E;
+            --text-muted: #7F8C8D;
+            --background-light: #F0F4F8;
+            --card-background: #FFFFFF;
+            --border-color: #E0E6EB;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-light);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            box-sizing: border-box;
+            color: var(--text-dark);
+        }
+
+        .container {
+            max-width: 550px;
+            width: 100%;
+            background-color: var(--card-background);
+            padding: 45px 35px;
+            border-radius: 16px;
+            box-shadow: 0 12px 30px var(--shadow-medium);
+            position: relative;
+            border: 1px solid var(--border-color);
+        }
+
+        .back-arrow {
+            position: absolute;
+            top: 25px;
+            left: 30px;
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: color 0.3s ease, transform 0.2s ease;
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+
+        .back-arrow:hover {
+            color: var(--primary-color-dark);
+            transform: translateX(-3px);
+            background-color: rgba(74, 144, 226, 0.08);
+        }
+
+        .back-arrow-chevron {
+            font-size: 1.8rem;
+            line-height: 1;
+            margin-right: 5px;
+            transform: translateY(-1px);
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary-color-dark);
+            margin-bottom: 40px;
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: var(--background-light);
+            border-radius: 10px;
+            transition: background-color 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        label:hover {
+            background-color: #EBF2F7;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="checkbox"] {
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            min-height: 24px;
+            border: 2px solid var(--primary-color);
+            border-radius: 6px;
+            margin-right: 15px;
+            position: relative;
+            cursor: pointer;
+            outline: none;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        input[type="checkbox"]:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        input[type="checkbox"]:checked::after {
+            content: '✔';
+            font-size: 16px;
+            color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: 700;
+        }
+
+        input[type="checkbox"]:focus {
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
+        }
+
+        .total {
+            font-weight: 600;
+            font-size: 1.5rem;
+            color: var(--primary-color-dark);
+            margin-top: 30px;
+            margin-bottom: 35px;
+            text-align: center;
+            background-color: #EBF2F7;
+            padding: 15px 25px;
+            border-radius: 10px;
+            border: 1px solid var(--primary-color);
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .total #totalAmount {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            min-width: 60px;
+            text-align: left;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: 0 6px 15px rgba(74, 144, 226, 0.3);
+        }
+
+        input[type="submit"]:hover {
+            background-color: var(--primary-color-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(74, 144, 226, 0.4);
+        }
+
+        input[type="submit"]:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 10px rgba(74, 144, 226, 0.2);
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+            .container {
+                padding: 30px 20px;
+                margin: 40px auto;
+            }
+            .back-arrow {
+                top: 20px;
+                left: 20px;
+                font-size: 1rem;
+            }
+            .back-arrow-chevron {
+                font-size: 1.5rem;
+            }
+            h2 {
+                font-size: 1.8rem;
+                margin-bottom: 30px;
+            }
+            .checkbox-group {
+                gap: 15px;
+                font-size: 1rem;
+            }
+            label {
+                padding: 12px 15px;
+            }
+            input[type="checkbox"] {
+                width: 22px;
+                height: 22px;
+                margin-right: 12px;
+            }
+            input[type="checkbox"]:checked::after {
+                font-size: 14px;
+            }
+            .total {
+                font-size: 1.3rem;
+                padding: 12px 20px;
+                margin-bottom: 30px;
+            }
+            .total #totalAmount {
+                font-size: 1.6rem;
+            }
+            input[type="submit"] {
+                padding: 12px;
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .container {
+                padding: 25px 15px;
+            }
+            h2 {
+                font-size: 1.6rem;
+                margin-bottom: 25px;
+            }
+            .checkbox-group {
+                font-size: 0.95rem;
+            }
+            label {
+                padding: 10px 12px;
+            }
+            input[type="checkbox"] {
+                width: 20px;
+                height: 20px;
+                margin-right: 10px;
+            }
+            input[type="checkbox"]:checked::after {
+                font-size: 12px;
+            }
+            .total {
+                font-size: 1.1rem;
+            }
+            .total #totalAmount {
+                font-size: 1.4rem;
+            }
+            input[type="submit"] {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/home" class="back-arrow">
+            <span class="back-arrow-chevron">&#x2039;</span> Back
+        </a>
+        <h2>Pay for Nutriment</h2>
+        <form method="POST">
+            <div class="checkbox-group">
+                <label><input type="checkbox" name="morning_snacks" value="35" onchange="calculateTotal()"> Morning Snacks (₹35)</label>
+                <label><input type="checkbox" name="lunch" value="80" onchange="calculateTotal()"> Lunch (₹80)</label>
+                <label><input type="checkbox" name="evening_snacks" value="35" onchange="calculateTotal()"> Evening Snacks (₹35)</label>
+            </div>
+
+            <div class="total">Total Amount: ₹<span id="totalAmount">0</span></div>
+
+            <input type="submit" value="Pay Amount">
+        </form>
+    </div>
+
+    <footer style="text-align: center; padding: 25px 15px; color: #7F8C8D; font-size: 16px; font-weight: 500; margin-top: 40px; border-top: 1px solid #E0E6EB;">
+        <div>Developed by <strong>Kaniskten</strong>, Grade 8 – Advaita International School</div>
+        <div style="margin-top: 8px;">© 2025 <strong>Kaniskten Programming</strong>. All rights reserved.</div>
+    </footer>
+
+    <script>
+        function calculateTotal() {
+            let checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            let total = 0;
+            checkboxes.forEach(cb => {
+                if (cb.checked) {
+                    total += parseInt(cb.value);
+                }
+            });
+            document.getElementById("totalAmount").innerText = total;
+        }
+
+        document.addEventListener('DOMContentLoaded', calculateTotal);
+    </script>
+</body>
+</html>

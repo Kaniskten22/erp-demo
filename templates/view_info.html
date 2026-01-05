@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ category.title() }}</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f7fa;
+      display: flex;
+      flex-direction: column; /* Allows footer to stack below */
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .container {
+      max-width: 800px;
+      width: 100%;
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      position: relative;
+    }
+
+    h2 {
+      color: #007bff;
+      font-size: 32px;
+      border-bottom: 3px solid #007bff;
+      padding-bottom: 10px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .entry {
+      margin-bottom: 25px;
+      padding: 20px;
+      background-color: #e9f5ff;
+      border-left: 5px solid #007bff;
+      border-radius: 8px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .entry:hover {
+      background-color: #dff0ff;
+      transform: translateY(-3px);
+    }
+
+    .entry strong {
+      display: block;
+      color: #0056b3;
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+
+    .entry p {
+      margin: 0;
+      color: #333;
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+    .no-data-message {
+      background-color: #ffeeba;
+      color: #856404;
+      padding: 15px;
+      border: 1px solid #ffc107;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 18px;
+      margin-top: 30px;
+      font-weight: bold;
+    }
+
+    .back-arrow {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      text-decoration: none;
+      color: #007bff;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      transition: color 0.3s ease;
+    }
+
+    .back-arrow:hover {
+      color: #0056b3;
+    }
+
+    .back-arrow-chevron {
+      font-size: 24px;
+      margin-right: 5px;
+      line-height: 1;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: gray;
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/home" class="back-arrow">
+      <span class="back-arrow-chevron">&#x2039;</span> Back
+    </a>
+    <h2>{{ category.title() }}</h2>
+    {% if data %}
+      {% for item in data %}
+        <div class="entry">
+          {% for key, value in item.items() %}
+            <strong>{{ key.replace('_', ' ').title() }}:</strong>
+            <p>{{ value }}</p>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="no-data-message">No information available for {{ category }}.</p>
+    {% endif %}
+  </div>
+
+  <footer>
+    Developed by Kaniskten, Grade 8, Advaita International School<br>
+    © 2025 Kaniskten Programming. All rights reserved.
+  </footer>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Edit Teacher</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 40px 15px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      color: #34495e;
+    }
+
+    .container {
+      background: #fff;
+      max-width: 400px;
+      width: 100%;
+      padding: 30px 35px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    a.back-arrow {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: #4e9af1;
+      font-size: 1rem;
+      text-decoration: none;
+      user-select: none;
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+    a.back-arrow-chevron {
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+    a.back-arrow:hover,
+    a.back-arrow:focus {
+      color: #2a6ed4;
+      outline: none;
+      transform: translateX(-5px);
+    }
+
+    h2 {
+      text-align: center;
+      margin: 50px 0 30px 0;
+      font-weight: 700;
+      font-size: 2rem;
+      user-select: none;
+      color: #34495e;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 1.05rem;
+      user-select: none;
+    }
+
+    select {
+      width: 100%;
+      padding: 12px 15px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1.5px solid #ccc;
+      background-color: #fefefe;
+      color: #34495e;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      appearance: none;
+      cursor: pointer;
+    }
+    select:focus {
+      outline: none;
+      border-color: #4e9af1;
+      box-shadow: 0 0 10px rgba(78, 154, 241, 0.5);
+      background-color: #fff;
+    }
+
+    button {
+      margin-top: 24px;
+      padding: 14px 0;
+      background-color: #4e9af1;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(78, 154, 241, 0.6);
+      user-select: none;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    button:hover,
+    button:focus {
+      background-color: #2a6ed4;
+      box-shadow: 0 14px 40px rgba(42, 110, 212, 0.8);
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/home" class="back-arrow" aria-label="Back to Home">
+      <span class="back-arrow-chevron" aria-hidden="true">&#x2039;</span> Back
+    </a>
+    <h2>Edit Teacher: {{ teacher_id }}</h2>
+    <form method="POST" novalidate>
+      <label for="board-select">Board:</label>
+      <select id="board-select" name="board" required aria-required="true" aria-label="Select Board">
+        {% for b in boards %}
+          <option value="{{ b }}" {% if teacher.board == b %}selected{% endif %}>{{ b }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="grade-select">Grade:</label>
+      <select id="grade-select" name="grade" required aria-required="true" aria-label="Select Grade">
+        {% for g in grades %}
+          <option value="{{ g }}" {% if teacher.grade == g %}selected{% endif %}>{{ g }}</option>
+        {% endfor %}
+      </select>
+
+      <button type="submit">Save Changes</button>
+    </form>
+    <a href="/manage_teachers" style="display:block; text-align:center; margin-top: 20px; font-weight: 600; color: #4e9af1; text-decoration: none; user-select: none;">&larr; Back to Manage Teachers</a>
+  </div>
+  <footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+
+</html>

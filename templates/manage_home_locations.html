@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Home Locations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f3f5;
+            padding: 40px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #007bff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            box-shadow: 0 0 8px rgba(0,0,0,0.05);
+        }
+
+        th, td {
+            padding: 12px 16px;
+            border: 1px solid #dee2e6;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .btn {
+            background-color: #dc3545;
+            color: white;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .map-btn {
+            background-color: #28a745;
+            margin-right: 8px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 20px;
+            text-decoration: none;
+            background: #007bff;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 6px;
+        }
+
+        .back:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <a href="/home" class="back">← Back to Home</a>
+    <h2>Manage Marked Home Locations</h2>
+    <table>
+        <tr>
+            <th>Username</th>
+            <th>Name</th>
+            <th>Bus No.</th>
+            <th>Transport Fee</th>
+            <th>Actions</th>
+        </tr>
+        {% for student in students %}
+        <tr>
+            <td>{{ student.username }}</td>
+            <td>{{ student.name }}</td>
+            <td>{{ student.bus_no }}</td>
+            <td>₹{{ student.transport_fee }}</td>
+            <td>
+                <a href="https://maps.google.com/?q={{ student.lat }},{{ student.lon }}" target="_blank" class="btn map-btn">View on Map</a>
+                <form method="POST" action="/delete_home_location" style="display:inline;" onsubmit="return confirm('Remove this location?');">
+                    <input type="hidden" name="username" value="{{ student.username }}">
+                    <button class="btn" type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+    
+</body>
+</html>
+

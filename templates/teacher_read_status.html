@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+ <html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circular Read Status (Grade {{ grade }})</title>
+  <style>
+   body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+    color: #333;
+   }
+
+   .circular-status-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    position: relative; /* Added for back-arrow positioning */
+   }
+
+   h1 {
+    color: #007bff;
+    margin-bottom: 25px;
+    text-align: center;
+   }
+
+   p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+   }
+
+   p strong {
+    font-weight: bold;
+    color: #555;
+    margin-right: 5px;
+   }
+
+   .read-by-list {
+    margin-top: 10px;
+    padding-left: 20px;
+   }
+
+   .read-by-list li {
+    margin-bottom: 5px;
+   }
+
+   .grade-highlight {
+    color: #28a745;
+    font-weight: bold;
+   }
+
+   .back-arrow {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    text-decoration: none;
+    color: #007bff;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease;
+   }
+
+   .back-arrow:hover {
+    color: #0056b3;
+   }
+
+   .back-arrow-chevron {
+    font-size: 24px;
+    margin-right: 5px;
+    line-height: 1;
+   }
+  </style>
+ </head>
+ <body>
+  <div class="circular-status-container">
+   <a href="/home" class="back-arrow">
+    <span class="back-arrow-chevron">&#x2039;</span> Back
+   </a>
+   <h1>Circular Read Status (Grade <span class="grade-highlight">{{ grade }}</span>)</h1>
+   <p><strong>Title:</strong> {{ circular.title }}</p>
+   <p><strong>Content:</strong> {{ circular.message }}</p>
+   <p><strong>Read By:</strong> {% if circular.read_by %}{{ circular.read_by | join(', ') }}{% else %}No students have read this circular yet.{% endif %}</p>
+  </div>
+                          <footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+ </body>
+
+ </html>

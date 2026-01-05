@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Add {{ category.title() }}</title>
+  <style>
+    /* Reset some basics */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      background: #f4f9ff;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 40px 0;
+      color: #343a40;
+    }
+    /* Container for form */
+    .container {
+      max-width: 500px;
+      background: #ffffff;
+      margin: auto;
+      padding: 40px 35px 50px;
+      border-radius: 16px;
+      box-shadow: 0 16px 40px rgba(0, 123, 255, 0.12);
+      transition: box-shadow 0.3s ease-in-out;
+    }
+    .container:hover {
+      box-shadow: 0 20px 50px rgba(0, 123, 255, 0.25);
+    }
+    /* Back arrow link */
+    .back-arrow {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      color: #007BFF;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 30px;
+      user-select: none;
+      transition: color 0.2s ease-in-out;
+    }
+    .back-arrow:hover {
+      color: #0056b3;
+      text-decoration: underline;
+    }
+    .back-arrow-chevron {
+      font-size: 1.7rem;
+      margin-right: 8px;
+      transition: margin-right 0.2s ease-in-out;
+    }
+    .back-arrow:hover .back-arrow-chevron {
+      margin-right: 12px;
+    }
+    /* Title */
+    h2 {
+      text-align: center;
+      color: #007BFF;
+      font-weight: 700;
+      font-size: 2rem;
+      margin-bottom: 35px;
+      letter-spacing: 1.3px;
+    }
+    /* Form field labels */
+    label {
+      font-weight: 700;
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1rem;
+      color: #495057;
+    }
+    /* Select and textarea */
+    select, textarea {
+      width: 100%;
+      font-size: 1rem;
+      padding: 14px 15px;
+      border: 1.8px solid #ced4da;
+      border-radius: 10px;
+      background-color: #f8f9fa;
+      transition: border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+      resize: vertical;
+      font-family: inherit;
+    }
+    select:focus, textarea:focus {
+      outline: none;
+      border-color: #007BFF;
+      background-color: #fff;
+      box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+    }
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='8'%3E%3Cpath fill='%239aa0a6' d='M7 8L0 0h14z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 15px center;
+      background-size: 14px 8px;
+      padding-right: 45px;
+      cursor: pointer;
+    }
+    /* Submit button */
+    input[type="submit"] {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      padding: 14px;
+      width: 100%;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: 0.7px;
+      transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      box-shadow: 0 8px 20px rgba(0, 123, 255, 0.25);
+    }
+    input[type="submit"]:hover {
+      background-color: #0056b3;
+      box-shadow: 0 10px 25px rgba(0, 86, 179, 0.4);
+    }
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      .container {
+        padding: 30px 20px 40px;
+        margin: 20px 15px;
+      }
+      h2 {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+ 
+
+  <div class="container">
+     <a href="/home" class="back-arrow" aria-label="Go back to Home">
+    <span class="back-arrow-chevron" aria-hidden="true">&#x2039;</span> Back
+  </a>
+    <h2>Add {{ category.title() }}</h2>
+
+    <form method="post" novalidate>
+      <label for="student">Student:</label>
+      <select name="student" id="student" required>
+        {% for s in students %}
+          <option value="{{ s }}">{{ s }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="content">Content:</label>
+      <textarea name="content" id="content" rows="5" required placeholder="Enter content here..."></textarea>
+
+      <input type="submit" value="Add" />
+    </form>
+  </div>
+<footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Homework</title>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f8f9; margin: 0; padding: 0; }
+        .container { max-width: 800px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 16px #0001; padding: 32px; }
+        h2 { color: #007bff; margin-top: 0; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 10px; border-bottom: 1px solid #eee; }
+        th { background: #f0f4ff; }
+        form { display: inline; }
+        .delete-btn { color: #fff; background: #e74c3c; border: none; padding: 6px 14px; border-radius: 5px; cursor: pointer; }
+        .delete-btn:hover { background: #c0392b; }
+        .edit-btn { color: #007bff; text-decoration: none; padding: 6px 14px; border: 1px solid #007bff; border-radius: 5px; }
+        .edit-btn:hover { background: #007bff; color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Manage Homework</h2>
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Subject</th>
+                <th>Due Date</th>
+                <th>Grade</th>
+                <th>Board</th>
+                <th>Action</th>
+            </tr>
+            {% for hw in homeworks %}
+            <tr>
+                <td>{{ hw.title }}</td>
+                <td>{{ hw.subject }}</td>
+                <td>{{ hw.due_date }}</td>
+                <td>{{ hw.grade }}</td>
+                <td>{{ hw.board }}</td>
+                <td>
+                    <a href="{{ url_for('edit_homework', homework_id=hw.id) }}" class="edit-btn" style="margin-right:8px;">Edit</a>
+                    <form method="post" style="display:inline;" onsubmit="return confirm('Delete this homework?');">
+                        <input type="hidden" name="homework_id" value="{{ hw.id }}">
+                        <button type="submit" name="delete" class="delete-btn">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+            {% if homeworks|length == 0 %}
+            <tr><td colspan="6" style="color:#888;">No homework found.</td></tr>
+            {% endif %}
+        </table>
+        <a href="/home" style="display:inline-block;margin-top:20px;color:#007bff;">&larr; Back to Home</a>
+    </div><footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+</html>

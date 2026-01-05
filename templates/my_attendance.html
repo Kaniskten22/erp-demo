@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Attendance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Variables for easy color adjustments */
+        :root {
+            --primary-blue: #3498db;
+            --primary-blue-dark: #2980b9;
+            --secondary-green: #2ecc71;
+            --secondary-green-dark: #27ae60;
+            --secondary-red: #e74c3c;
+            --secondary-red-dark: #c0392b;
+            --text-dark: #2c3e50;
+            --text-light: #ecf0f1;
+            --text-muted: #7f8c8d;
+            --background-light: #f9f9f9;
+            --container-bg: #ffffff;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+        }
+
+        /* General body styles */
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--background-light);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 850px; /* Slightly wider container */
+            margin: 0 auto;
+            background-color: var(--container-bg);
+            box-shadow: 0 8px 30px var(--shadow-medium); /* More pronounced shadow */
+            padding: 30px; /* Increased padding */
+            border-radius: 12px; /* Slightly more rounded corners */
+            box-sizing: border-box;
+            position: relative; /* For back arrow positioning */
+        }
+
+        /* Header styling */
+        header h1 {
+            text-align: center;
+            color: var(--primary-blue-dark);
+            margin-bottom: 30px; /* Increased margin */
+            font-weight: 700; /* Bolder title */
+            font-size: 2.5rem; /* Larger title */
+            letter-spacing: 0.5px;
+        }
+
+        /* Back Arrow */
+        .back-arrow {
+            position: absolute;
+            top: 25px;
+            left: 30px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--primary-blue);
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        .back-arrow:hover {
+            color: var(--primary-blue-dark);
+            text-decoration: underline;
+        }
+
+        .back-arrow-chevron {
+            font-size: 1.8rem;
+            line-height: 1;
+            margin-right: 5px;
+            transform: translateY(-1px);
+        }
+
+        /* Month Selector Styles */
+        .month-selector {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 25px; /* Increased margin */
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .month-selector button {
+            padding: 12px 20px; /* Larger buttons */
+            border: none;
+            border-radius: 8px; /* More rounded buttons */
+            background-color: var(--primary-blue);
+            color: var(--text-light);
+            cursor: pointer;
+            margin: 0 10px; /* More space between buttons and text */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-size: 1.1rem; /* Larger font */
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .month-selector button:hover {
+            background-color: var(--primary-blue-dark);
+            transform: translateY(-2px); /* Slight lift on hover */
+        }
+
+        .month-selector h2 {
+            margin: 0 15px;
+            font-size: 1.8rem; /* Larger month/year display */
+            color: var(--text-dark);
+            font-weight: 600;
+            min-width: 180px; /* Ensure consistent width */
+            text-align: center;
+        }
+
+        /* Calendar Styles */
+        .attendance-calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-gap: 10px; /* Slightly larger gap */
+            margin-bottom: 30px; /* Increased margin */
+            padding: 10px; /* Padding for the grid itself */
+            border-radius: 8px;
+            background-color: var(--background-light);
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05); /* Inner shadow for depth */
+        }
+
+        .calendar-day {
+            text-align: center;
+            padding: 15px; /* Larger padding */
+            border-radius: 50%; /* Perfect circles */
+            width: 45px; /* Consistent width */
+            height: 45px; /* Consistent height */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+            font-size: 1.1rem; /* Larger day numbers */
+            font-weight: 600;
+            transition: transform 0.2s ease-in-out, background-color 0.3s ease, box-shadow 0.3s ease;
+            cursor: default; /* Indicate non-clickable */
+        }
+
+        .calendar-day:hover {
+            transform: scale(1.05); /* Less aggressive scale */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Shadow on hover */
+        }
+
+        .present {
+            background-color: var(--secondary-green);
+            color: var(--text-light);
+            box-shadow: 0 2px 5px rgba(46, 204, 113, 0.4);
+        }
+
+        .present:hover {
+             background-color: var(--secondary-green-dark);
+        }
+
+        .absent {
+            background-color: var(--secondary-red);
+            color: var(--text-light);
+            box-shadow: 0 2px 5px rgba(231, 76, 60, 0.4);
+        }
+
+        .absent:hover {
+            background-color: var(--secondary-red-dark);
+        }
+
+        .week-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-gap: 10px;
+            margin-bottom: 15px; /* Increased margin */
+            padding: 0 10px; /* Align with calendar padding */
+        }
+
+        .week-day {
+            text-align: center;
+            font-size: 1rem; /* Slightly larger */
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Section Titles (if any, though h2 is used for month/year) */
+        h2 {
+            margin-top: 30px;
+            color: var(--text-dark);
+            font-weight: 700;
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        /* Back Link */
+        .back-link {
+            text-align: center;
+            margin-top: 35px; /* More space */
+        }
+
+        .back-link a {
+            font-size: 1.2rem; /* Larger link */
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease, text-decoration 0.3s ease;
+            padding: 8px 15px;
+            border-radius: 5px;
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+
+        .back-link a:hover {
+            text-decoration: none; /* Remove underline on hover */
+            color: var(--primary-blue-dark);
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        /* Summary Styles */
+        .summary-container {
+            background-color: var(--background-light);
+            padding: 25px; /* Increased padding */
+            border-radius: 10px;
+            box-shadow: inset 0 2px 8px var(--shadow-light); /* Softer inner shadow */
+            margin-bottom: 30px; /* More space below summary */
+            width: 100%;
+            max-width: 700px; /* Wider summary container */
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            text-align: center;
+            flex-wrap: wrap;
+            gap: 20px; /* Increased gap */
+            border: 1px solid #e0e0e0; /* Subtle border */
+        }
+
+        .summary-item {
+            flex: 1;
+            min-width: 150px; /* Larger min-width for items */
+            padding: 10px;
+            background-color: var(--container-bg);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .summary-item:hover {
+            transform: translateY(-3px); /* Lift on hover */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .summary-item h3 {
+            font-size: 1.4rem; /* Larger heading */
+            color: var(--primary-blue-dark);
+            margin-bottom: 8px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+        }
+
+        .summary-item p {
+            font-size: 1.3rem; /* Larger percentage/day display */
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            .container {
+                width: 100%;
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 2rem;
+                margin-bottom: 25px;
+            }
+            .back-arrow {
+                top: 20px;
+                left: 20px;
+                font-size: 1rem;
+            }
+            .back-arrow-chevron {
+                font-size: 1.5rem;
+            }
+            .month-selector {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .month-selector button {
+                width: 80%;
+                max-width: 200px;
+                font-size: 1rem;
+                padding: 10px 15px;
+            }
+            .month-selector h2 {
+                font-size: 1.5rem;
+                margin: 0;
+            }
+            .attendance-calendar {
+                grid-gap: 6px;
+                padding: 5px;
+            }
+            .calendar-day {
+                padding: 10px;
+                width: 38px;
+                height: 38px;
+                font-size: 0.9rem;
+            }
+            .week-day {
+                font-size: 0.85rem;
+            }
+            h2 {
+                font-size: 1.5rem;
+                margin-bottom: 20px;
+            }
+            .summary-container {
+                flex-direction: column;
+                margin-bottom: 20px;
+                padding: 20px;
+            }
+            .summary-item{
+                min-width: unset;
+                width: 100%;
+                padding: 15px;
+            }
+            .summary-item h3 {
+                font-size: 1.2rem;
+            }
+            .summary-item p {
+                font-size: 1.1rem;
+            }
+            .back-link {
+                margin-top: 25px;
+            }
+            .back-link a {
+                font-size: 1rem;
+                padding: 6px 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 15px;
+            }
+            header h1 {
+                font-size: 1.8rem;
+                margin-bottom: 20px;
+            }
+            .back-arrow {
+                top: 15px;
+                left: 15px;
+                font-size: 0.9rem;
+            }
+            .back-arrow-chevron {
+                font-size: 1.3rem;
+            }
+            .month-selector button {
+                width: 90%;
+            }
+            .month-selector h2 {
+                font-size: 1.3rem;
+            }
+            .calendar-day {
+                width: 32px;
+                height: 32px;
+                font-size: 0.8rem;
+                padding: 8px;
+            }
+            .week-day {
+                font-size: 0.75rem;
+            }
+            .summary-container {
+                padding: 15px;
+            }
+            .summary-item h3 {
+                font-size: 1.1rem;
+            }
+            .summary-item p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="/home" class="back-arrow">
+                <span class="back-arrow-chevron">&#x2039;</span> Back
+            </a>
+            <h1>My Attendance</h1>
+        </header>
+
+        <section class="attendance-records">
+            <div class="summary-container" id="attendance-summary">
+                <div class="summary-item">
+                    <h3>Present %</h3>
+                    <p id="presentPercentage">0%</p>
+                </div>
+                <div class="summary-item">
+                    <h3>Absent %</h3>
+                    <p id="absentPercentage">0%</p>
+                </div>
+                <div class="summary-item">
+                    <h3>Total Days</h3>
+                    <p id="totalDays">0</p>
+                </div>
+            </div>
+            <div class="month-selector">
+                <button id="prevMonth">❮</button>
+                <h2 id="monthYear">Month Year</h2>
+                <button id="nextMonth">❯</button>
+            </div>
+            <div class="week-days">
+                <div>Sun</div>
+                <div>Mon</div>
+                <div>Tue</div>
+                <div>Wed</div>
+                <div>Thu</div>
+                <div>Fri</div>
+                <div>Sat</div>
+            </div>
+            <div class="attendance-calendar" id="attendance-calendar"></div>
+
+        </section>
+
+        <div class="back-link">
+            <a href="/home">Back to Home</a>
+        </div>
+    </div>
+
+    <script>
+        // Placeholder for attendanceRecords. In a real application, this would be populated by a backend.
+        const attendanceRecords = [
+            { date: '2025-06-01', status: 'Present' },
+            { date: '2025-06-02', status: 'Present' },
+            { date: '2025-06-03', status: 'Absent' },
+            { date: '2025-06-04', status: 'Present' },
+            { date: '2025-06-05', status: 'Present' },
+            { date: '2025-06-06', status: 'Present' },
+            { date: '2025-06-07', status: 'Absent' },
+            { date: '2025-06-08', status: 'Present' },
+            { date: '2025-05-15', status: 'Present' },
+            { date: '2025-05-16', status: 'Present' },
+            { date: '2025-05-17', status: 'Absent' },
+            { date: '2025-07-01', status: 'Present' },
+            { date: '2025-07-02', status: 'Present' },
+            { date: '2025-07-03', status: 'Absent' },
+        ];
+        const attendanceCalendarDiv = document.getElementById('attendance-calendar');
+        const monthYearDisplay = document.getElementById('monthYear');
+        const prevMonthBtn = document.getElementById('prevMonth');
+        const nextMonthBtn = document.getElementById('nextMonth');
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const attendanceSummaryDiv = document.getElementById('attendance-summary');
+
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+
+        function generateAttendanceCalendar(month, year, records) {
+            attendanceCalendarDiv.innerHTML = '';
+            monthYearDisplay.textContent = `${monthNames[month]} ${year}`;
+
+            const firstDayOfMonth = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            let presentCount = 0;
+            let absentCount = 0;
+
+            // Add empty divs for the days before the 1st of the month
+            for (let i = 0; i < firstDayOfMonth; i++) {
+                const emptyDay = document.createElement('div');
+                attendanceCalendarDiv.appendChild(emptyDay);
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const dayDiv = document.createElement('div');
+                dayDiv.classList.add('calendar-day');
+                dayDiv.textContent = day;
+
+                const record = records.find(r => r.date === dateString);
+                if (record) {
+                    if (record.status === 'Present') {
+                        dayDiv.classList.add('present');
+                        presentCount++;
+                    } else if (record.status === 'Absent') {
+                        dayDiv.classList.add('absent');
+                        absentCount++;
+                    }
+                }
+                // Highlight the current day if it's the current month/year
+                const today = new Date();
+                if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                    dayDiv.style.border = `2px solid ${dayDiv.classList.contains('present') ? 'var(--primary-blue-dark)' : dayDiv.classList.contains('absent') ? 'var(--primary-blue-dark)' : 'var(--primary-blue-dark)'}`;
+                    dayDiv.style.boxShadow = `0 0 10px ${dayDiv.classList.contains('present') ? 'var(--secondary-green)' : dayDiv.classList.contains('absent') ? 'var(--secondary-red)' : 'var(--primary-blue)'}`;
+                }
+
+
+                attendanceCalendarDiv.appendChild(dayDiv);
+            }
+            displayAttendanceSummary(presentCount, absentCount, daysInMonth);
+        }
+
+        function getAttendanceForMonth(month, year, allRecords) {
+            return allRecords.filter(record => {
+                const recordDate = new Date(record.date);
+                return recordDate.getMonth() === month && recordDate.getFullYear() === year;
+            });
+        }
+
+        function displayAttendanceSummary(presentCount, absentCount, totalDays) {
+            const presentPercentageDisplay = document.getElementById('presentPercentage');
+            const absentPercentageDisplay = document.getElementById('absentPercentage');
+            const totalDaysDisplay = document.getElementById('totalDays');
+
+            const presentPercentage = totalDays > 0 ? ((presentCount / totalDays) * 100).toFixed(2) : 0;
+            const absentPercentage = totalDays > 0 ? ((absentCount / totalDays) * 100).toFixed(2) : 0;
+
+            presentPercentageDisplay.textContent = `${presentPercentage}%`;
+            absentPercentageDisplay.textContent = `${absentPercentage}%`;
+            totalDaysDisplay.textContent = totalDays;
+        }
+
+        // Initial generation of calendar for the current month
+        generateAttendanceCalendar(currentMonth, currentYear, getAttendanceForMonth(currentMonth, currentYear, attendanceRecords));
+
+        prevMonthBtn.addEventListener('click', () => {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            generateAttendanceCalendar(currentMonth, currentYear, getAttendanceForMonth(currentMonth, currentYear, attendanceRecords));
+        });
+
+        nextMonthBtn.addEventListener('click', () => {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            generateAttendanceCalendar(currentMonth, currentYear, getAttendanceForMonth(currentMonth, currentYear, attendanceRecords));
+        });
+    </script>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+
+</html>

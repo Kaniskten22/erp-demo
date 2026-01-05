@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Student Full Details</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f6f8;
+    }
+
+    h2, h3 {
+      color: #333;
+    }
+
+    .back-arrow {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #007bff;
+      text-decoration: none;
+      font-size: 16px;
+    }
+
+    .back-arrow:hover {
+      text-decoration: underline;
+    }
+
+    .form-wrapper {
+      background-color: #ffffff;
+      padding: 25px;
+      border-radius: 8px;
+      max-width: 800px;
+      margin: auto;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-top: 15px;
+      font-weight: 500;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="date"],
+    input[type="file"],
+    select {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-top: 5px;
+      font-size: 14px;
+    }
+
+    button[type="submit"] {
+      margin-top: 30px;
+      padding: 12px;
+      background-color: #007bff;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+
+    img {
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <a href="/home" class="back-arrow" aria-label="Go back to Home">
+    <span class="back-arrow-chevron" aria-hidden="true">&#x2039;</span> Back
+  </a>
+
+  <h2>Add Student Full Details</h2>
+
+  <div class="form-wrapper" role="main" aria-labelledby="page-title">
+    <form method="POST" enctype="multipart/form-data" aria-describedby="form-desc" novalidate>
+      
+      {% if not selected_student %}
+      <label for="student">Select Student:</label>
+      <select id="student" name="student">
+        {% for s in students %}
+          <option value="{{ s }}">{{ s }}</option>
+        {% endfor %}
+      </select>
+      {% endif %}
+
+      <!-- Student Photo -->
+      <h3>Student Photo</h3>
+      {% if existing_details and existing_details.student_photo %}
+        <img src="{{ existing_details.student_photo }}" alt="Student Photo" style="max-width: 150px; display: block; margin-bottom: 10px;">
+      {% endif %}
+      <label for="student_photo">Upload Student Photo:</label>
+      <input type="file" id="student_photo" name="student_photo" accept="image/*">
+
+      <!-- Personal Information -->
+      <h3 id="page-title">Personal Information</h3>
+      <label for="first_name">First Name:</label>
+      <input type="text" id="first_name" name="first_name" value="{{ existing_details.first_name if existing_details else '' }}">
+
+      <label for="middle_name">Middle Name:</label>
+      <input type="text" id="middle_name" name="middle_name" value="{{ existing_details.middle_name if existing_details else '' }}">
+
+      <label for="last_name">Last Name:</label>
+      <input type="text" id="last_name" name="last_name" value="{{ existing_details.last_name if existing_details else '' }}">
+
+      <label for="dob">Date of Birth:</label>
+      <input type="date" id="dob" name="dob" value="{{ existing_details.dob if existing_details else '' }}">
+
+      <label for="gender">Gender:</label>
+      <select id="gender" name="gender">
+        <option value="Male" {% if existing_details and existing_details.gender == 'Male' %}selected{% endif %}>Male</option>
+        <option value="Female" {% if existing_details and existing_details.gender == 'Female' %}selected{% endif %}>Female</option>
+        <option value="Other" {% if existing_details and existing_details.gender == 'Other' %}selected{% endif %}>Other</option>
+      </select>
+
+      <label for="nationality">Nationality:</label>
+      <input type="text" id="nationality" name="nationality" value="{{ existing_details.nationality if existing_details else '' }}">
+
+      <label for="religion">Religion:</label>
+      <input type="text" id="religion" name="religion" value="{{ existing_details.religion if existing_details else '' }}">
+
+      <label for="address">Address:</label>
+      <input type="text" id="address" name="address" value="{{ existing_details.address if existing_details else '' }}">
+
+      <label for="city">City:</label>
+      <input type="text" id="city" name="city" value="{{ existing_details.city if existing_details else '' }}">
+
+      <label for="state">State:</label>
+      <input type="text" id="state" name="state" value="{{ existing_details.state if existing_details else '' }}">
+
+      <label for="pincode">Pincode:</label>
+      <input type="text" id="pincode" name="pincode" value="{{ existing_details.pincode if existing_details else '' }}">
+
+      <!-- Academic Information -->
+      <h3>Academic Information</h3>
+      <label for="admission_number">Admission Number:</label>
+      <input type="text" id="admission_number" name="admission_number" value="{{ existing_details.admission_number if existing_details else '' }}">
+
+      <label for="admission_date">Admission Date:</label>
+      <input type="date" id="admission_date" name="admission_date" value="{{ existing_details.admission_date if existing_details else '' }}">
+
+      <label for="roll_number">Roll Number:</label>
+      <input type="text" id="roll_number" name="roll_number" value="{{ existing_details.roll_number if existing_details else '' }}">
+
+      <label for="class">Class:</label>
+      <input type="text" id="class" name="class" value="{{ existing_details.class if existing_details else '' }}">
+
+      <label for="section">Section:</label>
+      <input type="text" id="section" name="section" value="{{ existing_details.section if existing_details else '' }}">
+
+      <label for="language">Language:</label>
+      <input type="text" id="language" name="language" value="{{ existing_details.language if existing_details else '' }}">
+
+      <label for="previous_school">Previous School:</label>
+      <input type="text" id="previous_school" name="previous_school" value="{{ existing_details.previous_school if existing_details else '' }}">
+
+      <label for="previous_board">Previous Board:</label>
+      <input type="text" id="previous_board" name="previous_board" value="{{ existing_details.previous_board if existing_details else '' }}">
+
+      <label for="previous_class">Previous Class:</label>
+      <input type="text" id="previous_class" name="previous_class" value="{{ existing_details.previous_class if existing_details else '' }}">
+
+      <label for="previous_performance">Previous Performance:</label>
+      <input type="text" id="previous_performance" name="previous_performance" value="{{ existing_details.previous_performance if existing_details else '' }}">
+
+      <!-- Contact Information -->
+      <h3>Contact Information</h3>
+      <label for="email">Email ID:</label>
+      <input type="email" id="email" name="email" value="{{ existing_details.email if existing_details else '' }}">
+
+      <label for="phone">Mobile Number:</label>
+      <input type="text" id="phone" name="phone" value="{{ existing_details.phone if existing_details else '' }}">
+
+      <!-- Guardian Information -->
+      <h3>Parents Information</h3>
+
+      <!-- Father Photo -->
+      {% if existing_details and existing_details.father_photo %}
+        <img src="{{ existing_details.father_photo }}" alt="Father Photo" style="max-width: 150px; display: block; margin-bottom: 10px;">
+      {% endif %}
+      <label for="father_photo">Upload Father's Photo:</label>
+      <input type="file" id="father_photo" name="father_photo" accept="image/*">
+
+      <label for="father_name">Father's Name:</label>
+      <input type="text" id="father_name" name="father_name" value="{{ existing_details.father_name if existing_details else '' }}">
+
+      <label for="father_contact">Father's Contact:</label>
+      <input type="text" id="father_contact" name="father_contact" value="{{ existing_details.father_contact if existing_details else '' }}">
+
+      <label for="mother_name">Mother's Name:</label>
+      <input type="text" id="mother_name" name="mother_name" value="{{ existing_details.mother_name if existing_details else '' }}">
+
+      <label for="mother_contact">Mother's Contact:</label>
+      <input type="text" id="mother_contact" name="mother_contact" value="{{ existing_details.mother_contact if existing_details else '' }}">
+
+      <!-- Other Information -->
+      <h3>Other Information</h3>
+      <label for="medical_info">Medical Information:</label>
+      <input type="text" id="medical_info" name="medical_info" value="{{ existing_details.medical_info if existing_details else '' }}">
+
+      <label for="disability_info">Disability Information:</label>
+      <input type="text" id="disability_info" name="disability_info" value="{{ existing_details.disability_info if existing_details else '' }}">
+
+      <label for="sibling_info">Sibling Information:</label>
+      <input type="text" id="sibling_info" name="sibling_info" value="{{ existing_details.sibling_info if existing_details else '' }}">
+
+      <label for="aadhaar_student">Student Aadhaar Number:</label>
+      <input type="text" name="aadhaar_student" id="aadhaar_student" value="{{ existing_details.aadhaar_student if existing_details else '' }}">
+
+      <label for="email_student">Student Email:</label>
+      <input type="email" name="email_student" id="email_student" value="{{ existing_details.email_student if existing_details else '' }}">
+
+      <label for="father_aadhaar">Father Aadhaar Number:</label>
+      <input type="text" name="father_aadhaar" id="father_aadhaar" value="{{ existing_details.father_aadhaar if existing_details else '' }}">
+
+      <label for="father_email">Father Email:</label>
+      <input type="email" name="father_email" id="father_email" value="{{ existing_details.father_email if existing_details else '' }}">
+
+      <label for="mother_aadhaar">Mother Aadhaar Number:</label>
+      <input type="text" name="mother_aadhaar" id="mother_aadhaar" value="{{ existing_details.mother_aadhaar if existing_details else '' }}">
+
+      <label for="mother_email">Mother Email:</label>
+      <input type="email" name="mother_email" id="mother_email" value="{{ existing_details.mother_email if existing_details else '' }}">
+
+      <button type="submit">Save Details</button>
+    </form>
+  </div>
+
+</body>
+</html>

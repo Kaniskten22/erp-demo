@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Add Fee Details</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif; /* Modern font */
+      background: #eef2f6; /* Lighter, subtle background */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px; /* Add some padding for spacing */
+      box-sizing: border-box;
+      color: #333;
+    }
+
+    .container {
+      max-width: 480px; /* Slightly wider container */
+      width: 100%;
+      margin: 0 auto; /* Center the container */
+      background: #fff;
+      border-radius: 16px; /* More rounded corners */
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08); /* Softer, larger shadow */
+      padding: 35px 30px; /* Increased padding */
+      position: relative; /* For back arrow positioning */
+    }
+
+    h2 {
+      text-align: center;
+      color: #2c3e50; /* Darker heading color */
+      font-size: 28px; /* Larger heading */
+      margin-bottom: 30px; /* More space below heading */
+      font-weight: 700; /* Bolder font weight */
+    }
+
+    label {
+      display: block;
+      margin: 18px 0 8px; /* Adjusted margins */
+      font-weight: 600;
+      color: #555; /* Softer label color */
+      font-size: 15px; /* Slightly larger label font */
+    }
+
+    select, input[type="number"] {
+      width: calc(100% - 24px); /* Account for padding */
+      padding: 14px; /* Increased padding */
+      border-radius: 12px; /* Consistent rounded corners */
+      border: 1px solid #d1d1d6; /* Subtle border */
+      background: #f9f9fb; /* Light background for fields */
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      -webkit-appearance: none; /* Remove default styling for select */
+      -moz-appearance: none;
+      appearance: none;
+      box-sizing: border-box; /* Include padding in element's total width and height */
+    }
+
+    select {
+        background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'); /* Custom dropdown arrow */
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        padding-right: 30px; /* Make space for the arrow */
+    }
+
+    input:focus, select:focus {
+      border-color: #007bff; /* Blue focus border */
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); /* Subtle blue shadow on focus */
+    }
+
+    button {
+      margin-top: 30px; /* More space above button */
+      width: 100%;
+      padding: 16px; /* Larger button padding */
+      border: none;
+      border-radius: 12px;
+      background-color: #007bff; /* Primary blue button */
+      color: white;
+      font-size: 18px; /* Larger font size */
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3); /* Button shadow */
+    }
+
+    button:hover {
+      background-color: #0056b3; /* Darker blue on hover */
+      transform: translateY(-2px); /* Slight lift effect */
+    }
+
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .back-arrow {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      text-decoration: none;
+      color: #007bff;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      transition: color 0.3s ease;
+    }
+
+    .back-arrow:hover {
+      color: #0056b3;
+    }
+
+    .back-arrow-chevron {
+      font-size: 24px; /* Larger chevron */
+      margin-right: 5px;
+      line-height: 1; /* Align chevron better */
+    }
+
+    .error-message {
+      color: #dc3545; /* Red for errors */
+      background-color: #f8d7da; /* Light red background */
+      border: 1px solid #f5c6cb;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: 500;
+      margin-bottom: 20px; /* More space below error */
+      text-align: center;
+      font-size: 14px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      .container {
+        margin: 20px auto;
+        padding: 30px 20px;
+        border-radius: 12px;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
+
+      label {
+        font-size: 14px;
+      }
+
+      select, input {
+        padding: 12px;
+        font-size: 15px;
+      }
+
+      .select2-container {
+  width: 100% !important;
+}
+.select2-selection {
+  border-radius: 12px !important;
+  padding: 10px !important;
+  height: auto !important;
+  border: 1px solid #d1d1d6 !important;
+}
+
+
+      button {
+        padding: 14px;
+        font-size: 16px;
+      }
+
+      .back-arrow {
+        font-size: 14px;
+        top: 15px;
+        left: 15px;
+      }
+
+      .back-arrow-chevron {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/home" class="back-arrow">
+      <span class="back-arrow-chevron">&#x2039;</span> Back
+    </a>
+    <h2>Add Fee Details</h2>
+    {% if message %}
+      <div class="error-message">{{ message }}</div>
+    {% endif %}
+    <form method="POST">
+      <label for="student">Select Student</label>
+      <select name="student" id="student" required>
+        <option value="">-- Select Student --</option>
+        {% for student in students %}
+          <option value="{{ student }}">{{ student }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="total">Total Fees</label>
+      <input type="number" name="total" id="total" placeholder="Enter total fee amount" required />
+
+      <label for="concession">Concession (if any)</label>
+      <input type="number" name="concession" id="concession" placeholder="Enter concession amount" value="0" />
+
+      <button type="submit" {% if message %}disabled{% endif %}>Add Fees</button>
+    </form>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('#student').select2({
+      placeholder: "-- Select Student --"
+    });
+  });
+</script>
+<footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+</html>

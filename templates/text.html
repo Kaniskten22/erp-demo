@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .dashboard-container {
+            max-width: 960px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+            justify-content: center;
+        }
+
+        .card {
+            background-color: white;
+            padding: 16px;
+            text-align: center;
+            border-radius: 16px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            color: #333;
+            transition: all 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .card .icon {
+            background-color: #1B447B;
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #1B447B;
+            margin-bottom: 20px;
+        }
+
+        /* Profile popup menu */
+        #profilePopup {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+            padding: 20px;
+            animation: slideUp 0.3s ease;
+            z-index: 1000;
+        }
+
+        @keyframes slideUp {
+            from {transform: translateY(100%);}
+            to {transform: translateY(0);}
+        }
+
+        .profile-popup-item {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+
+        .profile-popup-item a {
+            text-decoration: none;
+            color: #1B447B;
+        }
+
+        .profile-popup-item.logout a {
+            color: red;
+            font-weight: bold;
+        }
+
+        /* ---  MEDIA QUERIES FOR MOBILE  ---  */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 0 10px;
+                margin: 10px auto;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr; /* Single column on mobile */
+                gap: 16px; /* Reduced gap */
+            }
+
+            .card {
+                padding: 12px;
+            }
+
+            h1 {
+                font-size: 24px;
+                margin-bottom: 16px;
+            }
+
+            .profile-popup-item {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard-container">
+    <div style="background-color: white; margin: 16px; padding: 16px; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; position: relative;">
+                <!-- Profile Picture -->
+                <img id="profilePic" src="https://icons.veryicon.com/png/o/miscellaneous/administration/account-25.png"
+                     alt="Profile Picture"
+                     style="width: 60px; height: 60px; border-radius: 50%; margin-right: 16px; cursor: pointer;">
+                <div>
+                    <div style="font-weight: bold; font-size: 18px;">Hello, {{ username }}</div>
+                    <div style="color: gray; font-size: 14px;">Grade {{ grade }} • {{ school_name }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Grid Start -->
+    <div class="dashboard-grid">
+        {% if role == 'admin' %}
+            <a href="/add_student" class="card"><div class="icon">➕</div>Add Student</a>
+            <a href="/edit_fees" class="card"><div class="icon">💵</div>Edit Fees</a>
+            <a href="/add_menu" class="card"><div class="icon">🍽️</div>Add Menu</a>
+            <a href="/view_nutriment_orders" class="card"><div class="icon">📦</div>View Nutriment Orders</a>
+            <a href="/upload_image" class="card"><div class="icon">📷</div>Upload Gallery Image</a>
+            <a href="/admin_view_all" class="card">
+                <div class="icon" style="background-color: transparent; box-shadow: none;">
+                    <img src="https://cdn-icons-png.flaticon.com/128/1150/1150592.png" alt="Chat" style="width: 32px; height: 32px;">
+                </div>
+                View readed messages
+            </a>
+            <a href="/add_admission" class="card">
+            <div class="icon" style="background-color: transparent; box-shadow: none;">
+                <img src="https://cdn-icons-png.flaticon.com/128/9523/9523827.png" alt="Chat" style="width: 32px; height: 32px;">
+            </div>
+            Add Addmission
+        </a>
+        <a href="/add_student_details" class="card">
+            <div class="icon" style="background-color: transparent; box-shadow: none;">
+                <img src="https://cdn-icons-png.flaticon.com/128/11860/11860831.png" alt="Chat" style="width: 32px; height: 32px;">
+            </div>
+            Add Student Details
+        </a>
+        <a href="/manage_students" class="card">
+            <div class="icon" style="background-color: transparent; box-shadow: none;">
+                <img src="https://cdn-icons-png.flaticon.com/128/1570/1570102.png" alt="Feedback" style="width: 32px; height: 32px;">
+            </div>
+           Manage Students
+        </a>
+        {% elif role == 'teacher' %}
+            <a href="/add_message/homework" class="card"><div class="icon">📝</div>Add Homework</a>
+            <a href="/add_message/circular" class="card"><div class="icon">🧾</div>Add Circular</a>
+            <a href="/attendance" class="card"><div class="icon">📅</div>Mark Attendance</a>
+            <a href="/add_menu" class="card"><div class="icon">🍽️</div>Add Menu</a>
+            <a href="/upload_image" class="card"><div class="icon">📷</div>Upload Gallery Image</a>
+            <a href="/admin_view_all" class="card">
+                <div class="icon" style="background-color: transparent; box-shadow: none;">
+                    <img src="https://cdn-icons-png.flaticon.com/128/1150/1150592.png" alt="Chat" style="width: 32px; height: 32px;">
+                </div>
+                View readed messages
+        {% elif role == 'student' %}
+            <a href="/view/homework" class="card"><div class="icon">📝</div>View Homework</a>
+            <a href="/view/circular" class="card"><div class="icon">🧾</div>View Circular</a>
+            <a href="/my_attendance" class="card"><div class="icon">📅</div>My Attendance</a>
+            <a href="/view_fees" class="card"><div class="icon">💰</div>View Fees</a>
+            <a href="/view_menu" class="card"><div class="icon">🍽️</div>View Menu</a>
+            <a href="/pay_nutriment" class="card"><div class="icon">💳</div>Pay Nutriment</a>
+            <a href="/gallery" class="card"><div class="icon">📷</div>Gallery</a>
+            <a href="/apply_leave" class="card">
+<div class="icon" style="background-color: transparent; box-shadow: none;">
+    <img src="https://cdn-icons-png.flaticon.com/128/3387/3387310.png" alt="Apply Leave" style="width: 32px; height: 32px;">
+</div>
+Apply Leave
+</a>
+<a href="/send_message" class="card">
+<div class="icon" style="background-color: transparent; box-shadow: none;">
+    <img src="https://cdn-icons-png.flaticon.com/128/3114/3114735.png" alt="Chat" style="width: 32px; height: 32px;">
+</div>
+Chat
+</a>
+<a href="/submit_feedback" class="card">
+<div class="icon" style="background-color: transparent; box-shadow: none;">
+    <img src="https://cdn-icons-png.flaticon.com/128/1208/1208703.png" alt="Feedback" style="width: 32px; height: 32px;">
+</div>
+Feedback
+</a>
+<a href="/answer_quiz" class="card">
+<div class="icon" style="background-color: transparent; box-shadow: none;">
+    <img src="https://cdn-icons-png.flaticon.com/128/3261/3261259.png" alt="Quiz" style="width: 32px; height: 32px;">
+</div>
+Quiz
+</a>
+
+<a href="/watch_live" class="card">
+<div class="icon" style="background-color: transparent; box-shadow: none;">
+    <img src="https://cdn-icons-png.flaticon.com/128/2177/2177994.png" alt="Live Streaming" style="width: 32px; height: 32px;">
+</div>
+Live Streaming
+</a>
+
+
+
+            <a href="{{ url_for('view_info', category='achievements') }}" class="card"><div class="icon">🏆</div>View Achievements</a>
+            <a href="{{ url_for('view_info', category='remarks') }}" class="card"><div class="icon">🗒️</div>View Remarks</a>
+            <a href="{{ url_for('view_info', category='performance') }}" class="card"><div class="icon">📊</div>View Performance</a>
+            <a href="/view_results" class="card"><div class="icon">🎓</div>View Results</a>
+            <a href="/view_timetable" class="card"><div class="icon">⏰</div>View Time Table</a>
+        {% endif %}
+
+        {% if role in ['teacher', 'admin'] %}
+            <a href="/add_info/remarks" class="card"><div class="icon">🗒️</div>Add Remarks</a>
+            <a href="/add_info/achievements" class="card"><div class="icon">🏆</div>Add Achievements</a>
+            <a href="/add_info/performance" class="card"><div class="icon">📈</div>Add Performance</a>
+            <a href="/add_results" class="card"><div class="icon">🎓</div>Add Results</a>
+            <a href="/view_leaves" class="card"><div class="icon">📄</div>View Leaves</a>
+            <a href="/add_timetable" class="card"><div class="icon">⏰</div>Add Time Table</a>
+
+<a href="/view_chat" class="card">
+<div class="icon" style="background-color: transparent; box-shadow: none;">
+    <img src="https://cdn-icons-png.flaticon.com/128/3114/3114735.png" alt="Chat" style="width: 32px; height: 32px;">
+</div>
+Chat
+</a>
+<a href="/view_feedback" class="card">
+<div class="icon" style="background-color: transparent; box-shadow: none;">
+    <img src="https://cdn-icons-png.flaticon.com/128/1208/1208703.png" alt="Feedback" style="width: 32px; height: 32px;">
+</div>
+View Feedback
+</a>
+<a href="/create_quiz" class="card">
+<div class="icon" style="background-color: transparent; box-shadow: none;">
+    <img src="https://cdn-icons-png.flaticon.com/128/3261/3261259.png" alt="Quiz" style="width: 32px; height: 32px;">
+</div>
+Quiz
+</a>
+
+<a href="/start_live" class="card">
+<div class="icon" style="background-color: transparent; box-shadow: none;">
+    <img src="https://cdn-icons-png.flaticon.com/128/2177/2177994.png" alt="Live Streaming" style="width: 32px; height: 32px;">
+</div>
+Live Streaming
+</a>
+
+        {% endif %}
+
+        {% if role == 'correspondent' %}
+        <a href="/add_homework" class="card"><div class="icon">📝</div>Add Homework</a>
+        <a href="/add_circular" class="card"><div class="icon">🧾</div>Add Circular</a>
+        <a href="/add_teacher" class="card"><div class="icon">➕</div>Add Teacher</a>
+        <a href="/add_student" class="card"><div class="icon">➕</div>Add Student</a>
+        <a href="/edit_fees" class="card"><div class="icon">💵</div>Edit Fees</a>
+        <a href="/add_admission" class="card">
+            <div class="icon" style="background-color: transparent; box-shadow: none;">
+                <img src="https://cdn-icons-png.flaticon.com/128/9523/9523827.png" alt="Chat" style="width: 32px; height: 32px;">
+            </div>
+            Addmission
+        </a>
+        <a href="/send_message_to_student" class="card">
+            <div class="icon" style="background-color: transparent; box-shadow: none;">
+                <img src="https://cdn-icons-png.flaticon.com/128/3114/3114735.png" alt="Chat" style="width: 32px; height: 32px;">
+            </div>
+            Send Message to Student
+            </a>
+            <a href="/view_feedback" class="card">
+                <div class="icon" style="background-color: transparent; box-shadow: none;">
+                    <img src="https://cdn-icons-png.flaticon.com/128/1208/1208703.png" alt="Feedback" style="width: 32px; height: 32px;">
+                </div>
+               View Feedback
+            </a>
+            <a href="/manage_students" class="card">
+            <div class="icon" style="background-color: transparent; box-shadow: none;">
+                <img src="https://cdn-icons-png.flaticon.com/128/1570/1570102.png" alt="Feedback" style="width: 32px; height: 32px;">
+            </div>
+           Manage Students
+        </a>
+        {% endif %}
+    </div>
+    <!-- Dashboard Grid End -->
+</div>
+
+<!-- Profile Popup Menu -->
+<div id="profilePopup">
+    <div style="width: 50px; height: 5px; background-color: #ccc; border-radius: 5px; margin: 0 auto 20px;"></div>
+    <div style="font-weight: bold; color: #1B447B; margin-bottom: 15px;">SWITCH USER</div>
+
+    <div style="display: flex; align-items: center; margin-bottom: 20px;">
+        <img src="https://icons.veryicon.com/png/o/miscellaneous/administration/account-25.png" alt="User" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+        <a href="/manage_user" style="background-color: #4A90E2; color: white; padding: 8px 14px; border-radius: 20px; font-weight: bold; text-decoration: none;">➕ Manage User</a>
+    </div>
+
+    <div class="profile-popup-item"><a href="/view_student_details">👤 My Profile</a></div>
+    <div class="profile-popup-item"><a href="#" onclick="location.reload()">🔄 Refresh</a></div>
+    <div class="profile-popup-item"><a href="/view_school_contacts">🎧 School Contacts</a></div>
+    <div class="profile-popup-item"><a href="/about">ℹ️ About</a></div>
+    <div class="profile-popup-item"><a href="/settings">⚙️ Settings</a></div>
+    <div class="profile-popup-item"><a href="/rate_us">⭐ Rate Us</a></div>
+    <div class="profile-popup-item logout"><a href="/logout">⏻ Logout</a></div>
+</div>
+
+<script>
+    const profilePic = document.getElementById('profilePic');
+    const profilePopup = document.getElementById('profilePopup');
+
+    profilePic.addEventListener('click', function() {
+        if (profilePopup.style.display === 'none' || profilePopup.style.display === '') {
+            profilePopup.style.display = 'block';
+        } else {
+            profilePopup.style.display = 'none';
+        }
+    });
+
+    // Close popup if clicked outside
+    window.addEventListener('click', function(e) {
+        if (!profilePopup.contains(e.target) && e.target !== profilePic) {
+            profilePopup.style.display = 'none';
+        }
+    });
+</script>
+
+</body>
+</html>

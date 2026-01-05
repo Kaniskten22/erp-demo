@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Manage Teachers</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    /* Reset & base */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #9be7ff 0%, #4a90e2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 60px 20px;
+      color: #2e3a59;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .container {
+      background: #ffffffee;
+      max-width: 850px;
+      width: 100%;
+      padding: 40px 50px;
+      border-radius: 23px;
+      box-shadow:
+        0 20px 40px rgba(74, 114, 226, 0.3),
+        0 30px 60px rgba(74, 114, 226, 0.15);
+      backdrop-filter: saturate(180%) blur(15px);
+      -webkit-backdrop-filter: saturate(180%) blur(15px);
+      position: relative;
+    }
+
+    /* Back arrow */
+    a.back-arrow {
+      position: absolute;
+      top: 32px;
+      left: 42px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #4a75e2;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 32px;
+      background: #dee8ff;
+      box-shadow: 0 6px 18px rgba(74, 114, 226, 0.25);
+      transition: background-color 0.3s ease, color 0.3s ease, transform 0.25s ease;
+      user-select: none;
+      z-index: 10;
+    }
+    a.back-arrow:hover,
+    a.back-arrow:focus {
+      background-color: #4468d3;
+      color: #fff;
+      outline: none;
+      transform: translateX(-6px);
+      box-shadow: 0 10px 32px rgba(68, 104, 211, 0.75);
+      cursor: pointer;
+    }
+    .back-arrow-chevron {
+      font-weight: 900;
+      font-size: 1.7rem;
+      line-height: 1;
+      user-select: none;
+    }
+
+    h2 {
+      margin: 12px 0 40px 0;
+      font-weight: 900;
+      font-size: 2.8rem;
+      color: #3b4a87;
+      text-align: center;
+      text-shadow: 0 3px 7px rgba(74, 114, 226, 0.4);
+      user-select: none;
+    }
+
+    table {
+      border-collapse: separate;
+      border-spacing: 0 18px;
+      width: 100%;
+      user-select: text;
+      box-shadow: 0 10px 25px rgba(74, 114, 226, 0.07);
+      border-radius: 16px;
+      overflow: hidden;
+      background-color: #f9fbff;
+    }
+
+    th, td {
+      padding: 16px 18px;
+      text-align: center;
+      color: #34475e;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    th {
+      background: linear-gradient(90deg, #4a7adc, #375cc1);
+      color: white;
+      font-weight: 700;
+      letter-spacing: 1.1px;
+      user-select: none;
+    }
+
+    tbody tr {
+      background: white;
+      box-shadow: 0 14px 34px rgba(74, 114, 226, 0.1);
+      border-radius: 18px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    tbody tr:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 22px 48px rgba(74, 114, 226, 0.3);
+    }
+
+    tbody tr td {
+      border: none;
+      vertical-align: middle;
+    }
+
+    tbody tr td:first-child {
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: #2c3e71;
+    }
+
+    /* Action cell */
+    td:last-child {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    form button, td a.edit-link {
+      font-weight: 700;
+      border-radius: 28px;
+      padding: 10px 26px;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+      align-self: center;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    form button {
+      background-color: #eb4d4b;
+      color: white;
+      box-shadow: 0 8px 25px rgba(235, 77, 75, 0.5);
+      border: none;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    form button:hover,
+    form button:focus {
+      background-color: #c33836;
+      box-shadow: 0 10px 30px rgba(195, 56, 54, 0.7);
+      outline: none;
+    }
+
+    td a.edit-link {
+      background-color: #4a7adc;
+      color: white;
+      box-shadow: 0 8px 25px rgba(74, 122, 220, 0.6);
+      padding: 10px 26px;
+      border-radius: 28px;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    td a.edit-link:hover,
+    td a.edit-link:focus {
+      background-color: #375cc1;
+      box-shadow: 0 12px 30px rgba(55, 92, 193, 0.8);
+      outline: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 720px) {
+      .container {
+        padding: 30px 30px;
+      }
+
+      h2 {
+        font-size: 2.2rem;
+      }
+
+      table, tbody tr {
+        border-radius: 14px;
+      }
+
+      th, td {
+        padding: 12px 10px;
+        font-size: 1rem;
+      }
+
+      td:last-child {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      form button, td a.edit-link {
+        padding: 8px 20px;
+        font-size: 0.9rem;
+        border-radius: 24px;
+      }
+    }
+
+    @media (max-width: 440px) {
+      .container {
+        padding: 25px 20px;
+      }
+
+      h2 {
+        font-size: 1.8rem;
+      }
+
+      table, tbody tr {
+        border-radius: 12px;
+      }
+
+      td:last-child {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" role="main" aria-label="Manage Teachers">
+    <a href="/home" class="back-arrow" aria-label="Back to Home">
+      <span class="back-arrow-chevron" aria-hidden="true">&#x2039;</span> Back
+    </a>
+    <h2>Manage Teachers</h2>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Username</th>
+          <th scope="col">Board</th>
+          <th scope="col">Grade</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for teacher in teachers %}
+        <tr>
+          <td>{{ teacher.id }}</td>
+          <td>{{ teacher.board }}</td>
+          <td>{{ teacher.grade }}</td>
+          <td>
+            <form method="POST" style="margin:0;">
+              <input type="hidden" name="teacher_id" value="{{ teacher.id }}" />
+              <button type="submit" aria-label="Remove {{ teacher.id }}">Remove</button>
+            </form>
+            <a href="/edit_teacher/{{ teacher.id }}" class="edit-link" aria-label="Edit {{ teacher.id }}">Edit</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</body>
+</html>

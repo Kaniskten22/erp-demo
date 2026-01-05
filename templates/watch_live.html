@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+ <html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Watch Live Stream</title>
+  <style>
+   body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f8; /* Light background color */
+    display: flex; /* Use flexbox for centering */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    color: #333;
+    padding: 20px; /* Add some padding for spacing */
+    box-sizing: border-box;
+   }
+
+   .container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 12px; /* More rounded corners */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Prominent shadow */
+    text-align: center;
+    width: 100%;
+    max-width: 500px; /* Adjusted max-width */
+    position: relative; /* For positioning back arrow */
+   }
+
+   h1 {
+    color: #007bff; /* Blue for consistent branding */
+    margin-bottom: 25px; /* Increased margin */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2em; /* Larger heading */
+   }
+
+   .icon-live {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background-color: #dc3545; /* Red for live indicator */
+    border-radius: 50%;
+    margin-right: 12px; /* More space */
+    box-shadow: 0 0 10px rgba(220, 53, 69, 0.7); /* Stronger shadow */
+    animation: pulse 1.5s infinite alternate;
+   }
+
+   @keyframes pulse {
+    0% {
+     transform: scale(1);
+     opacity: 1;
+    }
+    100% {
+     transform: scale(1.2);
+     opacity: 0.7;
+    }
+   }
+
+   p {
+    font-size: 1.1em; /* Slightly larger text */
+    color: #555;
+    margin-bottom: 30px;
+    background-color: #ffe0b2; /* Light orange for warnings */
+    color: #e65100; /* Dark orange text */
+    padding: 15px;
+    border: 1px solid #ffcc80;
+    border-radius: 8px;
+   }
+
+   a {
+    display: inline-block;
+    padding: 15px 30px; /* Larger padding for button */
+    background-color: #fbfbfb; /* Green for action button */
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 1.1em; /* Larger font for button */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.2); /* Subtle shadow */
+   }
+
+   a:hover {
+    background-color: #218838;
+    transform: translateY(-2px); /* Slight lift on hover */
+   }
+
+   .back-arrow {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            text-decoration: none;
+            color: #007bff;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            transition: color 0.3s ease;
+        }
+
+        .back-arrow:hover {
+            color: #0056b3;
+        }
+
+        .back-arrow-chevron {
+            font-size: 24px; /* Larger chevron */
+            margin-right: 5px;
+            line-height: 1;
+        }
+
+   /* Responsive adjustments */
+   @media (max-width: 600px) {
+    .container {
+        padding: 30px;
+    }
+    h1 {
+        font-size: 1.8em;
+    }
+    p {
+        font-size: 1em;
+    }
+    a {
+        padding: 12px 25px;
+        font-size: 1em;
+    }
+   }
+  </style>
+ </head>
+ <body>
+  <div class="container">
+            <a href="/home" class="back-arrow">
+            <span class="back-arrow-chevron">&#x2039;</span> Back
+        </a>
+   <h1>
+    <span class="icon-live"></span>
+    Watch Live Stream
+   </h1>
+   {% if live_stream_url %}
+   <p>A live stream is currently active!</p>
+   <a href="{{ live_stream_url }}" target="_blank">Go to Live Stream</a>
+   {% else %}
+   <p>No live stream is currently active. Please check back later.</p>
+   {% endif %}
+  </div>
+                          <footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+ </body>
+
+ </html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Management</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f5f6fa;
+            --accent-color: #2ecc71;
+            --text-color: #2c3e50;
+        }
+
+        body {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .attendance-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s;
+        }
+
+        .attendance-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .filter-section {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .attendance-table {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .table thead th {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px;
+        }
+
+        .btn-mark {
+            border-radius: 20px;
+            padding: 8px 20px;
+            font-weight: 500;
+        }
+
+        .status-present {
+            color: var(--accent-color);
+        }
+
+        .status-absent {
+            color: #e74c3c;
+        }
+
+        .stats-card {
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .stats-present {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        }
+
+        .stats-absent {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .page-title {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .filter-section {
+                padding: 15px;
+            }
+            
+            .table-responsive {
+                border-radius: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <h2 class="page-title">
+            <i class="fas fa-user-check me-2"></i>Attendance Management
+        </h2>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <form method="GET" class="row g-3 align-items-end">
+                {% if role == 'admin' %}
+                <div class="col-md-4">
+                    <label class="form-label">Select Grade</label>
+                    <select name="grade" class="form-select">
+                        <option value="">All Grades</option>
+                        {% for grade in grades %}
+                        <option value="{{ grade }}" {% if grade == selected_grade %}selected{% endif %}>
+                            {{ grade }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Select Board</label>
+                    <select name="board" class="form-select">
+                        <option value="">All Boards</option>
+                        {% for board in boards %}
+                        <option value="{{ board }}" {% if board == selected_board %}selected{% endif %}>
+                            {{ board }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% endif %}
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-filter me-2"></i>Apply Filter
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Statistics Cards -->
+        {% if students %}
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="stats-card stats-present">
+                    <h3 class="mb-0">Present Today</h3>
+                    <p class="display-4 mb-0">{{ students|selectattr('status', 'equalto', 'present')|list|length }}</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="stats-card stats-absent">
+                    <h3 class="mb-0">Absent Today</h3>
+                    <p class="display-4 mb-0">{{ students|selectattr('status', 'equalto', 'absent')|list|length }}</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Attendance Form -->
+        {% if students %}
+        <div class="attendance-card">
+            <form method="POST" class="p-4">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Grade</th>
+                                <th>Board</th>
+                                <th class="text-center">Attendance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in students %}
+                            <tr>
+                                <td>{{ student.name }}</td>
+                                <td>{{ student.grade }}</td>
+                                <td>{{ student.board }}</td>
+                                <td class="text-center">
+                                    <div class="btn-group" role="group">
+                                        <input type="radio" class="btn-check" name="attendance_{{ student.username }}" 
+                                               id="present_{{ student.username }}" value="present" 
+                                               {% if student.status == 'present' %}checked{% endif %} required>
+                                        <label class="btn btn-outline-success btn-mark" for="present_{{ student.username }}">
+                                            <i class="fas fa-check me-1"></i>Present
+                                        </label>
+
+                                        <input type="radio" class="btn-check" name="attendance_{{ student.username }}" 
+                                               id="absent_{{ student.username }}" value="absent" 
+                                               {% if student.status == 'absent' %}checked{% endif %} required>
+                                        <label class="btn btn-outline-danger btn-mark" for="absent_{{ student.username }}">
+                                            <i class="fas fa-times me-1"></i>Absent
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-end mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg px-5">
+                        <i class="fas fa-save me-2"></i>Save Attendance
+                    </button>
+                </div>
+            </form>
+        </div>
+        {% else %}
+        <div class="alert alert-info" role="alert">
+            <i class="fas fa-info-circle me-2"></i>No students found for the selected criteria.
+        </div>
+        {% endif %}
+
+        <!-- Attendance Records -->
+        {% if records %}
+        <h3 class="mt-5 mb-4">Recent Attendance Records</h3>
+        <div class="attendance-card">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Student</th>
+                            <th>Grade</th>
+                            <th>Board</th>
+                            <th class="text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in records %}
+                        <tr>
+                            <td>{{ record.date }}</td>
+                            <td>{{ record.student_name }}</td>
+                            <td>{{ record.grade }}</td>
+                            <td>{{ record.board }}</td>
+                            <td class="text-center">
+                                {% if record.status == 'present' %}
+                                <span class="badge bg-success">
+                                    <i class="fas fa-check me-1"></i>Present
+                                </span>
+                                {% else %}
+                                <span class="badge bg-danger">
+                                    <i class="fas fa-times me-1"></i>Absent
+                                </span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

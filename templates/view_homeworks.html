@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Homeworks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f8f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6;
+        }
+        header {
+            background: linear-gradient(to right, #007bff, #004aad);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        header div {
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        .homework-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e0e0e0;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+        }
+        .homework-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+        }
+        .homework-date {
+            font-size: 0.95em;
+            color: #777;
+            margin-bottom: 8px;
+            text-align: right;
+        }
+        .homework-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .homework-preview {
+            font-size: 1em;
+            color: #555;
+            line-height: 1.6;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+        .back-arrow {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            text-decoration: none;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            transition: color 0.3s ease;
+        }
+        .back-arrow:hover {
+            color: #d1e7ff;
+        }
+        .back-arrow-chevron {
+            font-size: 1.8em;
+            margin-right: 5px;
+            line-height: 1;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+            .homework-card {
+                margin-bottom: 15px;
+                padding: 15px;
+            }
+            header div{
+                font-size: 1.6em;
+            }
+            .back-arrow {
+                left: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/home" class="back-arrow">
+            <span class="back-arrow-chevron">&#x2039;</span> Back
+        </a>
+        <div>My Homeworks</div>
+    </header>
+    <div class="container">
+        {% if homeworks %}
+            {% for hw in homeworks %}
+                <div class="homework-card" onclick="window.location.href='/homework/{{ hw.id }}'">
+                    <div class="homework-date">{{ hw.timestamp }} | Due: {{ hw.due_date }}</div>
+                    <div class="homework-title">{{ hw.title }} <span style="font-size:0.9em;color:#007bff;">({{ hw.subject }})</span></div>
+                    <div class="homework-preview">{{ hw.description }}</div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No homework found for your grade and board.</p>
+        {% endif %}
+    </div>
+                            <footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+</html>

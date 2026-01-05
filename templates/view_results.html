@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Results</title>
+  <style>
+   body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f8; /* Light background color */
+    display: flex; /* Use flexbox for centering */
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Full viewport height */
+    margin: 0;
+    padding: 20px; /* Add some padding for spacing */
+    box-sizing: border-box;
+    color: #333;
+   }
+
+   .results-container {
+    background-color: #fff;
+    padding: 30px; /* Increased padding */
+    border-radius: 12px; /* More rounded corners */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Prominent shadow */
+    width: 100%;
+    max-width: 700px; /* Adjusted max-width for better display */
+    overflow-x: auto; /* Enable horizontal scrolling for smaller screens */
+    position: relative; /* For positioning back arrow */
+   }
+
+   h2 {
+    color: #28a745; /* Green for main heading */
+    margin-bottom: 25px; /* Increased margin */
+    text-align: center;
+    font-size: 32px;
+    border-bottom: 2px solid #28a745; /* Green border */
+    padding-bottom: 10px;
+   }
+
+   .exam-result {
+    background-color: #f8fcf8; /* Light green background for each exam */
+    border: 1px solid #e0e0e0; /* Subtle border */
+    border-radius: 8px;
+    margin-bottom: 25px; /* Increased margin between exam results */
+    padding: 20px; /* Increased padding */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+    transition: transform 0.2s ease; /* Smooth transition for hover */
+   }
+
+   .exam-result:hover {
+       transform: translateY(-3px); /* Slight lift on hover */
+   }
+
+   .exam-result h3 {
+    margin: 0 0 15px 0; /* Adjusted margin for h3 */
+    font-size: 22px; /* Larger font size for exam name */
+    color: #28a745; /* Green for exam name */
+    text-align: left; /* Align to left */
+   }
+
+   .exam-result strong {
+    display: block; /* Make strong tags block for better spacing */
+    margin-bottom: 5px;
+    color: #333; /* Darker color for labels */
+    font-size: 16px;
+   }
+
+   .exam-result small {
+    color: #777;
+    font-size: 0.9em;
+   }
+
+   table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px; /* Rounded corners for table */
+    overflow: hidden; /* Ensures rounded corners are applied */
+   }
+
+   th, td {
+    padding: 12px 15px; /* Increased padding */
+    text-align: left;
+    border-bottom: 1px solid #e9ecef; /* Lighter border */
+   }
+
+   th {
+    background-color: #28a745; /* Green for table headers */
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+   }
+
+   tr:nth-child(even) {
+    background-color: #f8fcf8; /* Light green for even rows */
+   }
+
+   tr:hover {
+    background-color: #e6f7e9; /* Lighter green on hover */
+   }
+
+   td:nth-child(2) { /* Style for Marks column */
+    font-weight: bold;
+    color: #007bff; /* Blue for marks */
+   }
+
+   td:nth-child(3) { /* Style for Grade column */
+    font-weight: bold;
+    color: #ffc107; /* Amber for grade */
+   }
+
+   .back-arrow {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            text-decoration: none;
+            color: #007bff;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            transition: color 0.3s ease;
+        }
+
+        .back-arrow:hover {
+            color: #0056b3;
+        }
+
+        .back-arrow-chevron {
+            font-size: 24px; /* Larger chevron */
+            margin-right: 5px;
+            line-height: 1;
+        }
+
+   @media (max-width: 600px) {
+    th, td {
+     padding: 8px 10px;
+     font-size: 0.9em;
+    }
+    .results-container {
+        padding: 20px;
+    }
+    h2 {
+        font-size: 28px;
+    }
+    .exam-result h3 {
+        font-size: 20px;
+    }
+   }
+  </style>
+</head>
+<body>
+  <div class="results-container">
+            <a href="/home" class="back-arrow">
+            <span class="back-arrow-chevron">&#x2039;</span> Back
+        </a>
+    <h2>Your Examination Results</h2>
+    {% if results %}
+        {% for exam_name, exam_data in results.items() %}
+            <div class="exam-result">
+                <h3>{{ exam_name }}</h3>
+                <p><strong>Grade:</strong> {{ exam_data.grade }} <small>(Board: {{ exam_data.board }})</small></p>
+                <p><strong>Date:</strong> {{ exam_data.date }}</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Marks</th>
+                            <th>Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for subject, marks_grade in exam_data.subjects.items() %}
+                            <tr>
+                                <td>{{ subject }}</td>
+                                <td>{{ marks_grade.marks }}</td>
+                                <td>{{ marks_grade.grade }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p style="text-align: center; color: #555;">No results available at the moment. Please check back later!</p>
+    {% endif %}
+  </div>
+                          <footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+</html>

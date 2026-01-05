@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circulars</title>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f8f9; /* Soft background color */
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6;
+        }
+        header {
+            background: linear-gradient(to right, #007bff, #004aad); /* Gradient header */
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative; /* For positioning back arrow */
+        }
+        header div {
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+        .container {
+            max-width: 800px; /* Increased max-width */
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        .circular-card {
+            background: white;
+            border-radius: 12px; /* More rounded corners */
+            padding: 20px; /* Increased padding */
+            margin-bottom: 20px; /* Increased margin */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); /* More prominent shadow */
+            border: 1px solid #e0e0e0; /* Subtle border */
+            transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth transitions */
+            cursor: pointer; /* Indicate clickable */
+        }
+        .circular-card:hover {
+            transform: translateY(-5px); /* Lift effect on hover */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12); /* Increased shadow on hover */
+        }
+        .circular-date {
+            font-size: 0.95em; /* Slightly larger date font */
+            color: #777; /* Slightly darker date color */
+            margin-bottom: 8px; /* Adjusted margin */
+            text-align: right; /* Align date to the right */
+        }
+        .circular-title {
+            font-size: 1.3em; /* Larger title font */
+            font-weight: 600;
+            color: #2c3e50; /* Darker title color */
+            margin-bottom: 10px; /* Adjusted margin */
+        }
+        .circular-preview {
+            font-size: 1em;
+            color: #555; /* Slightly darker preview color */
+            line-height: 1.6;
+            overflow: hidden; /* Hide overflowing text */
+            text-overflow: ellipsis; /* Add ellipsis for overflow */
+            display: -webkit-box;
+            -webkit-line-clamp: 3; /* Show up to 3 lines */
+            -webkit-box-orient: vertical;
+        }
+        /* Back arrow styling */
+        .back-arrow {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            text-decoration: none;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            transition: color 0.3s ease;
+        }
+        .back-arrow:hover {
+            color: #d1e7ff; /* Lighter color on hover */
+        }
+        .back-arrow-chevron {
+            font-size: 1.8em; /* Larger chevron */
+            margin-right: 5px;
+            line-height: 1; /* Align chevron vertically */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px; /* Adjust padding for smaller screens */
+            }
+            .circular-card {
+                margin-bottom: 15px;
+                padding: 15px;
+            }
+            header div{
+                font-size: 1.6em; /* Slightly smaller title on small screens */
+            }
+            .back-arrow {
+                left: 15px; /* Adjust left position */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/home" class="back-arrow">
+            <span class="back-arrow-chevron">&#x2039;</span> Back
+        </a>
+        <div>{{ header_title }}</div>
+    </header>
+    <div class="container">
+        {% for message in messages %}
+            <div class="circular-card" onclick="window.location.href='/circular/{{ message.id }}'">
+                <div class="circular-date">{{ message.timestamp }}</div>
+                <div class="circular-title">{{ message.title }}</div>
+                <div class="circular-preview">{{ message.content }}</div>
+            </div>
+        {% endfor %}
+    </div>
+                            <footer style="text-align: center; padding: 20px; color: gray; font-size: 18px; font-weight: bold;">
+    Developed by Kaniskten grade 8 Advaita international school
+     
+</footer>
+    <footer style="text-align: center; padding: 20px; color: gray; font-size: 16px; font-weight: bold;">
+    © 2025 Kaniskten Programming. All rights reserved.
+</footer>
+</body>
+</html>
